@@ -85,7 +85,7 @@ const Register = () => {
                                 placeholder="Email" 
                                 name="email"
                                 value={email} 
-                                className="flex-1" 
+                                className="flex-1 text-[#000000] text-[16px]" 
                                 onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <FontAwesomeIcon className="text-[#636d77]" icon={faEnvelope} />
@@ -96,7 +96,7 @@ const Register = () => {
                                 placeholder="Họ và tên" 
                                 name="fullname"
                                 value={fullname} 
-                                className="flex-1" 
+                                className="flex-1 text-[#000000] text-[16px]" 
                                 onChange={(e) => setFullname(e.target.value)}
                                 />
                                 <FontAwesomeIcon className="text-[#636d77]" icon={faUser} />
@@ -106,7 +106,7 @@ const Register = () => {
                                     type="text" 
                                     placeholder="Số điện thoại" 
                                     name="phone" 
-                                    className="flex-1" 
+                                    className="flex-1 text-[#000000] text-[16px]" 
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)} 
                                 />
@@ -117,7 +117,7 @@ const Register = () => {
                                     type="password" 
                                     placeholder="Mật khẩu" 
                                     name="password" 
-                                    className="flex-1" 
+                                    className="flex-1 text-[#000000] text-[16px]" 
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)} 
                                 />

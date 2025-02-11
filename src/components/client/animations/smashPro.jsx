@@ -49,7 +49,7 @@ const SmashPro = () => {
     );
 
     return (
-        <div>
+        <div className="pb-[100px]">
             <div className="scrolling-banner" ref={bannerRef1}>
                 <div className="scrolling-content" ref={contentRef1}>
                     {generateContent()}

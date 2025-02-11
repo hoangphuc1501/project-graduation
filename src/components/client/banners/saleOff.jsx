@@ -2,7 +2,8 @@ const SaleOff = () => {
     return (
         <div className="py-[60px]">
             <div className="container mx-auto px-[16px]">
-                <h3 className="cl"> Sale off</h3>
+                <h3 className="text-[24px] text-main font-[700] uppercase text-center pb-[16px]"> Sale off</h3>
+                <div className="line-title"></div>
                 <div className="flex justify-between items-center">
                     <div className="w-[32%] h-[180px]">
                         <img src="https://golfcity.com.vn/wp-content/uploads/2023/04/banner-giay-1.gif" alt="" className="w-full h-full" />

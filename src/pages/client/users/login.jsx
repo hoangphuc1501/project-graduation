@@ -18,7 +18,8 @@ const Login = () => {
 
     const handleSubmitLogin = async (e) => {
         e.preventDefault();
-        const data = await axios.post("/user/login", { email, password });
+        const data = await axios.post("/user/login", { email, password })
+        
         if (data.code === "success") {
             const userData = data.user;
             const token = data.token;
@@ -62,7 +63,7 @@ const Login = () => {
                                     placeholder="Email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="flex-1" />
+                                    className="flex-1 text-[#000000] text-[16px]" />
                                 <FontAwesomeIcon className="text-[#636d77]" icon={faEnvelope} />
                             </div>
                             <div className="border border-[#b3b3b3] px-[20px] py-[15px] rounded-[25px] flex gap-x-[20px] items-center mb-[20px]">
@@ -71,7 +72,7 @@ const Login = () => {
                                     placeholder="Mật khẩu"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="flex-1" />
+                                    className="flex-1  text-[#000000] text-[16px]" />
                                 <FontAwesomeIcon className="text-[#636d77]" icon={faLock} />
                             </div>
                             <div className="flex justify-between items-center px-[20px]">

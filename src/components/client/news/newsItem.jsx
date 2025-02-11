@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faArrowUp } from "@fortawesome/free-solid-svg-icons";
-
+import { Link } from "react-router-dom";
 const NewsItem = () => {
     return(
         <div className="relative box-hidden">
@@ -11,7 +11,7 @@ const NewsItem = () => {
                 <div className="w-full mb-[180px]">
                     <p className="font-[400] text-[14px] text-[#FFFFFF] pb-[12px]">15 Tháng Một, 2025</p>
                     <h3 className="font-[700] text-[20px] text-[#FFFFFF] mb-[12px] leading-[1.3] line-clamp-2 hover:text-[#FF0000]">
-                        <a href="asd" className="hover:text-main">So Sánh Vợt Lining 6000 và Lining 9000. Đâu là sự lựa chọn tốt hơn cho bạn?</a>
+                        <Link to="*" className="hover:text-main">So Sánh Vợt Lining 6000 và Lining 9000. Đâu là sự lựa chọn tốt hơn cho bạn?</Link>
                         </h3>
                 </div>
                 <button className="flex gap-x-[8px] items-center font-[500] text-main text-[16px] hover:text-black ">

@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {  faAnglesRight, faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ProductItem from "../../../components/client/products/productItem";
-
-
+import axios from '../../../utils/axiosCustom';
 const items = [...Array(33).keys()];
 
 function Items({ currentItems }) {
@@ -23,12 +22,9 @@ function PaginatedItems({ itemsPerPage }) {
     // We start with an empty list of items.
     const [currentItems, setCurrentItems] = useState(null);
     const [pageCount, setPageCount] = useState(0);
-    // Here we use item offsets; we could also use page offsets
-    // following the API or data you're working with.
     const [itemOffset, setItemOffset] = useState(0);
 
     useEffect(() => {
-        // Fetch items from another resources.
         const endOffset = itemOffset + itemsPerPage;
         console.log(`Loading items from ${itemOffset} to ${endOffset}`);
         setCurrentItems(items.slice(itemOffset, endOffset));
@@ -70,6 +66,21 @@ function PaginatedItems({ itemsPerPage }) {
 }
 
 const Product = () => {
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get("/products");
+                // console.log("API Response:", response.data);
+                setProducts(response.data || []);
+            } catch (error) {
+                console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
+            } 
+        };
+
+        fetchProducts();
+    }, []);
+
     return (
         <div className="py-[100px]">
             <div className="container mx-auto px-[16px]">
@@ -82,7 +93,7 @@ const Product = () => {
                             <h3 className="text-[16px] font-[700] text-black uppercase">Vợt Yonex</h3>
                             <div className="flex justify-center items-center gap-x-[20px]">
                                 <span className="text-[16px] font-[500] text-[#444545]">
-                                    Sắp xếp theo:{" "}
+                                    Sắp xếp theo:
                                 </span>
                                 <select
                                     name=""
@@ -98,16 +109,14 @@ const Product = () => {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-[20px] ">
-                            <ProductItem />
-                            <ProductItem />
-                            <ProductItem />
-                            <ProductItem />
-                            <ProductItem />
+                        {products.map((product) => (
+                                <ProductItem key={product.id} product={product} />
+                            ))}
                         </div>
                         <div className="flex items-center justify-center py-[20px] mt-[10px]">
                             <PaginatedItems itemsPerPage={4} />,
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

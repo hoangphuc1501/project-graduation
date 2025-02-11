@@ -47,60 +47,6 @@ input::placeholder{
 
 /* end zoom box */
 
-/* NewsSection */
-.arrow-rotota{
-  transform: rotate(30deg);
-}
-.box-hidden{
-  overflow: hidden;
-}
-.box-hidden::before{
-  content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    z-index: 0;
-    border-radius: 20px;
-}
-
-.animation{
-  transition: all 0.3s ease-in-out;
-  overflow: hidden;
-}
-
-.animation:hover h3{
-  color: #031230;
-}
-
-.animation:hover p{
-  color: #7f8080;
-}
-.news-swiper .swiper-button-next,
-.news-swiper .swiper-button-prev{
-  position: absolute;
-  background-color: var(--main-color);
-  color: #FFFFFF;
-  width: 35px;
-  height: 35px;
-  text-align: center;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-.news-swiper .swiper-button-prev:hover{
-  color: var(--main-color);
-  background-color: #FFFFFF;
-}
-.news-swiper .swiper-button-next::after,
-.news-swiper .swiper-button-prev::after{
-  font-size: 18px;
-}
-/* end NewsSection */
 
 /* footer */
 .bg-custom-gradient{
@@ -122,6 +68,22 @@ input::placeholder{
 /* end */
 
 /* banner */
+.banner-main .swiper .swiper-button-next,
+.banner-main .swiper .swiper-button-prev{
+  margin: 0 20px;
+  top: 310px;
+}
+.banner-main .swiper .swiper-button-next::after,
+.banner-main .swiper .swiper-button-prev::after{
+  background-color: var(--main-color);
+  font-size: 25px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 500;
+  margin: 0 20px;
+}
+/* end banner */
 /* pagination */
 .pagination{
   gap: 5px;
@@ -147,7 +109,7 @@ input::placeholder{
 
 /* smashpro */
 .scrolling-banner {
-  margin-top: 250px;
+  margin-top: 180px;
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -173,7 +135,7 @@ input::placeholder{
   position: relative;
   display: flex;
   align-items: center;
-  transform: rotate(10deg);
+  transform: rotate(8deg);
 } 
 /* Nội dung chạy */
 .scrolling-content {
@@ -181,7 +143,7 @@ input::placeholder{
   white-space: nowrap;
   position: absolute;
   gap: 15px;
-  animation: scroll 10s linear infinite;
+  animation: scroll 20s linear infinite;
 }
   keyframes scroll {
   from {
@@ -189,6 +151,23 @@ input::placeholder{
   }
   to {
     transform: translateX(-100%);
+  }
+}
+
+
+.scrolling-box {
+  display: flex;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  from {
+      transform: translateX(0);
+  }
+  to {
+      transform: translateX(-50%);
   }
 }
 /* end  smashpro */ 
@@ -385,3 +364,85 @@ input::placeholder{
   opacity: 1;
 }
 /* end product item */
+
+/* NewsSection */
+.arrow-rotota{
+  transform: rotate(30deg);
+}
+.box-hidden{
+  overflow: hidden;
+}
+.box-hidden::before{
+  content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+    border-radius: 20px;
+}
+
+.animation{
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.animation:hover h3{
+  color: #031230;
+}
+
+.animation:hover p{
+  color: #7f8080;
+}
+.news-swiper .swiper-button-next,
+.news-swiper .swiper-button-prev{
+  position: absolute;
+  background-color: var(--main-color);
+  color: #FFFFFF;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+.news-swiper .swiper-button-prev:hover{
+  color: var(--main-color);
+  background-color: #FFFFFF;
+}
+.news-swiper .swiper-button-next::after,
+.news-swiper .swiper-button-prev::after{
+  font-size: 18px;
+}
+
+/* feature */
+.news-section-feature .swiper .swiper-button-next,
+.news-section-feature .swiper .swiper-button-prev{
+  margin: 0 20px;
+  top: 130px;
+}
+.news-section-feature .swiper .swiper-button-next::after,
+.news-section-feature .swiper .swiper-button-prev::after{
+  background-color: var(--main-color);
+  font-size: 20px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 500;
+}
+/* end feature */
+/* end NewsSection */
+
+/* line-title */
+.line-title{
+    content: "";
+    width: 20%;
+    border: 2px solid var(--main-color);
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+/* end line-title */

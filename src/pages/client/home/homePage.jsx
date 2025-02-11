@@ -1,22 +1,32 @@
 
+import CategoryAnimation from "../../../components/client/animations/categoryAnimation";
 import BannerMain from "../../../components/client/banners/banner";
 import SaleOff from "../../../components/client/banners/saleOff";
 import ServiceBanner from "../../../components/client/banners/serviceBanner";
 import Brand from "../../../components/client/brand/brand";
-import Footer from "../../../components/client/footer/footer";
-import Header from "../../../components/client/headers/header";
-import NewsSection from "../../../components/client/news/newsSection";
 
+import NewsSection from "../../../components/client/news/newsSection";
+import {ProductRackets, ProductShoes, ProductNew} from "../../../components/client/products/productCategory";
+import ProductSale from "../../../components/client/products/productSale";
+import SmashPro from "../../../components/client/animations/smashPro";
 
 const HomePage = () => {
     return (
-        <div className="">
+        <>
             <BannerMain/>
-            <Brand/>
-            <NewsSection/>
             <ServiceBanner/>
+            <ProductNew/>
+            <ProductSale/>
+            <ProductRackets/>
+            <ProductShoes/>
+            <CategoryAnimation/>
+            
             <SaleOff/>
-        </div>
+            <Brand/>
+            <SmashPro/>
+            <NewsSection/>
+            
+        </>
     )
 }
 

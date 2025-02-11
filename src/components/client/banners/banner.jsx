@@ -1,21 +1,37 @@
-import React, { useRef, useState } from 'react';
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
-// import required modules
-import { Navigation } from 'swiper/modules';
+
 const BannerMain = () => {
+    const banners = [
+        "https://cdn.shopvnb.com/img/1920x640/uploads/slider/astrox88-sd-key-visual-2880x1120-_1718650445.webp",
+        "https://cdn.shopvnb.com/img/1920x640/uploads/slider/thiet-ke-chua-co-ten-12_1727137763.webp",
+        "https://cdn.shopvnb.com/img/1920x640/uploads/slider/65z3ltd-launch-website_1695177820.webp",
+        "https://cdn.shopvnb.com/img/1920x640/uploads/slider/1000z-launch-website-banner_1695177885.webp",
+        "https://cdn.shopvnb.com/img/1920x640/uploads/slider/ynx-eclp-banner_1695178004.webp",
+    ];
+
     return (
-        <>
-            <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
-                <SwiperSlide><img className='w-full' src="https://static.fbshop.vn/wp-content/uploads/2024/12/Banner-Xa-kho-Fbshop-1920x685.png" alt="" /></SwiperSlide>
-                <SwiperSlide><img className='w-full' src="https://static.fbshop.vn/wp-content/uploads/2024/12/Banner-Fbshop-1-1920x685.png" alt="" /></SwiperSlide>
-                <SwiperSlide><img className='w-full' src="https://static.fbshop.vn/wp-content/uploads/2024/01/Banner-website-4-min.webp" alt="" /></SwiperSlide>
+        <div className="banner-main">
+            <Swiper
+                loop={true}
+                autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                }}
+                navigation={true}
+                modules={[Navigation, Autoplay]}
+                className="mySwiper"
+            >
+                {banners.map((banner, index) => (
+                    <SwiperSlide key={index}>
+                        <img className="w-full" src={banner} alt={`Banner ${index + 1}`} />
+                    </SwiperSlide>
+                ))}
             </Swiper>
-        </>
+        </div>
     )
 }
 

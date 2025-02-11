@@ -8,15 +8,20 @@ import {
     faReceipt,
     faHeart,
 } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import React, { useState } from "react";
 import { useContext  } from "react";
 import { toast } from 'react-toastify';
 import { UserContext } from "../../../middleware/UserContext";
 import { useNavigate } from 'react-router-dom';
+import CartModal from "../cart/cartModal";
+import ContactModal from "../contact/contactModal";
+import WishListModal from "../wishlist/wishListModal";
 
 
-const Header = () => {
-
+const Header = (props) => {
+    const [showModalCart, setShowModalCart] = useState(false);
+    const [showModalContactForm, setShowModalContactForm] = useState(false);
+    const [showModalWishList, setShowModalWishList] = useState(false);
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -30,7 +35,7 @@ const Header = () => {
     };
 
     return (
-        <header className="">
+        <header className="z-[999]">
             <div className="container mx-auto px-[16px]">
                 <div className="flex justify-between h-[90px] items-center gap-[40px]">
                     <Link to="/" className="w-[100px] h-[60px]">
@@ -141,7 +146,7 @@ const Header = () => {
                         </div>
                         <div className="relative group">
                             <Link
-                                to="*"
+                                onClick={() => setShowModalWishList(true)}
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
                                 <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%]">
                                     <FontAwesomeIcon
@@ -156,7 +161,7 @@ const Header = () => {
                         </div>
                         <div className="relative group">
                             <Link
-                                to="*"
+                                onClick={() => setShowModalCart(true)}
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
                                 <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%]">
                                     <FontAwesomeIcon
@@ -164,14 +169,16 @@ const Header = () => {
                                         style={{ fontSize: "18px" }}
                                     />
                                 </span>
-                                <span className="text-[14px] font-[500] text-[#231f20]">
+                                <span className="text-[14px] font-[500] text-[#231f20] " >
                                     Giỏ hàng
                                 </span>
                             </Link>
                         </div>
                     </div>
                     <div className="">
-                        <button className="text-[16px] text-white bg-[linear-gradient(30deg,_#f57f20,_#d62b08_100%)] rounded-[45px] font-[500] py-[10px] px-[20px]">
+                        <button 
+                            onClick={() => setShowModalContactForm(true)}
+                            className="text-[16px] text-white bg-[linear-gradient(30deg,_#f57f20,_#d62b08_100%)] rounded-[45px] font-[500] py-[10px] px-[20px]">
                             Tư vấn ngay
                         </button>
                     </div>
@@ -180,16 +187,28 @@ const Header = () => {
             <nav className="bg-main">
                 <div className="container mx-auto px-[16px]">
                     <ul className="flex items-center gap-[40px] justify-center">
-                        <li><Link to="*" className="py-[10px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Trang chủ</Link></li>
-                        <li><Link to="*" className="py-[10px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Giới thiệu</Link></li>
-                        <li><Link to="/product" className="py-[10px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Sản phẩm</Link></li>
-                        <li><Link to="*"  className="py-[10px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Chính sách nhượng quyền</Link></li>
-                        <li><Link to="*"  className="py-[10px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Hướng dẫn</Link></li>
-                        <li><Link to="/news"  className="py-[10px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]">Tin tức</Link></li>
-                        <li><Link to="/contact" className="py-[10px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Liên hệ</Link></li>
+                        <li><Link to="/" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Trang chủ</Link></li>
+                        <li><Link to="*" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Giới thiệu</Link></li>
+                        <li><Link to="/product" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Sản phẩm</Link></li>
+                        <li><Link to="*"  className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Chính sách nhượng quyền</Link></li>
+                        <li><Link to="*"  className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Hướng dẫn</Link></li>
+                        <li><Link to="/news"  className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]">Tin tức</Link></li>
+                        <li><Link to="/contact" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Liên hệ</Link></li>
                     </ul>
                 </div>
             </nav>
+            <CartModal
+            showCart={showModalCart}
+            setShowCart={setShowModalCart}
+            />
+            <ContactModal
+                showContactForm={showModalContactForm}
+                setShowContactForm={setShowModalContactForm}
+            />
+            <WishListModal
+                showWishList = {showModalWishList}
+                setShowWishList = {setShowModalWishList}
+            />
         </header>
     );
 };
