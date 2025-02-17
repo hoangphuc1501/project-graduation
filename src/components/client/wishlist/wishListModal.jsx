@@ -1,5 +1,7 @@
 
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import WishListModalItem from './wishListModalItem';
+import { WishListButtonViewAll } from './wishListButton';
 
 const WishListModal = (props) => {
 
@@ -12,13 +14,18 @@ const WishListModal = (props) => {
             <Offcanvas 
             show={showWishList} 
             onHide={handleClose} 
-            placement="end">
+            placement="end"
+            >
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Yêu thích</Offcanvas.Title>
+                    <Offcanvas.Title className='font-[700] text-[26px] text-[#000000]'>Danh sách yêu thích</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    Some text as placeholder. In real life you can have the elements you
-                    have chosen. Like, text, images, lists, etc.
+                    <WishListModalItem/>
+                    <WishListModalItem/>
+                    <WishListModalItem/>
+                    <WishListModalItem/>
+
+                    <WishListButtonViewAll/>
                 </Offcanvas.Body>
             </Offcanvas>
         </>

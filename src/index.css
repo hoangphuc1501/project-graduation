@@ -145,7 +145,7 @@ input::placeholder{
   gap: 15px;
   animation: scroll 20s linear infinite;
 }
-  keyframes scroll {
+@keyframes scroll {
   from {
     transform: translateX(0);
   }
@@ -159,10 +159,10 @@ input::placeholder{
   display: flex;
   white-space: nowrap;
   flex-wrap: nowrap;
-  animation: scroll 20s linear infinite;
+  animation: category 40s linear infinite;
 }
 
-@keyframes scroll {
+@keyframes category {
   from {
       transform: translateX(0);
   }
@@ -446,3 +446,85 @@ input::placeholder{
     margin-bottom: 40px;
 }
 /* end line-title */
+
+/* custom-number-input */
+
+.custom-number-input input[type="number"]::-webkit-inner-spin-button,
+.custom-number-input input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* end */
+
+/* profile */
+.profile-active{
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  background-color: #fee;
+}
+/* .form-field label{
+  position: absolute;
+  top: 25px;
+  transform: translateY(-50%);
+  left: 8px;
+  color: #000000;
+  pointer-events: none;
+  transition: all 0.3s ease-in-out;
+  font-size: 16px;
+}
+.form-field input.filled ~ label,
+.form-field input:focus ~ label {
+  font-weight: 500;
+  color: var(--main-color);
+  transform: translateY(-35px);
+  font-size: 14px;
+} */
+.form-field label {
+  position: absolute;
+  top: 25px;
+  transform: translateY(-50%);
+  left: 10px;
+  color: #000000;
+  pointer-events: none;
+  transition: all 0.1s ease-in-out;
+  font-size: 16px;
+  
+}
+
+/* Khi input có dữ liệu hoặc được focus */
+.form-field input.filled ~ label,
+.form-field input:focus ~ label {
+  font-weight: 500;
+  transform: translateY(-35px);
+  left: 0;
+  font-size: 14px;
+  /* transform: translate(-35px, 0); */
+}
+
+/* Giữ màu chính khi input có dữ liệu */
+.form-field input.filled ~ label {
+  color: #000000;
+}
+
+/* Khi focus thì đổi màu */
+.form-field input:focus ~ label {
+  color: #E0052B;
+}
+/* Mặc định border-bottom */
+/* Mặc định border-bottom */
+.form-field input {
+  border-bottom: 2px solid #ccc;
+  transition: border-color 0.3s ease-in-out;
+}
+
+/* Khi focus, đổi màu border */
+.form-field input:focus {
+  border-bottom: 2px solid #E0052B;
+}
+
+/* Khi mất focus, nếu input có dữ liệu thì giữ màu chính, nếu không thì về mặc định */
+.form-field input:not(:focus):not(.filled) {
+  border-bottom: 2px solid #ccc;
+}
+
+/* end profile */

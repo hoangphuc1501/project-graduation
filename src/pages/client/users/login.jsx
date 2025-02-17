@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
-import axios from '../../../utils/axiosCustom';
 import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../../middleware/UserContext";
+import { LoginUserApi } from "../../../services/client/UserApiService";
 
 
 
@@ -18,8 +18,7 @@ const Login = () => {
 
     const handleSubmitLogin = async (e) => {
         e.preventDefault();
-        const data = await axios.post("/user/login", { email, password })
-        
+        const data = await LoginUserApi(email, password);
         if (data.code === "success") {
             const userData = data.user;
             const token = data.token;
@@ -80,9 +79,9 @@ const Login = () => {
                                     <input type="checkbox" id="remeberPass" className="w-[15px] h-[15px]" />
                                     <label htmlFor="remeberPass" className="font-[500] text-black text-[18px] cursor-pointer hover:text-main" >Nhớ mật khẩu</label>
                                 </div>
-                                <button className="font-[500] text-black text-[18px] cursor-pointer hover:text-main hover:underline">
+                                <Link to="/forgotPassword" className="font-[500] text-black text-[18px] cursor-pointer hover:text-main hover:underline">
                                     Quên mật khẩu?
-                                </button>
+                                </Link>
                             </div>
                             <button
                                 onClick={handleSubmitLogin}

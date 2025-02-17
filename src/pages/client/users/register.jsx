@@ -4,9 +4,8 @@ import { faTwitter, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-ic
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import axios from '../../../utils/axiosCustom';
 import { toast } from 'react-toastify';
-// import { registerUser } from "../../../services/client/UserApiService";
+import { registerUserApi } from "../../../services/client/UserApiService";
 
 const Register = () => {
     const [fullname, setFullname] = useState("");
@@ -42,21 +41,12 @@ const Register = () => {
         if (!validateForm()) {
             return;
         }
-
-        const userData = {
-            fullname,
-            email,
-            phone,
-            password,
-        };
-
-            const data = await axios.post("/user/register", userData);
-            console.log(data);
-            if (data.code === "success") {
-                toast.success(data.message);
+            const res = await registerUserApi(fullname, email , phone, password);
+            if (res.code === "success") {
+                toast.success(res.message);
                 navigate("/login")
             } else {
-                toast.error(data.message);
+                toast.error(res.message);
             }
     };
 

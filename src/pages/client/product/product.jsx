@@ -3,7 +3,7 @@ import { faAnglesRight, faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ProductItem from "../../../components/client/products/productItem";
-import axios from '../../../utils/axiosCustom';
+import {nodeAPI} from '../../../utils/axiosCustom';
 const items = [...Array(33).keys()];
 
 function Items({ currentItems }) {
@@ -70,7 +70,7 @@ const Product = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get("/products");
+                const response = await nodeAPI.get("/products");
                 // console.log("API Response:", response.data);
                 setProducts(response.data || []);
             } catch (error) {

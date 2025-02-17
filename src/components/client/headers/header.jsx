@@ -5,8 +5,8 @@ import {
     faMagnifyingGlass,
     faMapLocationDot,
     faCartPlus,
-    faReceipt,
     faHeart,
+    faCodeCompare
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 import { useContext  } from "react";
@@ -66,34 +66,19 @@ const Header = (props) => {
                     </form>
                     <div className="flex gap-[20px]">
                         <div className="relative group">
-                            <div
+                            <Link
+                            to="/comparison"
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
                                 <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%]">
                                     <FontAwesomeIcon
-                                        icon={faReceipt}
+                                        icon={faCodeCompare}
                                         style={{ fontSize: "18px" }}
                                     />
                                 </span>
                                 <span className="text-[14px] font-[500] text-[#231f20]">
-                                    Tra cứu
+                                    So sánh
                                 </span>
-                            </div>
-                            <ul className="absolute w-[180px] bg-white text-black rounded-[10px] top-[60px] left-[-50px] hidden group-hover:block shadow-[0_0_5px_rgba(35,31,32,0.5)] z-[999]">
-                                <li>
-                                    <Link to="*"
-                                        className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
-                                        Kiểm tra đơn hàng
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        to="*"
-                                        className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white"
-                                    >
-                                        Kiểm tra bảo hành
-                                    </Link>
-                                </li>
-                            </ul>
+                            </Link>
                         </div>
                         <div className="relative group">
                             <div

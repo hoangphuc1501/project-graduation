@@ -22,7 +22,7 @@ const ContactForm = () => {
                     <FontAwesomeIcon className="text-[#636d77]" icon={faPhone} />
                 </div>
                 <div className="border border-[#b3b3b3] px-[20px] py-[15px] rounded-[25px] flex gap-x-[20px] items-center mb-[20px]">
-                    <textarea name="" id="" placeholder="Nội dung" className="h-[120px] overflow-auto"></textarea>
+                    <textarea name="" id="" placeholder="Nội dung" className="h-[120px] overflow-auto w-full outline-none"></textarea>
                 </div>
                 <div className="flex justify-center items-center">
                     <button className="font-[700] bg-main text-[16px] text-white hover:text-main w-[30%] py-[12px] rounded-[15px] my-[12px] hover:bg-white border border-main ">

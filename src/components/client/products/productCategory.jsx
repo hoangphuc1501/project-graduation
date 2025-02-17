@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from '../../../utils/axiosCustom';
+import {nodeAPI} from '../../../utils/axiosCustom';
 import ProductItem from "./productItem";
 
 
@@ -9,7 +9,7 @@ const ProductNew = () => {
     useEffect(() => {
         const fetchProductNew = async () => {
             try {
-                const response = await axios.get("/products/newProduct");
+                const response = await nodeAPI.get("/products/newProduct");
                 console.log("API Response:", response);
                 setProductNew(response.data || []);
             } catch (error) {
@@ -47,7 +47,7 @@ const ProductRackets = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`/products/category/${categoryId}`);
+                const response = await nodeAPI.get(`/products/category/${categoryId}`);
                 if (response.code === "success") {
                     setProductRackets(response.data);
                 }
@@ -93,7 +93,7 @@ const ProductShoes = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`/products/category/${categoryId}`);
+                const response = await nodeAPI.get(`/products/category/${categoryId}`);
                 if (response.code === "success") {
                     setProductShoes(response.data);
                 }

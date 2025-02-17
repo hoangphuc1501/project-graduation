@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+// import React, { useRef, useState, useEffect } from "react";
 import { initTabs } from 'david-ai';
 import ImageSlider from "../../../components/client/productDetail/imageSlider";
 import ProductInfo from "../../../components/client/productDetail/ProductInfo";

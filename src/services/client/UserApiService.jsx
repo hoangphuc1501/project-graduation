@@ -1,14 +1,40 @@
-import axios from '../../utils/axiosCustom';
+import { nodeAPI } from '../../utils/axiosCustom';
 
+// api đăng ký
+const registerUserApi = async (fullname, email, phone, password) => {
+    const userData = {
+        fullname,
+        email,
+        phone,
+        password,
+    };
 
-// const registerUser = async (userData) => {
-//     try {
-//         const response = await axios.post("/api/register", userData);
-//         return response.data;
-//     } catch (error) {
-//         console.error("Error:", error);
-//         throw error;
-//     }
-// };
+    return await nodeAPI.post("/user/register", userData);
+};
 
-// export {registerUser}
+// api đăng nhập
+const LoginUserApi = async ( email,password) => {
+    const userData = {email,password};
+
+    return await nodeAPI.post("/user/login", userData);
+};
+
+// api quên mật khẩu
+const fogotUserApi = async (email) => {
+    return await nodeAPI.post("/user/password/forgot", { email })
+}
+
+// api xác nhận mã otp
+const ComfirmOtpApi = async (email, otp) => {
+    return await nodeAPI.post("/user/password/otp", {email, otp});
+}
+
+const ChangePasswordApi = async(email, oldPassword, newPassword) => {
+    return await nodeAPI.post("/user/password/change", {
+        email,
+        oldPassword,
+        newPassword,
+    });
+}
+
+export {registerUserApi, LoginUserApi, fogotUserApi, ComfirmOtpApi, ChangePasswordApi}
