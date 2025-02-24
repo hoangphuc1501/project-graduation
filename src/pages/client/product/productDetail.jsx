@@ -9,10 +9,24 @@ import Description from "../../../components/client/productDetail/description";
 import ListStore from "../../../components/client/productDetail/listStore";
 import Rating from "../../../components/client/productDetail/rating";
 import CommentProduct from "../../../components/client/productDetail/comment";
+import { useEffect, useState } from 'react';
+import { productDetailApi } from '../../../services/client/productApiService';
 initTabs();
 
 
 const ProductDetail = () => {
+    // const [productDetail, setProductDetail] = useState()
+
+    // useEffect(() => {
+    //     const fetchProducDetail = async () => {
+    //         const response = productDetailApi();
+    //             console.log("API Response:", response);
+    //             // setProductDetail(response.data || []);
+    //     };
+
+    //     fetchProducDetail();
+    // }, []);
+
     return (
         <div className="py-[60px] product-detail">
             <div className="container mx-auto px-[16px]">

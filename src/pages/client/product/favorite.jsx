@@ -60,7 +60,8 @@ const Favorite = () => {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Đồng ý"
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy"
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -125,7 +126,7 @@ const Favorite = () => {
                                             </Link>
                                         </td>
                                         <td className="py-[10px] text-[16px] font-[500] text-[#000000]">
-                                            {favorite.productVariants.specialPrice}
+                                            {favorite.productVariants.specialPrice.toLocaleString("vi-VN")}
                                             <sup>đ</sup>
                                         </td>
                                         <td className="py-[10px]">

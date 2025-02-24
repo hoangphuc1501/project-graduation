@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+
 import Modal from 'react-bootstrap/Modal';
 import ImageSlider from "../../../components/client/productDetail/imageSlider";
 import ProductInfo from "../../../components/client/productDetail/ProductInfo";
@@ -16,7 +15,6 @@ const ProductModal = (props) => {
     const {show, setShow} = props;
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
     return (
         <>

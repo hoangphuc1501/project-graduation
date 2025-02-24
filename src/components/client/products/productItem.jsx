@@ -11,7 +11,7 @@ const ProductItem = ({product}) => {
 
     // Kiểm tra biến thể đầu tiên
     const firstVariant = product?.variant || {};
-    const imageUrl = firstVariant ? firstVariant.image : ""; 
+    const imageUrl = product?.image || ''; 
     const price = firstVariant ? firstVariant.price : 0;
     const specialPrice = firstVariant ? firstVariant.specialPrice : 0;
     const discount = firstVariant ? firstVariant.discount : 0;
@@ -25,7 +25,7 @@ const ProductItem = ({product}) => {
             <div className="w-full h-[200px] inner-image">
                 <img
                     src={imageUrl}
-                    alt=""
+                    alt={product.title}
                     className="w-full h-full "
                 />
                 <div className="inner-list-button">
@@ -63,11 +63,11 @@ const ProductItem = ({product}) => {
             </div>
             <div className="flex items-center gap-x-[12px]">
                 <span className="text-[16px] font-[700] text-main">
-                {specialPrice.toLocaleString("vi-VN")} <sup>đ</sup>
+                {specialPrice} <sup>đ</sup>
                 </span>
                 <span className="text-[12px] font-[300] text-[#9e9e9e]">
                     <strike>
-                    {price.toLocaleString("vi-VN")} <sup>đ</sup>
+                    {price} <sup>đ</sup>
                     </strike>
                 </span>
             </div>

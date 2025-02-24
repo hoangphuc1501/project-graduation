@@ -9,14 +9,17 @@ import {
     faCodeCompare
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
-import { useContext  } from "react";
+import { useContext } from "react";
 import { toast } from 'react-toastify';
 import { UserContext } from "../../../middleware/UserContext";
 import { useNavigate } from 'react-router-dom';
 import CartModal from "../cart/cartModal";
 import ContactModal from "../contact/contactModal";
 import WishListModal from "../wishlist/wishListModal";
-
+import { ListButtonAnimation } from "../buttons/listButtonAnimation";
+import BrandList from "./brandList";
+import CategoryList from "./categoryList";
+import { FaChevronDown } from "react-icons/fa6";
 
 const Header = (props) => {
     const [showModalCart, setShowModalCart] = useState(false);
@@ -28,7 +31,7 @@ const Header = (props) => {
     // hàm đăng xuất
     const handleLogout = () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('user'); 
+        localStorage.removeItem('user');
         setUser(null);
         navigate("/");
         toast.success("Đăng xuất thành công");
@@ -53,12 +56,12 @@ const Header = (props) => {
                     </p>
                     <form
                         action=""
-                        className="flex-1 flex py-[10px] px-[15px] rounded-[8px] bg-[#f3f3f3]"
+                        className="flex-1 flex py-[10px] px-[15px] rounded-[8px] bg-[#f3f3f3] border !border-main bg-transparent "
                     >
                         <input
                             type="text"
                             placeholder="Tìm sản phẩm..."
-                            className="flex-1 bg-transparent"
+                            className="flex-1 bg-transparent text-[16px] text-[#000000] font-[400]"
                         />
                         <button className="text-main text-[16px] px-[5px]">
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -67,7 +70,7 @@ const Header = (props) => {
                     <div className="flex gap-[20px]">
                         <div className="relative group">
                             <Link
-                            to="/comparison"
+                                to="/comparison"
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
                                 <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%]">
                                     <FontAwesomeIcon
@@ -92,40 +95,40 @@ const Header = (props) => {
                                 </span>
                             </div>
                             <ul className="absolute w-[180px] bg-white text-black rounded-[10px] top-[60px] left-[-50px] hidden group-hover:block shadow-[0_0_5px_rgba(35,31,32,0.5)] z-[999]">
-                            {!user ? (
-                                <>
-                                    <li>
-                                        <Link
-                                            to="/login"
-                                            className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
-                                            Đăng nhập
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            to="/register"
-                                            className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
-                                            Đăng ký
-                                        </Link>
-                                    </li>
-                                </>
-                                ):(
+                                {!user ? (
                                     <>
-                                    <li>
-                                        <Link
-                                            to="/profile"
-                                            className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
-                                            {user.fullname}
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link 
-                                            onClick={handleLogout}
-                                            className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
-                                            Đăng xuất
-                                        </Link>
-                                    </li>
-                                </>
+                                        <li>
+                                            <Link
+                                                to="/login"
+                                                className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
+                                                Đăng nhập
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                to="/register"
+                                                className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
+                                                Đăng ký
+                                            </Link>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                        <li>
+                                            <Link
+                                                to="/profile"
+                                                className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
+                                                {user.fullname}
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                onClick={handleLogout}
+                                                className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
+                                                Đăng xuất
+                                            </Link>
+                                        </li>
+                                    </>
                                 )}
                             </ul>
                         </div>
@@ -161,38 +164,50 @@ const Header = (props) => {
                         </div>
                     </div>
                     <div className="">
-                        <button 
+                        <ListButtonAnimation
+                            type="button"
+                            text="tư vấn ngay"
                             onClick={() => setShowModalContactForm(true)}
-                            className="text-[16px] text-white bg-[linear-gradient(30deg,_#f57f20,_#d62b08_100%)] rounded-[45px] font-[500] py-[10px] px-[20px]">
-                            Tư vấn ngay
-                        </button>
+                        />
                     </div>
                 </div>
             </div>
-            <nav className="bg-main">
+            <nav className="bg-main relative w-full">
                 <div className="container mx-auto px-[16px]">
-                    <ul className="flex items-center gap-[40px] justify-center">
+                    <ul className="flex items-center gap-[40px] justify-center w-full">
                         <li><Link to="/" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Trang chủ</Link></li>
                         <li><Link to="*" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Giới thiệu</Link></li>
-                        <li><Link to="/product" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Sản phẩm</Link></li>
-                        <li><Link to="*"  className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Chính sách nhượng quyền</Link></li>
-                        <li><Link to="*"  className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Hướng dẫn</Link></li>
-                        <li><Link to="/news"  className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]">Tin tức</Link></li>
+                        <li className="group">
+                            <Link to="/product" className="py-[16px] inline-flex gap-[10px] items-center text-white font-[500] text-[14px] uppercase px-[10px] " >
+                                Sản phẩm
+                                <FaChevronDown className="transition-transform duration-500 group-hover:rotate-[-180deg]" />
+                            </Link>
+                            <CategoryList />
+                        </li>
+                        <li className="relative group">
+                            <Link to="*" className="py-[16px] inline-flex gap-[10px] items-center text-white font-[500] text-[14px] uppercase px-[10px] " >
+                            Thương hiệu
+                            <FaChevronDown className="transition-transform duration-500 group-hover:rotate-[-180deg]" />
+                            </Link>
+                            <BrandList />
+                        </li>
+                        <li><Link to="*" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Hướng dẫn</Link></li>
+                        <li><Link to="/news" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]">Tin tức</Link></li>
                         <li><Link to="/contact" className="py-[16px] inline-block text-white font-[500] text-[14px] uppercase px-[10px]" >Liên hệ</Link></li>
                     </ul>
                 </div>
             </nav>
             <CartModal
-            showCart={showModalCart}
-            setShowCart={setShowModalCart}
+                showCart={showModalCart}
+                setShowCart={setShowModalCart}
             />
             <ContactModal
                 showContactForm={showModalContactForm}
                 setShowContactForm={setShowModalContactForm}
             />
             <WishListModal
-                showWishList = {showModalWishList}
-                setShowWishList = {setShowModalWishList}
+                showWishList={showModalWishList}
+                setShowWishList={setShowModalWishList}
             />
         </header>
     );

@@ -7,11 +7,17 @@ import 'react-toastify/dist/ReactToastify.css';
 const AdminLayout = () => {
     return (
         <>
-            <HeaderAdmin />
-            <SidebarAdmin />
-            <>
-                <Outlet />
-            </>
+            <div className="flex min-h-[1000px] bg-[]">
+                <div className="w-[300px] h-full bg-[#1b1a1b] fixed">
+                    <SidebarAdmin />
+                </div>
+                <div className="w-[calc(100%-300px)] border px-[20px] ml-[300px]">
+                    <HeaderAdmin />
+                    <>
+                        <Outlet />
+                    </>
+                </div>
+            </div>
 
             <ToastContainer
                 position="top-right"

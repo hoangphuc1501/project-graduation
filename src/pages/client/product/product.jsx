@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ProductItem from "../../../components/client/products/productItem";
 import {nodeAPI} from '../../../utils/axiosCustom';
+import { toast } from "react-toastify";
+import AccordionProduct from "../../../components/client/products/accordionCatetegory";
 const items = [...Array(33).keys()];
 
 function Items({ currentItems }) {
@@ -66,6 +68,9 @@ function PaginatedItems({ itemsPerPage }) {
 }
 
 const Product = () => {
+
+
+
     const [products, setProducts] = useState([]);
     useEffect(() => {
         const fetchProducts = async () => {
@@ -81,12 +86,33 @@ const Product = () => {
         fetchProducts();
     }, []);
 
+    const handleSortChange = (e) => {
+        const sortValue = e.target.value;
+        console.log(sortValue)
+        fetch(`/products?sortBy=${sortValue}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === "success") {
+                    setProducts(data.data);
+                    toast.success(data.message);
+                } else {
+                    console.error("Có lỗi khi lấy dữ liệu sản phẩm");
+                }
+            });
+    };
+
     return (
         <div className="py-[100px]">
             <div className="container mx-auto px-[16px]">
                 <div className="flex justify-center gap-[20px]">
-                    <div className="w-[calc(25%-20px)] border">
-                        <h3 className="">Bộ lọc</h3>
+                    <div className="w-[calc(25%-20px)]">
+                        <div className="border">
+                            <h2>bộ lọc</h2>
+                        </div>
+                        <div className="border mt-[40px]">
+                            <h2>Danh mục sản phẩm</h2>
+                            <AccordionProduct/>
+                        </div>
                     </div>
                     <div className="w-[75%] ">
                         <div className="flex justify-between items-center mb-[20px] py-[10px] px-[10px] bg-[#F7F8F9]">
@@ -99,12 +125,13 @@ const Product = () => {
                                     name=""
                                     id=""
                                     className="border px-[8px] py-[10px] text-[16px] outline-none rounded-[8px] w-[180px] text-black cursor-pointer "
+                                    onChange={(e) => handleSortChange(e)}
                                 >
                                     <option value="">Vui lòng chọn</option>
-                                    <option value="">Giá giảm dần</option>
-                                    <option value="">Giá tăng dần</option>
-                                    <option value="">Mới nhất</option>
-                                    <option value="">Cũ nhất</option>
+                                    <option value="price_desc">Giá giảm dần</option>
+                                    <option value="price_asc">Giá tăng dần</option>
+                                    <option value="newest">Mới nhất</option>
+                                    <option value="oldest">Cũ nhất</option>
                                 </select>
                             </div>
                         </div>

@@ -1,8 +1,8 @@
 const HeaderAdmin = () => {
     return (
-        <>
-            <header>dsa</header>
-        </>
+        <div className="w-full h-[60px] border">
+            <header>header</header>
+        </div>
     )
 }
 

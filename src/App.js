@@ -22,6 +22,8 @@ import { ShoppingHistory } from "./components/client/users/shoppingHistory";
 import { ChangePass } from "./components/client/users/changePass";
 import { Discount } from "./components/client/users/discount";
 import Comparison from "./pages/client/comparison/comparison";
+import ProductList from "./pages/admin/products/productList";
+import ProducDetailAdmin from "./pages/admin/products/productDetail";
 
 
 function App() {
@@ -56,6 +58,8 @@ function App() {
       {/* Admin Layout */}
       <Route path="/admin" element={<AdminLayout/>}>
         <Route path="dashboard" element={<Dashboard/>} />
+        <Route path="product" element={<ProductList/>} />
+        <Route path="product/:id" element={<ProducDetailAdmin />} />
         {/* <Route path="users" element={<Users />} /> */}
       </Route>
 

@@ -1,26 +1,22 @@
 import { useEffect, useState } from "react";
-
+import { categoryParentApi } from "../../../services/client/productApiService";
 
 const CategoryAnimation = () => {
-    // const contentRef = useRef(null);
+    const [categoryParent, setcCtegoryParent] = useState([]);
 
-    // useEffect(() => {
-    //     if (contentRef.current) {
-    //         contentRef.current.innerHTML += contentRef.current.innerHTML;
-    //     }
-    // }, []);
-    const [items, setItems] = useState([
-        { id: 1, name: "Vợt cầu lông", img: "https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" },
-        { id: 2, name: "Giày cầu lông", img: "https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" },
-        { id: 3, name: "Áo thể thao", img: "https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" },
-        { id: 4, name: "Túi cầu lông", img: "https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" },
-        { id: 5, name: "Vợt cầu lông", img: "https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" },
-        { id: 6, name: "Giày cầu lông", img: "https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" },
-        { id: 7, name: "Áo thể thao", img: "https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" },
-        { id: 8, name: "Túi cầu lông", img: "https://cdn.shopvnb.com/img/400x400/uploads/danh_muc/thumb/1.1.webp" },
-    ]);
     useEffect(() => {
-        setItems((prevItems) => [...prevItems, ...prevItems]);
+        const fetchCategories = async () => {
+            try {
+                const response = await categoryParentApi();
+                if (response.code === "success") {
+                    setcCtegoryParent(response.categoryParent);
+                }
+            } catch (error) {
+                console.error("Lỗi khi lấy danh mục sản phẩm:", error);
+            }
+        };
+
+        fetchCategories();
     }, []);
 
     return (
@@ -29,13 +25,13 @@ const CategoryAnimation = () => {
             <div className="line-title"></div>
             <div className="flex items-center relative overflow-hidden ">
                 <div className="scrolling-box">
-                    {items.map((item, index) => (
-                        <div key={index} className="w-[300px] h-[300px] border relative overflow-hidden ">
-                            <img src={item.img} alt=""
+                    {[...categoryParent, ...categoryParent].map((items, index) => (
+                        <div key={index} className="w-[300px] h-[300px] border rounded-[22px] relative overflow-hidden ">
+                            <img src={items.image} alt=""
                                 className="w-full h-full object-cover hover:scale-[1.2] transition-all ease-in-out"
                             />
                             <h3 className="absolute top-[130px] left-[60px] bg-main px-[30px] py-[10px] text-[16px] uppercase font-[400] text-[#ffffff] rotate-[-20deg]">
-                                {item.name}
+                                {items.name}
                             </h3>
                         </div>
                     ))}

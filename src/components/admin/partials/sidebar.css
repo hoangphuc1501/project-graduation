@@ -1,0 +1,10 @@
+.sidebar .accordion-item .accordion-button{
+    background-color: transparent;
+}
+.sidebar .accordion-item{
+    background-color: transparent;
+}
+
+.sidebar{
+    color: rgb(255, 255, 255, 0.3);
+}

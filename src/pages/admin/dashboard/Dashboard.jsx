@@ -1,9 +1,15 @@
+import { useState } from 'react';
+import ProducDetailAdmin from '../products/productDetail';
+
+
 const Dashboard = () => {
+
+
     return (
         <>
-            dashboard
+            <ProducDetailAdmin/>
         </>
-    )
-}
+    );
+};
 
 export default Dashboard;

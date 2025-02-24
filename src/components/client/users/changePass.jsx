@@ -29,6 +29,7 @@ const ChangePass = () => {
         try {
             const response = await ChangePasswordApi(email, oldPassword, newPassword);
             if (response.code === "success") {
+                
                 toast.success("Đổi mật khẩu thành công!");
                 navigate("/profile");
             } else {
