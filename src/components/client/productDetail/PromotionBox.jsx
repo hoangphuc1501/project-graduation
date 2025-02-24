@@ -1,4 +1,6 @@
-const PromotionBox = () => {
+import TinyMceToHtml from "../decodeHTMLEntities/decodeHTMLEntities";
+
+const PromotionBox = ({ content }) => {
     return (
         <>
             <div className="promotion-box">
@@ -9,7 +11,9 @@ const PromotionBox = () => {
                     />
                     <span className="">ưu đãi</span>
                 </div>
-                <div className="">adfsadfdsfsdf</div>
+                <div className="">
+                    <TinyMceToHtml content={content} />
+                </div>
             </div>
         </>
     )

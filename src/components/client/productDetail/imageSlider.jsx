@@ -8,19 +8,19 @@ import "swiper/css/thumbs";
 import "viewerjs/dist/viewer.css";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
-const ImageSlider = () => {
+const ImageSlider = ({ images = [] }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const viewerRef = useRef(null);
-    const images = [
-        "https://cdn.shopvnb.com/uploads/gallery/giay-cau-long-yonex-shb-39ex-wt-bl-chinh-hang-1_1694661710.webp",
-        "https://cdn.shopvnb.com/uploads/gallery/giay-cau-long-yonex-shb-39ex-wt-bl-chinh-hang-2_1694717690.webp",
-        "https://cdn.shopvnb.com/uploads/gallery/giay-cau-long-yonex-shb-39ex-wt-bl-chinh-hang-3_1694718054.webp",
-        "https://cdn.shopvnb.com/uploads/gallery/giay-cau-long-yonex-shb-39ex-wt-bl-chinh-hang-4_1694718060.webp",
-    ];
+    // const images = [
+    //     "https://cdn.shopvnb.com/uploads/gallery/giay-cau-long-yonex-shb-39ex-wt-bl-chinh-hang-1_1694661710.webp",
+    //     "https://cdn.shopvnb.com/uploads/gallery/giay-cau-long-yonex-shb-39ex-wt-bl-chinh-hang-2_1694717690.webp",
+    //     "https://cdn.shopvnb.com/uploads/gallery/giay-cau-long-yonex-shb-39ex-wt-bl-chinh-hang-3_1694718054.webp",
+    //     "https://cdn.shopvnb.com/uploads/gallery/giay-cau-long-yonex-shb-39ex-wt-bl-chinh-hang-4_1694718060.webp",
+    // ];
 
     // Khởi tạo Viewer.js khi component được render
     useEffect(() => {
-        if (viewerRef.current) {
+        if (viewerRef.current && images.length > 0) {
             const viewer = new Viewer(viewerRef.current, {
                 navbar: true,
                 title: true,
@@ -34,12 +34,15 @@ const ImageSlider = () => {
 
             return () => viewer.destroy(); // Dọn dẹp Viewer.js khi component unmount
         }
-    }, []);
+    }, [images]);
+    useEffect(() => {
+        console.log("Images received:", images); // Debug kiểm tra dữ liệu
+    }, [images]);
 
 
     return (
         <>
-            <Swiper
+            {/* <Swiper
                 ref={viewerRef}
                 style={{
                     "--swiper-navigation-color": "#E95221",
@@ -77,7 +80,53 @@ const ImageSlider = () => {
                         <img src={image} alt="" />
                     </SwiperSlide>
                 ))}
-            </Swiper>
+            </Swiper> */}
+            {images.length > 0 ? (
+                <>
+                    {/* Hiển thị ảnh lớn */}
+                    <Swiper
+                        ref={viewerRef}
+                        style={{
+                            "--swiper-navigation-color": "#E95221",
+                            "--swiper-pagination-color": "#E95221",
+                        }}
+                        spaceBetween={10}
+                        navigation={true}
+                        thumbs={{ swiper: thumbsSwiper }}
+                        modules={[FreeMode, Navigation, Thumbs]}
+                        className="mySwiper2"
+                    >
+                        {images.map((imgObj, index) => (
+                            <SwiperSlide key={imgObj.id || index}>
+                                <img
+                                    src={imgObj.image} // Lấy đúng đường dẫn ảnh từ đối tượng
+                                    alt=""
+                                    className="swiper-slide-image"
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+
+                    {/* Hiển thị thumbnail */}
+                    <Swiper
+                        onSwiper={setThumbsSwiper}
+                        spaceBetween={10}
+                        slidesPerView={Math.min(images.length, 4)} // Tự động theo số lượng ảnh, tối đa 4
+                        freeMode={true}
+                        watchSlidesProgress={true}
+                        modules={[FreeMode, Navigation, Thumbs]}
+                        className="mySwiper"
+                    >
+                        {images.map((imgObj, index) => (
+                            <SwiperSlide key={imgObj.id || index}>
+                                <img src={imgObj.image} alt="" />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </>
+            ) : (
+                <p>Không có hình ảnh</p>
+            )}
         </>
     )
 }

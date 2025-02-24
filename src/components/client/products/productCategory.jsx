@@ -27,7 +27,7 @@ const ProductNew = () => {
                     <h3 className="text-[24px] text-[#FFFFFF] font-[700] uppercase bg-main text-center py-[12px] mb-[18px] rounded-b-[60px]"> Sản phẩm mới</h3>
                     <div className="grid grid-cols-5 gap-[20px]">
                         {productNew.map((product) => (
-                            <ProductItem key={product.id} product={product} />
+                            <ProductItem key={product.id} product={product} slug={product.slug}/>
                         ))}
                     </div>
                     <div className="flex items-center justify-center pt-[20px]">
@@ -73,7 +73,7 @@ const ProductRackets = () => {
                         <div className="grid grid-cols-3 gap-[20px] w-[70%]">
                             {productRackets.length > 0 ? (
                                 productRackets.map((product) => (
-                                    <ProductItem key={product.id} product={product} />
+                                    <ProductItem key={product.id} product={product} slug={product.slug}/>
                                 ))
                             ) : (
                                 <p className="col-span-3 text-center text-gray-500">Không có sản phẩm nào.</p>
@@ -116,7 +116,7 @@ const ProductShoes = () => {
                         <div className="grid grid-cols-3 gap-[20px] w-[70%]">
                             {productShoes.length > 0 ? (
                                 productShoes.map((product) => (
-                                    <ProductItem key={product.id} product={product} />
+                                    <ProductItem key={product.id} product={product} slug={product.slug}/>
                                 ))
                             ) : (
                                 <p className="col-span-3 text-center text-gray-500">Không có sản phẩm nào.</p>

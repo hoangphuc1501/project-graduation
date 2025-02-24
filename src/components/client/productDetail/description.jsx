@@ -1,7 +1,18 @@
-const Description = () => {
+import { useState } from "react";
+import TinyMceToHtml from "../decodeHTMLEntities/decodeHTMLEntities";
+import { FaCirclePlus } from "react-icons/fa6";
+import { AiFillMinusCircle } from "react-icons/ai";
+
+const Description = ({ description }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const toggleDescription = () => {
+        setIsExpanded(!isExpanded);
+    };
+
     return (
         <>
-            <div class="relative tab-group">
+            <div class="relative tab-group px-[10px]">
                 <div
                     class="flex justify-between bg-stone-100 p-0.5 relative rounded-lg"
                     role="tablist">
@@ -21,18 +32,111 @@ const Description = () => {
                         Thông số kỹ thuật
                     </a>
                 </div>
-                <div class="mt-4 tab-content-container">
+                <div class="mt-4 tab-content-container px-[20px]">
                     <div
                         id="tab1-group"
                         class="tab-content text-[#000000] text-[16px] block font-[400]"
                     >
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto magnam quas explicabo molestias consectetur laborum. Corrupti odit fugit </p>
+                        <div
+                            className={`overflow-hidden transition-[max-height] duration-700 ease-in-out ${isExpanded ? "min-h-[800px]" : "max-h-[300px]"
+                                }`}
+                        >
+                            <TinyMceToHtml content={description} />
+                        </div>
+                        <span
+                            className="font-[500] text-[#000000] cursor-pointer mt-[12px] block text-[18px] py-[8px] bg-[#EEEEEE] rounded-[4px] text-center flex items-center justify-center gap-[10px]"
+                            onClick={toggleDescription}
+                        >
+                            {isExpanded ? (<><AiFillMinusCircle /> Ẩn bớt</>) : (<><FaCirclePlus /> Xem thêm</>)}
+                        </span>
                     </div>
                     <div
                         id="tab2-group"
-                        class="tab-content text-[#000000] text-[16px] block font-[400] hidden"
-                    >
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo amet quae, ea enim rerum at laboriosam corporis? Corporis eos voluptatum aliquid blanditiis voluptates praesentium magnam veritatis deleniti a ipsa accusantium harum accusamus illum deserunt labore, minima quod doloribus dicta pariatur qui debitis. Harum assumenda recusandae incidunt magni. Magni, beatae adipisci?</p>
+                        class="tab-content text-[#000000] text-[16px] block font-[400] hidden ">
+                        <table className=" w-full rounded-[8px]">
+                            <tbody>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                        Thương hiệu
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Lining
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Trọng lượng
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        4U
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Độ cứng
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Trọng lượng
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Sản xuất
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Trọng lượng
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Màu sắc
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Trọng lượng
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Sức căng
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Trọng lượng
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Vật liệu trục
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Trọng lượng
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Vật liệu khung
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Trọng lượng
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Điểm cân bằng
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Trọng lượng
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%] uppercase">
+                                    Chiều dài tổng thể
+                                    </td>
+                                    <td className="border py-[15px] text-[18px] font-[500] text-[#000000] px-[15px] w-[50%]">
+                                        Trọng lượng
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

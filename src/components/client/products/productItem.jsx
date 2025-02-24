@@ -6,7 +6,7 @@ import { faCartPlus, faHeart, faEye } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import ProductModal from "../../../components/client/products/ProductModal";
 
-const ProductItem = ({product}) => {
+const ProductItem = ({product, slug}) => {
     const [showModalProductDetail, setShowModalProductDetail] = useState(false);
 
     // Kiểm tra biến thể đầu tiên
@@ -50,7 +50,7 @@ const ProductItem = ({product}) => {
                 </div>
             </div>
             <h3 className="text-[16px] font-[700] text-black  my-[12px] line-clamp-2 ">
-                <Link to="/productDetail" className="block  hover:text-main">
+                <Link to={`/productDetail/${slug}`} className="block  hover:text-main">
                 {product.title}
                 </Link>
             </h3>
@@ -63,16 +63,16 @@ const ProductItem = ({product}) => {
             </div>
             <div className="flex items-center gap-x-[12px]">
                 <span className="text-[16px] font-[700] text-main">
-                {specialPrice} <sup>đ</sup>
+                {specialPrice.toLocaleString() ?? "0"} <sup>đ</sup>
                 </span>
                 <span className="text-[12px] font-[300] text-[#9e9e9e]">
                     <strike>
-                    {price} <sup>đ</sup>
+                    {price.toLocaleString() ?? "0"} <sup>đ</sup>
                     </strike>
                 </span>
             </div>
-            <div className="absolute top-[15px] right-[0] bg-[#FF0000] w-[80px] rounded-tl-[50px] rounded-bl-[50px] pr-[10px] py-[5px] text-right">
-                <span className=" text-white font-[700] text-[14px]">{discount} %</span>
+            <div className="absolute top-[15px] right-[5px] bg-main rounded-[6px] py-[5px] px-[12px] text-center">
+                <span className=" text-[#ffffff] font-[500] text-[12px]">{discount} %</span>
             </div>
             <ProductModal
                 show={showModalProductDetail}

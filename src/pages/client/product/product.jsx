@@ -137,7 +137,7 @@ const Product = () => {
                         </div>
                         <div className="grid grid-cols-4 gap-[20px] ">
                         {products.map((product) => (
-                                <ProductItem key={product.id} product={product} />
+                                <ProductItem key={product.id} product={product} slug={product.slug}/>
                             ))}
                         </div>
                         <div className="flex items-center justify-center py-[20px] mt-[10px]">
