@@ -24,6 +24,7 @@ import { Discount } from "./components/client/users/discount";
 import Comparison from "./pages/client/comparison/comparison";
 import ProductList from "./pages/admin/products/productList";
 import ProducDetailAdmin from "./pages/admin/products/productDetail";
+import SearchProduct from "./pages/client/product/searchProduct";
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
         <Route path="productDetail/:slug" element={<ProductDetail />} />
         <Route path="wishList" element={<Favorite/>} />
         <Route path="comparison" element={<Comparison/>} />
+        <Route path="search" element={<SearchProduct/>} />
         <Route path="cart" element={<Cart/>} />
       </Route>
 

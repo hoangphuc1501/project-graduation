@@ -180,7 +180,7 @@ input::placeholder{
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  height: 450px;
+  height: 500px;
   margin-bottom: 20px;
 }
 
@@ -188,7 +188,6 @@ input::placeholder{
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   border-radius: 20px;
   
 }
@@ -278,12 +277,12 @@ input::placeholder{
 /* end product detail */
 
 /* product item */
-.product-item .inner-image {
+.product-item{
   position: relative;
 }
 
 
-.product-item .inner-image::before {
+/* .product-item .inner-image::before {
   content: '';
   position: absolute;
   top: 0;
@@ -293,13 +292,13 @@ input::placeholder{
   background-color: transparent; 
   transition: background-color 0.3s;
   z-index: 2; 
-}
+} */
 
 /* .product-item .inner-image:hover::before {
   background-color: rgb(0, 0, 0, 0.3); 
 } */
 
-.product-item .inner-image .inner-list-button{
+.product-item .inner-list-button{
   position: absolute;
   width: 100%;
   margin: 0 auto;
@@ -307,16 +306,16 @@ input::placeholder{
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
-  top: 120px;
+  top: 150px;
   opacity: 0;
   transition: all 0.5s;
   z-index: 3;
 }
-.product-item .inner-image:hover .inner-list-button {
+.product-item:hover .inner-list-button {
   opacity: 1;
 }
-.product-item .inner-image .inner-list-button .inner-button{
-  background-color: #ffffff;
+.product-item .inner-list-button .inner-button{
+  background-color: #eee;
   width: 35px;
   height: 35px;
   border-radius: 10px;
@@ -327,17 +326,17 @@ input::placeholder{
   color: #031230;
   box-shadow: 0 0 10px #ddd;
 }
-.product-item .inner-image .inner-list-button .inner-button a{
+.product-item .inner-list-button .inner-button a{
   color: #003459;
 }
-.product-item .inner-image .inner-list-button .inner-button:hover{
+.product-item .inner-list-button .inner-button:hover{
   background-color: var(--main-color); 
 }
-.product-item .inner-image .inner-list-button .inner-button:hover a{
+.product-item .inner-list-button .inner-button:hover a{
   background-color: var(--main-color);
   color: #ffffff;  
 }
-.product-item .inner-image .inner-list-button .inner-button .inner-tooltip{
+.product-item .inner-list-button .inner-button .inner-tooltip{
   position: absolute;
   top: -35px;
   border-radius: 20px;
@@ -349,7 +348,7 @@ input::placeholder{
   white-space: nowrap;
   transition: 0.25s ease-in-out;
 }
-.product-item .inner-image .inner-list-button .inner-button .inner-tooltip::after {
+.product-item .inner-list-button .inner-button .inner-tooltip::after {
   content: '';
   position: absolute;
   bottom: -5px; /* Đặt mũi nhọn nằm ngay dưới tooltip */
@@ -363,9 +362,40 @@ input::placeholder{
   transition: 0.25s ease-in-out;
 
 }
-.product-item .inner-image .inner-list-button .inner-button:hover .inner-tooltip{
+.product-item .inner-list-button .inner-button:hover .inner-tooltip{
   opacity: 1;
 }
+.product-item .background-linear{
+  background: linear-gradient(90deg, #ffecb3 0%, #ffb200 100%);
+}
+
+.sale-product {
+  background: linear-gradient(to right, #e64b48, #2463ff, #ff7a1a, #5bb9ff, #ff2831);
+  background-size: 200% auto; 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: moveGradient 3s linear infinite, bounceText 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes moveGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+@keyframes bounceText {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
 /* end product item */
 
 /* NewsSection */
@@ -393,11 +423,15 @@ input::placeholder{
 }
 
 .animation:hover h3{
-  color: #031230;
+  color: #031230 !important;
+  color: rgb(221, 221, 221);
 }
 
 .animation:hover p{
   color: #7f8080;
+}
+.news-swiper .swiper-wrapper{
+  padding: 10px 0;
 }
 .news-swiper .swiper-button-next,
 .news-swiper .swiper-button-prev{

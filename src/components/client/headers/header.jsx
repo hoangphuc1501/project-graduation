@@ -1,13 +1,4 @@
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faUser,
-    faMagnifyingGlass,
-    faMapLocationDot,
-    faCartPlus,
-    faHeart,
-    faCodeCompare
-} from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 import { useContext } from "react";
 import { toast } from 'react-toastify';
@@ -19,7 +10,12 @@ import WishListModal from "../wishlist/wishListModal";
 import { ListButtonAnimation } from "../buttons/listButtonAnimation";
 import BrandList from "./brandList";
 import CategoryList from "./categoryList";
-import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronDown, FaHeart, FaMapLocationDot, FaCodeCompare,  } from "react-icons/fa6";
+import { FaUserPlus, FaUser   } from "react-icons/fa";
+import { BsBoxArrowLeft } from "react-icons/bs";
+import { nodeAPI } from "../../../utils/axiosCustom";
+import SearchForm from "./searchForm";
+import { FaCartPlus } from "react-icons/fa";
 
 const Header = (props) => {
     const [showModalCart, setShowModalCart] = useState(false);
@@ -27,7 +23,7 @@ const Header = (props) => {
     const [showModalWishList, setShowModalWishList] = useState(false);
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
-
+    
     // hàm đăng xuất
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -41,42 +37,27 @@ const Header = (props) => {
         <header className="z-[999]">
             <div className="container mx-auto px-[16px]">
                 <div className="flex justify-between h-[90px] items-center gap-[40px]">
-                    <Link to="/" className="w-[100px] h-[60px]">
+                    <Link to="/" className="w-[100px] h-[80px]">
                         <img
                             className="w-full h-full"
-                            src="https://cdn.shopvnb.com/themes/images/logo.svg"
+                            src="https://res.cloudinary.com/dyoestl0x/image/upload/v1740494788/hchpsyiqngpziwkfn83y.png"
                             alt=""
                         />
                     </Link>
-                    <p className="flex gap-[10px] text-[16px] font-[500] uppercase">
-                        <span className="text-main">
-                            <FontAwesomeIcon icon={faMapLocationDot} />
+                    <p className="flex items-center gap-[10px] text-[16px] font-[500] uppercase">
+                        <span className="text-main text-[18px]">
+                            <FaMapLocationDot/>
                         </span>
                         Hệ thống cửa hàng
                     </p>
-                    <form
-                        action=""
-                        className="flex-1 flex py-[10px] px-[15px] rounded-[8px] bg-[#f3f3f3] border !border-main bg-transparent "
-                    >
-                        <input
-                            type="text"
-                            placeholder="Tìm sản phẩm..."
-                            className="flex-1 bg-transparent text-[16px] text-[#000000] font-[400]"
-                        />
-                        <button className="text-main text-[16px] px-[5px]">
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </button>
-                    </form>
+                    <SearchForm />
                     <div className="flex gap-[20px]">
                         <div className="relative group">
                             <Link
                                 to="/comparison"
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
-                                <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%]">
-                                    <FontAwesomeIcon
-                                        icon={faCodeCompare}
-                                        style={{ fontSize: "18px" }}
-                                    />
+                                <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%] text-[18px]">
+                                    <FaCodeCompare/>
                                 </span>
                                 <span className="text-[14px] font-[500] text-[#231f20]">
                                     So sánh
@@ -87,27 +68,29 @@ const Header = (props) => {
                             <div
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main "
                             >
-                                <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%]">
-                                    <FontAwesomeIcon icon={faUser} style={{ fontSize: "18px" }} />
+                                <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%] text-[18px]">
+                                <FaUser />
                                 </span>
                                 <span className="text-[14px] font-[500] text-[#231f20]">
                                     Tài khoản
                                 </span>
                             </div>
-                            <ul className="absolute w-[180px] bg-white text-black rounded-[10px] top-[60px] left-[-50px] hidden group-hover:block shadow-[0_0_5px_rgba(35,31,32,0.5)] z-[999]">
+                            <ul className="absolute w-[180px] bg-white text-black rounded-[10px] top-[55    px] left-[-50px] hidden group-hover:block shadow-[0_0_5px_rgba(35,31,32,0.5)] z-[999]">
                                 {!user ? (
                                     <>
                                         <li>
                                             <Link
                                                 to="/login"
-                                                className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
+                                                className="text-[14px] text-black py-[7px] rounded-[8px] hover:bg-main hover:!text-white flex items-center gap-[6px] justify-center">
+                                                <span><FaUser /></span>
                                                 Đăng nhập
                                             </Link>
                                         </li>
                                         <li>
                                             <Link
                                                 to="/register"
-                                                className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
+                                                className="text-[14px] text-center text-black py-[7px] rounded-[8px] hover:bg-main hover:!text-white flex items-center gap-[6px] justify-center">
+                                                <span><FaUserPlus /></span>
                                                 Đăng ký
                                             </Link>
                                         </li>
@@ -117,14 +100,15 @@ const Header = (props) => {
                                         <li>
                                             <Link
                                                 to="/profile"
-                                                className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
+                                                className="text-[14px] text-center text-black block py-[7px] rounded-[8px] hover:bg-main hover:!text-white">
                                                 {user.fullname}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link
                                                 onClick={handleLogout}
-                                                className="text-[14px] text-center text-black block py-[5px] rounded-[8px] hover:bg-main hover:!text-white">
+                                                className="text-[14px] text-center text-black py-[7px] rounded-[8px] hover:bg-main hover:!text-white flex items-center gap-[6px] justify-center">
+                                                <span><BsBoxArrowLeft /></span>
                                                 Đăng xuất
                                             </Link>
                                         </li>
@@ -136,11 +120,8 @@ const Header = (props) => {
                             <Link
                                 onClick={() => setShowModalWishList(true)}
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
-                                <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%]">
-                                    <FontAwesomeIcon
-                                        icon={faHeart}
-                                        style={{ fontSize: "18px" }}
-                                    />
+                                <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%] text-[18px]">
+                                    <FaHeart />
                                 </span>
                                 <span className="text-[14px] font-[500] text-[#231f20]">
                                     Yêu thích
@@ -151,11 +132,8 @@ const Header = (props) => {
                             <Link
                                 onClick={() => setShowModalCart(true)}
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
-                                <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%]">
-                                    <FontAwesomeIcon
-                                        icon={faCartPlus}
-                                        style={{ fontSize: "18px" }}
-                                    />
+                                <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%] text-[18px]">
+                                    <FaCartPlus/>
                                 </span>
                                 <span className="text-[14px] font-[500] text-[#231f20] " >
                                     Giỏ hàng
@@ -186,8 +164,8 @@ const Header = (props) => {
                         </li>
                         <li className="relative group">
                             <Link to="*" className="py-[16px] inline-flex gap-[10px] items-center text-white font-[500] text-[14px] uppercase px-[10px] " >
-                            Thương hiệu
-                            <FaChevronDown className="transition-transform duration-500 group-hover:rotate-[-180deg]" />
+                                Thương hiệu
+                                <FaChevronDown className="transition-transform duration-500 group-hover:rotate-[-180deg]" />
                             </Link>
                             <BrandList />
                         </li>

@@ -4,8 +4,8 @@ const Brand = () => {
             <div className="container mx-auto px-[16px]">
                 <div className="relative">
                     <div className="flex flex-col gap-[10px] items-center justify-center w-[50%] mx-auto">
-                        <div className="w-[120px] h-[120px]">
-                            <img className="w-full h-full" src="https://static.fbshop.vn/wp-content/uploads/2023/11/cropped-logo-4.png" alt="" />
+                        <div className="w-[150px] h-[150px]">
+                            <img className="w-full h-full" src="https://res.cloudinary.com/dyoestl0x/image/upload/v1740494788/hchpsyiqngpziwkfn83y.png" alt="" />
                         </div>
                         <h3 className="font-[700] text-[40px] text-[#031230] text-center leading-[1.4] pb-[12px]">Đồng hành cùng nhiều nhãn hàng uy tín trên thế giới</h3>
                         <p className="font-[400] text-[16px] text-center pb-[12px] text-[#444545] w-[60%]">Chúng tôi hân hạnh trở thành đối tác phân phối của các nhãn hàng uy tín trên toàn thế giới</p>

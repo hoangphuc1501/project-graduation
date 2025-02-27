@@ -1,7 +1,7 @@
 import { FaEdit } from "react-icons/fa";
 
 const ButtonEditUser = (props) => {
-    const { onClick } = props;
+    const { onClick, to, text, type = "button", className = "" } = props;
     return (
         <>
             <button
@@ -15,7 +15,7 @@ const ButtonEditUser = (props) => {
 }
 
 const ButtonUpdateUser = (props) => {
-    const { onClick, text, type } = props;
+    const { onClick, to, text, type = "button", className = "" } = props;
     return (
         <>
             <button

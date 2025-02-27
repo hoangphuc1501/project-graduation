@@ -26,14 +26,14 @@ const ListStore = () => {
     ];
 
     return (
-        <div className="relative border !border-dashed !border-main py-[30px] px-[10px]">
+        <div className="relative border !border-dashed !border-main py-[30px] px-[10px] rounded-[4px]">
             <h2 className="absolute top-[-21px] left-[12px] text-[16px] text-main font-[700] py-[8px] px-[10px] border !border-main uppercase bg-[#ffffff] rounded-[8px]">đang có hàng tại</h2>
             <div className="bg-[#ED754D] w-full">
                 <h3 className="font-[700] text-16px text-[#ffffff] py-[15px] px-[10px] bg-[#E95221] uppercase text-center" >Tất cả tỉnh thành</h3>
                 <ul className="px-[15px]">
                     {storeList.map((store, index) => (
                         <li key={index} className="border-b last:border-b-0">
-                            <Link className="flex items-center text-[16px] font-[500] text-[#ffffff] py-[10px]  hover:text-[#ffffff] ">
+                            <Link className="flex items-center text-[14px] font-[500] text-[#ffffff] py-[10px]  hover:text-[#ffffff] ">
                                 {store.name}
                             </Link>
                         </li>

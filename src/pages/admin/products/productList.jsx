@@ -116,6 +116,8 @@ const ProductList = () => {
                             <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Vị trí</td>
                             <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Trạng thái</td>
                             <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Nổi bật</td>
+                            <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Thông số</td>
+                            <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Thông tin</td>
                             <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Hành động</td>
                         </tr>
                     </thead>
@@ -174,16 +176,34 @@ const ProductList = () => {
                                         <div className="flex items-center justify-center gap-[6px]">
                                             <button 
                                             onClick={() => handleViewProduct(product.id)}
+                                            className="text-[16px] font-[600] text-[#ffffff] bg-main rounded-[8px] py-[8px] px-[12px]">
+                                                Thêm mới
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className="flex items-center justify-center gap-[6px]">
+                                            <button 
+                                            onClick={() => handleViewProduct(product.id)}
+                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[8px] py-[8px] px-[12px]">
+                                                Chi tiết
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className="flex items-center justify-center gap-[6px]">
+                                            {/* <button 
+                                            onClick={() => handleViewProduct(product.id)}
                                             className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[12px] py-[8px] px-[12px]">
-                                                Chi tiết</button>
+                                                Chi tiết</button> */}
                                             <button 
                                             onClick={() => handleEditClick(product)}
-                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[12px] py-[8px] px-[12px]">
+                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
                                                 Sửa
                                             </button>
                                             <button 
                                             onClick={() => handleDeleteProduct(product.id)}
-                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[12px] py-[8px] px-[12px]">
+                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
                                                 Xóa</button>
                                         </div>
                                     </th>

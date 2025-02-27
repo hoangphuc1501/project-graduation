@@ -6,9 +6,12 @@ import ServiceBanner from "../../../components/client/banners/serviceBanner";
 import Brand from "../../../components/client/brand/brand";
 
 import NewsSection from "../../../components/client/news/newsSection";
-import {ProductRackets, ProductShoes, ProductNew} from "../../../components/client/products/productCategory";
+import {ProductNew, ProductFeature} from "../../../components/client/products/productCategory";
 import ProductSale from "../../../components/client/products/productSale";
 import SmashPro from "../../../components/client/animations/smashPro";
+import ServiceSection from "../../../components/client/services/serviceSection";
+import ProductRackets from "../../../components/client/products/productRackets";
+import ProductShoes from "../../../components/client/products/ProductShoes";
 
 const HomePage = () => {
     return (
@@ -17,6 +20,7 @@ const HomePage = () => {
             <ServiceBanner/>
             <ProductNew/>
             <ProductSale/>
+            <ProductFeature/>
             <ProductRackets/>
             <ProductShoes/>
             <CategoryAnimation/>
@@ -24,6 +28,7 @@ const HomePage = () => {
             <SaleOff/>
             <Brand/>
             <SmashPro/>
+            <ServiceSection/>
             <NewsSection/>
             
         </>

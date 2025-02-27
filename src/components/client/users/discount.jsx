@@ -1,4 +1,5 @@
-import { ButtonSeeMore, ListButtonAnimation } from "../buttons/listButtonAnimation";
+import ButtonSeeMore from "../buttons/buttonSeeMore";
+import { ListButtonAnimation } from "../buttons/listButtonAnimation";
 
 const Discount = () => {
     return (
