@@ -5,8 +5,27 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
+import { useEffect, useState } from "react";
+import { nodeAPI } from "../../../utils/axiosCustom";
 
 const NewsSection = () => {
+    const [newsList, setNewsList] = useState([]);
+
+    useEffect(() => {
+        fetchHomedNews();
+    }, []);
+
+    const fetchHomedNews = async () => {
+        try {
+            const response = await nodeAPI.get("/news/newsHome");
+            // console.log(response)
+            setNewsList(response.newsList);
+        } catch (error) {
+            console.error("Lỗi khi lấy danh sách tin tức:", error);
+        }
+    };
+
+
     return (
         <div className="my-[80px] bg-main w-full h-[500px] py-[20px]">
             <div className="container mx-auto px-[16px]">
@@ -34,19 +53,22 @@ const NewsSection = () => {
                             slidesPerView={4}
                             spaceBetween={30}
                             freeMode={true}
-                                // pagination={{
-                                // clickable: true,
-                                // }}
-                            navigation={true} 
+                            // pagination={{
+                            // clickable: true,
+                            // }}
+                            navigation={true}
                             modules={[FreeMode, Pagination, Navigation]}
                             className="mySwiper"
                         >
-                            <SwiperSlide><NewsItem/></SwiperSlide>
-                            <SwiperSlide><NewsItem/></SwiperSlide>
-                            <SwiperSlide><NewsItem/></SwiperSlide>
-                            <SwiperSlide><NewsItem/></SwiperSlide>
-                            <SwiperSlide><NewsItem/></SwiperSlide>
-                            <SwiperSlide><NewsItem/></SwiperSlide>
+                            {newsList?.length > 0 ? (
+                                newsList.map((news) => (
+                                    <SwiperSlide key={news.id}>
+                                        <NewsItem key={news.id} news={news} />
+                                    </SwiperSlide>
+                                ))
+                            ) : (
+                                <p className="text-center">Không có tin tức nổi bật.</p>
+                            )}
                         </Swiper>
                     </div>
                 </div>

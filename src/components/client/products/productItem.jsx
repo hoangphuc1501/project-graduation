@@ -9,6 +9,13 @@ import ProductModal from "../../../components/client/products/ProductModal";
 
 const ProductItem = ({ product, slug }) => {
     const [showModalProductDetail, setShowModalProductDetail] = useState(false);
+    const [selectedProductSlug, setSelectedProductSlug] = useState(null);
+
+    // 
+    const handleShowModal = (slug) => {
+        setSelectedProductSlug(slug);
+        setShowModalProductDetail(true);
+    };
 
     // Kiểm tra biến thể đầu tiên
     const firstVariant = product?.variant || {};
@@ -32,7 +39,11 @@ const ProductItem = ({ product, slug }) => {
                     <div className="inner-list-button">
                         <div className="inner-button">
                             <span className="inner-tooltip">Xem nhanh</span>
-                            <Link onClick={() => setShowModalProductDetail(true)}>
+                            <Link
+                                onClick={(e) => {
+                                    e.preventDefault(); // Ngăn chặn điều hướng trang
+                                    handleShowModal(product.slug);
+                                }}>
                                 <FaEye />
                             </Link>
                         </div>
@@ -58,11 +69,11 @@ const ProductItem = ({ product, slug }) => {
                 </div>
                 <div className="flex items-center gap-x-[12px]">
                     <span className="text-[16px] font-[700] text-main">
-                        {specialPrice.toLocaleString() ?? "0"} <sup>đ</sup>
+                        {specialPrice?.toLocaleString() ?? "0"} <sup>đ</sup>
                     </span>
                     <span className="text-[12px] font-[300] text-[#9e9e9e]">
                         <strike>
-                            {price.toLocaleString() ?? "0"} <sup>đ</sup>
+                            {price?.toLocaleString() ?? "0"} <sup>đ</sup>
                         </strike>
                     </span>
                 </div>

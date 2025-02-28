@@ -4,103 +4,74 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ProductItem from "../../../components/client/products/productItem";
 import { nodeAPI } from '../../../utils/axiosCustom';
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import AccordionProduct from "../../../components/client/products/accordionCatetegory";
 import Breadcrumb from "../../../components/client/breadcrumbs/Breadcrumb";
 import FilterProduct from "../../../components/client/products/filterProduct";
-const items = [...Array(33).keys()];
+import { useParams } from "react-router-dom";
 
-function Items({ currentItems }) {
-    return (
-        <div className="items">
-            {currentItems && currentItems.map((item) => (
-                <div>
-                    {/* <h3>Item #{item}</h3> */}
-                </div>
-            ))}
-        </div>
-    );
-}
-
-function PaginatedItems({ itemsPerPage }) {
-    // We start with an empty list of items.
-    const [currentItems, setCurrentItems] = useState(null);
-    const [pageCount, setPageCount] = useState(0);
-    const [itemOffset, setItemOffset] = useState(0);
-
-    useEffect(() => {
-        const endOffset = itemOffset + itemsPerPage;
-        console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-        setCurrentItems(items.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(items.length / itemsPerPage));
-    }, [itemOffset, itemsPerPage]);
-
-    // Invoke when user click to request another page.
-    const handlePageClick = (event) => {
-        const newOffset = event.selected * itemsPerPage % items.length;
-        console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
-        setItemOffset(newOffset);
-    };
-
-    return (
-        <>
-            <Items currentItems={currentItems} />
-            <ReactPaginate
-                nextLabel={<FontAwesomeIcon icon={faAnglesRight} />}
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
-                marginPagesDisplayed={2}
-                pageCount={pageCount}
-                previousLabel={<FontAwesomeIcon icon={faAnglesLeft} />}
-                pageClassName="page-item"
-                pageLinkClassName="page-link"
-                previousClassName="page-item"
-                previousLinkClassName="page-link"
-                nextClassName="page-item"
-                nextLinkClassName="page-link"
-                breakLabel="..."
-                breakClassName="page-item"
-                breakLinkClassName="page-link"
-                containerClassName="pagination"
-                activeClassName="active"
-                renderOnZeroPageCount={null}
-            />
-        </>
-    );
-}
-
-const Product = () => {
 
 
 
+const Product = () => {
+    // const [pageCount, setPageCount] = useState(0);
+    const { slug } = useParams();
     const [products, setProducts] = useState([]);
+    const [categoryName, setCategoryName] = useState("Danh mục sản phẩm");
+    // useEffect(() => {
+    //     const fetchProducts = async (page) => {
+    //         try {
+    //             const response = await nodeAPI.get(`/products`);
+    //             // console.log("API Response:", response.data);
+    //             setProducts(response.data || []);
+    //         } catch (error) {
+    //             console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
+    //         }
+    //     };
+
+    //     fetchProducts();
+    // }, []);
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchProducts = async (page) => {
             try {
-                const response = await nodeAPI.get("/products");
-                // console.log("API Response:", response.data);
-                setProducts(response.data || []);
+                const response = await nodeAPI.get(`/products/category/${slug}`);
+                console.log("API Response:", response);
+                // setProducts(response.data || []);
+                // setCategoryName(response.message.split("danh mục ")[1].split(" thành công")[0]); 
+                if (response.code === "success") {
+                    setProducts(response.data || []);
+                    setCategoryName(response.message); 
+                } else {
+                    setProducts([]);
+                    setCategoryName("Danh mục sản phẩm");
+                }
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
+                setCategoryName("Danh mục sản phẩm");
             }
         };
 
-        fetchProducts();
-    }, []);
+        if (slug) fetchProducts();
+    }, [slug]);
+    
+    // const handleSortChange = (e) => {
+    //     const sortValue = e.target.value;
+    //     // console.log(sortValue)
+    //     fetch(`/products?sortBy=${sortValue}`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data.code === "success") {
+    //                 setProducts(data.data);
+    //                 toast.success(data.message);
+    //             } else {
+    //                 console.error("Có lỗi khi lấy dữ liệu sản phẩm");
+    //             }
+    //         });
+    // };
 
-    const handleSortChange = (e) => {
-        const sortValue = e.target.value;
-        console.log(sortValue)
-        fetch(`/products?sortBy=${sortValue}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.code === "success") {
-                    setProducts(data.data);
-                    toast.success(data.message);
-                } else {
-                    console.error("Có lỗi khi lấy dữ liệu sản phẩm");
-                }
-            });
+    const handlePageClick = (event) => {
+
+        console.log(`User requested page number ${event.selected} `);
     };
 
     return (
@@ -112,7 +83,7 @@ const Product = () => {
                         <div className="w-[calc(25%-20px)]">
                             <div className="border rounded-[12px] overflow-hidden">
                                 {/* <h2 className="text-[20px] font-[500] text-[#333333] pb-[12px] uppercase text-center border py-[10px] rounded-t-[4px]">bộ lọc</h2> */}
-                                <FilterProduct/>
+                                <FilterProduct />
                             </div>
                             <div className="border mt-[40px]">
                                 <AccordionProduct />
@@ -120,7 +91,7 @@ const Product = () => {
                         </div>
                         <div className="w-[75%] ">
                             <div className="flex justify-between items-center mb-[20px] py-[10px] px-[10px] bg-[#F7F8F9]">
-                                <h3 className="text-[16px] font-[700] text-black uppercase">Vợt Yonex</h3>
+                                <h3 className="text-[16px] font-[700] text-black uppercase"> {categoryName}</h3>
                                 <div className="flex justify-center items-center gap-x-[20px]">
                                     <span className="text-[16px] font-[500] text-[#444545]">
                                         Sắp xếp theo:
@@ -129,7 +100,7 @@ const Product = () => {
                                         name=""
                                         id=""
                                         className="border px-[8px] py-[10px] text-[16px] outline-none rounded-[8px] w-[180px] text-black cursor-pointer "
-                                        onChange={(e) => handleSortChange(e)}
+                                        // onChange={(e) => handleSortChange(e)}
                                     >
                                         <option value="">Vui lòng chọn</option>
                                         <option value="price_desc">Giá giảm dần</option>
@@ -145,9 +116,28 @@ const Product = () => {
                                 ))}
                             </div>
                             <div className="flex items-center justify-center py-[20px] mt-[10px]">
-                                <PaginatedItems itemsPerPage={4} />,
-                            </div>
 
+                            </div>
+                            <ReactPaginate
+                                nextLabel={<FontAwesomeIcon icon={faAnglesRight} />}
+                                onPageChange={handlePageClick}
+                                pageRangeDisplayed={3}
+                                marginPagesDisplayed={2}
+                                pageCount={10}
+                                previousLabel={<FontAwesomeIcon icon={faAnglesLeft} />}
+                                pageClassName="page-item"
+                                pageLinkClassName="page-link"
+                                previousClassName="page-item"
+                                previousLinkClassName="page-link"
+                                nextClassName="page-item"
+                                nextLinkClassName="page-link"
+                                breakLabel="..."
+                                breakClassName="page-item"
+                                breakLinkClassName="page-link"
+                                containerClassName="pagination"
+                                activeClassName="active"
+                                renderOnZeroPageCount={null}
+                            />
                         </div>
                     </div>
                 </div>

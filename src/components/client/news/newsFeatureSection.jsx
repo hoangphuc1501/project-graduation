@@ -6,9 +6,27 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import NewsItemFeature from './newsItemfeature';
+import { useEffect, useState } from 'react';
+import { nodeAPI } from '../../../utils/axiosCustom';
 
 
 const NewsFeatureSection = () => {
+    const [newsList, setNewsList] = useState([]);
+
+    useEffect(() => {
+        fetchFeaturedNews();
+    }, []);
+
+    const fetchFeaturedNews = async () => {
+        try {
+            const response = await nodeAPI.get("/news/newsFeature");
+            // console.log(response)
+            setNewsList(response.newsList);
+        } catch (error) {
+            console.error("Lỗi khi lấy tin tức nổi bật:", error);
+        }
+    };
+
     return (
         <div className="pt-[70px] pb-[120px] news-section-feature">
             <h2 className='font-[700] text-[40px] text-[#000000] text-center pb-[30px]'>
@@ -37,21 +55,15 @@ const NewsFeatureSection = () => {
                 modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
                 className="mySwiper"
             >
-                <SwiperSlide>
-                    <NewsItemFeature/>
-                </SwiperSlide>
-                <SwiperSlide>
-                <NewsItemFeature/>
-                </SwiperSlide>
-                <SwiperSlide>
-                <NewsItemFeature/>
-                </SwiperSlide>
-                <SwiperSlide>
-                <NewsItemFeature/>
-                </SwiperSlide>
-                <SwiperSlide>
-                <NewsItemFeature/>
-                </SwiperSlide>
+                {newsList?.length > 0 ? (
+                    newsList.map((news) => (
+                        <SwiperSlide key={news.id}>
+                            <NewsItemFeature news={news} />
+                        </SwiperSlide>
+                    ))
+                ) : (
+                    <p className="text-center">Không có tin tức nổi bật.</p>
+                )}
             </Swiper>
         </div>
     )

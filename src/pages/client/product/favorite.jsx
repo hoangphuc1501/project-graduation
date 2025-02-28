@@ -11,13 +11,13 @@ import { UserContext } from "../../../middleware/UserContext";
 
 
 const Favorite = () => {
-    const { token } = useContext(UserContext);
+    // const { token } = useContext(UserContext);
     const [favorites, setFavorites] = useState([]);
     const navigate = useNavigate();
 
     // danh sách yêu thích
     useEffect(() => {
-        // const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
         if (!token) {
             toast.error("Vui lòng đăng nhập!");
             navigate("/login");
@@ -25,6 +25,7 @@ const Favorite = () => {
         }
         const fetchFavorites = async () => {
             const response = await ListFavoriteApi();
+
             console.log("API Response:", response);
             if (response.code === "success") {
                 setFavorites(response.favorites);
@@ -106,15 +107,20 @@ const Favorite = () => {
                                             <td className="py-[10px] text-[16px] font-[500] text-[#000000]">{index + 1}</td>
                                             <td className="flex items-center justify-center py-[10px]">
                                                 <img
-                                                    src={favorite?.productVariants?.image}
+                                                    src={favorite?.productVariants?.images?.[0]?.image}
                                                     alt=""
                                                     className="w-[100px] h-[100px]"
                                                 />
                                             </td>
                                             <td className="py-[10px] text-[16px] font-[500] text-[#000000]">
                                                 <Link to="" className="hover:text-main">
-                                                    {favorite?.productVariants?.products?.title}
+                                                    {favorite?.productVariants?.product?.title}
                                                 </Link>
+                                                <div className="flex items-center gap-[10px] justify-center text-[14px] font-[400]">
+                                                <span>Màu: {favorite?.productVariants?.color}</span>
+                                                <span>/</span>
+                                                <span>size : {favorite?.productVariants?.size}</span>
+                                                </div>
                                             </td>
                                             <td className="py-[10px] text-[16px] font-[500] text-[#000000]">
                                                 {favorite?.productVariants?.specialPrice.toLocaleString("vi-VN")}

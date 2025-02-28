@@ -11,7 +11,7 @@ const ProductRackets = () => {
         const fetchProducts = async () => {
             try {
                 const response = await nodeAPI.get(`/products/categoryID/${categoryId}`);
-                console.log(response)
+                // console.log(response)
                 if (response.code === "success") {
                     setProductRackets(response.data);
                 }

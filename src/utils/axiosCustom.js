@@ -37,15 +37,18 @@ const laravelAPI = axios.create({
     baseURL: process.env.REACT_APP_LARAVEL_API_URL, // URL của server Laravel
 });
 
-
+// const getToken = () => {
+//     return localStorage.getItem("token");
+// };
 // Thêm interceptor cho cả hai instance
 const addInterceptors = (instance) => {
     
     instance.interceptors.request.use(config => {
-        // const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
         // console.log('Token in interceptor:', localStorage.getItem("token"));
         // config.headers.Authorization = `Bearer ${token}`;
-        const token = localStorage.getItem("token");
+        // const token = getToken();
+        console.log("Token trong interceptor:", token);
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         } else {

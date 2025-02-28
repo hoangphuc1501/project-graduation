@@ -1,20 +1,88 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonEditUser, ButtonUpdateUser } from "../buttons/buttonEditUser";
+import { nodeAPI } from "../../../utils/axiosCustom";
+import { toast } from "react-toastify";
 const Info = () => {
     const [isFullNameDisabled, setIsFullNameDisabled] = useState(true);
     const [isEmailDisabled, setIsEmailDisabled] = useState(true);
     const [isPhoneDisabled, setIsPhoneDisabled] = useState(true);
     const [isAddressDisabled, setIsAddressDisabled] = useState(true);
     const [isBirthdayDisabled, setIsBirthdayDisabled] = useState(true);
-    const [isGenderDisabled, setIsGenderDisabled] = useState(true);
     const [isCreateDisabled, setIsCreateDisabled] = useState(true);
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
-    const [birthday, setBirthday] = useState("");
-    const [create, setCreate] = useState("");
+    // const [fullName, setFullName] = useState("");
+    // const [email, setEmail] = useState("");
 
+
+    const [userData, setUserData] = useState({
+        fullName: "",
+        email: "",
+        phone: "",
+        address: "",
+        birthday: "",
+        create: "",
+        gender: "",
+    });
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        });
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    const fetchUserData = async () => {
+        try {
+            // const token = localStorage.getItem("token");
+            const response = await nodeAPI.get("/user/profile");
+            console.log("check info user:", response)
+            if (response.code === "success") {
+                setUserData({
+                    fullName: response.user.fullname,
+                    email: response.user.email,
+                    phone: response.user.phone,
+                    address: response.user.address,
+                    birthday: response.user.birthday,
+                    create: response.user.createdAt,
+                    gender: response.user.gender,
+                });
+            }
+        } catch (error) {
+            console.error("Lỗi khi lấy thông tin người dùng:", error);
+        }
+    };
+
+    // cập nhật thông tin
+    const handleUpdateUser = async () => {
+        try {
+            const response = await nodeAPI.patch(
+                "/user/updateProfile",
+                {
+                    fullname: userData.fullName,
+                    email: userData.email,
+                    phone: userData.phone,
+                    address: userData.address,
+                    birthday: userData.birthday,
+                    gender: userData.gender,
+                }   
+            );
+    
+            if (response.code === "success") {
+                toast.success(response.message);
+                fetchUserData(); 
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            console.error("Lỗi khi cập nhật thông tin:", error);
+            toast.error("Có lỗi xảy ra! Vui lòng thử lại.");
+        }
+    };
     return (
         <>
             <div className="w-[50%] mx-auto">
@@ -28,13 +96,13 @@ const Info = () => {
                     <div className="relative flex items-center form-field">
                         <input
                             type="text"
-                            onChange={(e) => setFullName(e.target.value)}
+                            onChange={(e) => setUserData({ ...userData, fullName: e.target.value })}
                             readOnly={isFullNameDisabled}
                             onBlur={() => setIsFullNameDisabled(true)}
-                            value={fullName}
+                            value={userData.fullName}
                             id="fullname"
                             required
-                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${fullName ? "filled" : ""}`} />
+                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${userData.fullName ? "filled" : ""}`} />
                         <label htmlFor="fullname">
                             Họ và tên
                         </label>
@@ -43,13 +111,13 @@ const Info = () => {
                     <div className="relative flex items-center form-field">
                         <input
                             type="email"
-                            onChange={(e) => setEmail(e.target.value)}
+                            // onChange={(e) => setEmail(e.target.value)}
                             readOnly={isEmailDisabled}
                             onBlur={() => setIsEmailDisabled(true)}
-                            value={email}
+                            value={userData.email}
                             id="email"
                             required
-                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${email ? "filled" : ""}`} />
+                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${userData.email ? "filled" : ""}`} />
                         <label htmlFor="email">
                             Email
                         </label>
@@ -57,13 +125,14 @@ const Info = () => {
                     <div className="relative flex items-center form-field">
                         <input
                             type="text"
-                            onChange={(e) => setPhone(e.target.value)}
+                            // onChange={(e) => setPhone(e.target.value)}
+                            onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                             readOnly={isPhoneDisabled}
                             onBlur={() => setIsPhoneDisabled(true)}
-                            value={phone}
+                            value={userData.phone}
                             id="phone"
                             required
-                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${phone ? "filled" : ""}`} />
+                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${userData.phone ? "filled" : ""}`} />
                         <label htmlFor="phone">
                             Số điện thoại
                         </label>
@@ -72,13 +141,14 @@ const Info = () => {
                     <div className="relative flex items-center form-field">
                         <input
                             type="text"
-                            onChange={(e) => setAddress(e.target.value)}
+                            // onChange={(e) => setAddress(e.target.value)}
+                            onChange={(e) => setUserData({ ...userData, address: e.target.value })}
                             readOnly={isAddressDisabled}
                             onBlur={() => setIsAddressDisabled(true)}
-                            value={address}
+                            value={userData.address}
                             id="address"
                             required
-                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${address ? "filled" : ""}`} />
+                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${userData.address ? "filled" : ""}`} />
                         <label htmlFor="address">
                             Địa chỉ
                         </label>
@@ -86,14 +156,15 @@ const Info = () => {
                     </div>
                     <div className="relative flex items-center form-field">
                         <input
-                            type="text"
-                            onChange={(e) => setBirthday(e.target.value)}
+                            type="date"
+                            // onChange={(e) => setBirthday(e.target.value)}
+                            onChange={(e) => setUserData({ ...userData, birthday: e.target.value })}
                             readOnly={isBirthdayDisabled}
                             onBlur={() => setIsBirthdayDisabled(true)}
-                            value={birthday}
+                            value={userData.birthday ? userData.birthday.split("T")[0] : ""}
                             id="birthday"
                             required
-                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${birthday ? "filled" : ""}`} />
+                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${userData.birthday ? "filled" : ""}`} />
                         <label htmlFor="birthday">
                             Ngày sinh
                         </label>
@@ -102,33 +173,45 @@ const Info = () => {
                     <div className="relative flex items-center form-field">
                         <input
                             type="text"
-                            onChange={(e) => setCreate(e.target.value)}
+                            // onChange={(e) => setCreate(e.target.value)}
+                            onChange={(e) => setUserData({ ...userData, create: e.target.value })}
                             readOnly={isCreateDisabled}
                             onBlur={() => setIsCreateDisabled(true)}
-                            value={create}
+                            value={formatDate(userData.create)}
                             id="create"
                             required
-                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${create ? "filled" : ""}`} />
+                            className={`flex-1 text-[#000000] font-[500] text-[16px] border-b px-[10px] py-[10px] peer bg-transparent ${userData.create ? "filled" : ""}`} />
                         <label htmlFor="create">
                             Ngày tham gia
                         </label>
-                        <ButtonEditUser onClick={() => setIsCreateDisabled(false)} />
                     </div>
                     <div className="flex items-center gap-[60px] mt-[10px]" >
                         <h3 className="text-[16px] text-[#000000] font-[500]">Giới tính :</h3>
                         <div className="flex items-center gap-[30px]">
                         <div className="flex items-center gap-[10px]">
-                            <input type="radio" id="man" name="gender" />
+                            <input 
+                            type="radio" 
+                            id="man" 
+                            name="gender" 
+                            checked={userData.gender === "Nam"}
+                            onChange={() => setUserData({ ...userData, gender: "Nam" })}
+                            />
                             <label htmlFor="man" className="font-[500] text-[16px] text-[#000000]"> Nam</label>
                         </div>
                         <div className="flex items-center gap-[10px]">
-                            <input type="radio" id="women" name="gender" />
+                            <input 
+                            type="radio"
+                            id="women" 
+                            name="gender" 
+                            checked={userData.gender === "Nữ"}
+                            onChange={() => setUserData({ ...userData, gender: "Nữ" })}
+                            />
                             <label htmlFor="women" className="font-[500] text-[16px] text-[#000000]"> Nữ</label>
                         </div>
                         </div>
                     </div>
                     <div className="mt-[12px]">
-                        <ButtonUpdateUser text="Cập nhật"/>
+                        <ButtonUpdateUser text="Cập nhật" onClick={handleUpdateUser} />
                     </div>
                 </form>
 

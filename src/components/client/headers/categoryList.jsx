@@ -24,7 +24,7 @@ const CategoryList = () => {
                         {category.subCategories?.map((subCategory) => (
                             <li key={subCategory.id}>
                                 <Link
-                                    to={`*`} 
+                                    to={`/products/category/${subCategory.slug}`}
                                     className="text-[##666] text-[16px] font-[400] hover:text-main block py-[10px] capitalize hover:text-main py-[10px]"
                                 >
                                     {subCategory.name}

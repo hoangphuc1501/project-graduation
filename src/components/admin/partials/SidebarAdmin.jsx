@@ -27,14 +27,11 @@ const SidebarAdmin = () => {
                             <FaChevronDown data-dui-accordion-icon />
                         </div>
                         <div id="customStylesAccordion1" class="overflow-hidden transition-all duration-500">
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/category" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Danh mục sản phẩm
                             </Link>
                             <Link to="/admin/product" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Danh sách sản phẩm
-                            </Link>
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
-                                Danh sách biến thể
                             </Link>
                             <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Thông số kỹ thuật
@@ -43,7 +40,7 @@ const SidebarAdmin = () => {
                     </div>
 
                 </div>
-                <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
+                <Link to="/admin/brand" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
                     <span><TbBrand4Chan /></span> Thương hiệu
                 </Link>
                 <div class="group block w-full" aria-disabled="false" data-dui-accordion-container data-dui-accordion-mode="exclusive">
@@ -59,7 +56,7 @@ const SidebarAdmin = () => {
                             <FaChevronDown data-dui-accordion-icon />
                         </div>
                         <div id="customStylesAccordion2" class="overflow-hidden transition-all duration-500">
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/user" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Danh sách khách hàng
                             </Link>
                             <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
@@ -85,10 +82,10 @@ const SidebarAdmin = () => {
                             <FaChevronDown data-dui-accordion-icon />
                         </div>
                         <div id="customStylesAccordion3" class="overflow-hidden transition-all duration-500">
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/newsCategory" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Danh mục bài viết
                             </Link>
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/news" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Danh sách bài viết
                             </Link>
                         </div>

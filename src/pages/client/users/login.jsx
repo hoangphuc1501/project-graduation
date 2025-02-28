@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../../middleware/UserContext";
 import { LoginUserApi } from "../../../services/client/UserApiService";
+import { laravelAPI, nodeAPI } from "../../../utils/axiosCustom";
 
 
 
@@ -14,6 +15,8 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { setUser } = useContext(UserContext);
+
+    // const { setUser, setToken, fetchAccount  } = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleSubmitLogin = async (e) => {
@@ -36,6 +39,36 @@ const Login = () => {
             toast.error(data.message);
         }
     }
+
+
+    // const handleSubmitLogin = async (e) => {
+    //     e.preventDefault();
+
+    //     const data = await LoginUserApi(email, password);
+    //     if (data.code === "success") {
+    //         const token = data.token;
+
+    //         // Lưu vào localStorage
+    //         console.log("Lưu token vào localStorage:", token);
+    //         localStorage.setItem("token", token);
+    //         setToken(token);
+    //         // Cập nhật state ngay lập tức
+    //         setUser({
+    //             isAuthenticated: true,
+    //             user: {
+    //                 email: data?.user?.email ?? "",
+    //                 fullname: data?.user?.fullname ?? ""
+    //             }
+    //         });
+    //         toast.success(data.message);
+    //         navigate("/")
+    //         // setTimeout(() => {
+    //         //     fetchAccount();
+    //         // }, 100);
+    //     } else {
+    //         toast.error(data.message);
+    //     }
+    // }
 
     return (
 

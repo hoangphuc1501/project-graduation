@@ -1,7 +1,27 @@
+import { useEffect, useState } from "react";
 import NewsCategory from "./newsCategory";
 import NewsItem from "./newsItem";
+import { nodeAPI } from "../../../utils/axiosCustom";
 
 const ListNews = () => {
+
+    const [newsList, setNewsList] = useState([]);
+
+
+    useEffect(() => {
+        fetchNews();
+    }, []);
+
+    const fetchNews = async () => {
+        try {
+            const response = await nodeAPI.get("/news");
+                // console.log("API Response:", response);  
+                setNewsList(response.newsList || []);
+        } catch (error) {
+            console.error("Lỗi khi lấy danh sách tin tức:", error);
+        }
+    };
+
     return (
         <div className="pb-[60px]"> 
             <div className="container px-[16px] mx-auto">
@@ -27,14 +47,11 @@ const ListNews = () => {
                             </div>
                         </div>
                         <div className="grid grid-cols-3 gap-[20px]">
-                            <NewsItem/>
-                            <NewsItem/>
-                            <NewsItem/>
-                            <NewsItem/>
-                            <NewsItem/>
-                            <NewsItem/>
-                            <NewsItem/>
-                            <NewsItem/>
+                        {newsList?.length > 0 ? (
+                                newsList.map((news) => <NewsItem key={news.id} news={news} />)
+                            ) : (
+                                <p>Không có tin tức nào.</p>
+                            )}
                         </div>
                     </div>
                     <div className="w-[24%]">

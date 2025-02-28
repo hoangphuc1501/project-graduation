@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faFacebook, faInstagram} from '@fortawesome/free-brands-svg-icons';
-import {faEnvelope } from "@fortawesome/free-solid-svg-icons"
+import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
 
 const Footer = () => {
     return (
@@ -13,10 +13,10 @@ const Footer = () => {
                             <form action="" className="lg:w-[349px] w-[100%]">
                                 <div className="bg-white rounded-[62px] sm:h-[48px] h-[42px] px-[16px] flex gap-[12px] items-center">
                                     <FontAwesomeIcon icon={faEnvelope} className="sm:text-[20px] text-[16px] text-[#00000066]" />
-                                    <input 
+                                    <input
                                         type="email"
-                                        placeholder="Nhập email của bạn..." 
-                                        class="flex-1 sm:text-[16px] text-[14px]" 
+                                        placeholder="Nhập email của bạn..."
+                                        class="flex-1 sm:text-[16px] text-[14px]"
                                     />
                                 </div>
                                 <button className="sm:mt-[14px] mt-[12px] bg-white rounded-[62px] sm:h-[44px] h-[42px]  w-[100%] font-[500] text-black sm:text-[16xp] text-[14xp] capitalize"> Đăng ký nhận tin</button>
@@ -49,141 +49,126 @@ const Footer = () => {
                             </div>
                         </div>
                         <div className="sm:w-auto w-[48%]">
-                            <h2 className="mb-[26px] font-[500] text-[16px] text-black uppercase">Trợ giúp</h2>
-                                <ul className="flex flex-col gap-[16px]">
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                </ul>
+                            <h2 className="mb-[26px] font-[500] text-[16px] text-black uppercase">THÔNG TIN LIÊN HỆ</h2>
+                            <ul className="flex flex-col gap-[16px]">
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Hotline: <span className="text-main">0333573303</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                    Email: <span className="text-main">smashpro@gmail.com</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                    Hợp tác kính doanh: <span className="text-main">0333573303</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                    Nhượng quyền thương hiệu: <span className="text-main">0333573303</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                    Than phiền dịch vụ: <spa className="text-main">0333573303</spa>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                         <div className="sm:w-auto w-[48%]">
-                                <h2 className="mb-[26px] font-[500] text-[16px] text-black uppercase">Trợ giúp</h2>
-                                <ul className="flex flex-col gap-[16px]">
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                </ul>
+                            <h2 className="mb-[26px] font-[500] text-[16px] text-black uppercase">Chính sách</h2>
+                            <ul className="flex flex-col gap-[16px]">
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Thông tin về vận chuyển và giao nhận
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Chính sách đổi trả,hoàn tiền
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Chính sách bảo hành
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Chính sách xử lý khiếu nại
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Chính sách vận chuyển
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Điều khoản sử dụng
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Chính Sách Bảo Mật Thông Tin
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Chính sách nhượng quyền
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                         <div className="sm:w-auto w-[48%]">
-                                <h2 className="mb-[26px] font-[500] text-[16px] text-black uppercase">Trợ giúp</h2>
-                                <ul className="flex flex-col gap-[16px]">
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                </ul>
-                        </div>
-                        <div className="sm:w-auto w-[48%]">
-                            <h2 className="mb-[26px] font-[500] text-[16px] text-black uppercase">Trợ giúp</h2>
-                                <ul className="flex flex-col gap-[16px]">
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
-                                        Giới Thiệu   
-                                        </button>
-                                    </li>
-                                </ul>
+                            <h2 className="mb-[26px] font-[500] text-[16px] text-black uppercase">Hướng dẫn</h2>
+                            <ul className="flex flex-col gap-[16px]">
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Hướng dẫn cách chọn vợt cầu lông
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Hướng dẫn thanh toán
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Kiểm tra bảo hành
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        Kiểm tra đơn hàng
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="font-[400] text-[16px] text-[#00000099] hover:text-main">
+                                        HƯỚNG DẪN MUA HÀNG
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div className="sm:mt-[48px] mt-[38px] border-t border-[#0000001A] pt-[20px] flex items-center md:justify-between justify-center flex-wrap md:gap-[20px] gap-[10px]">
                         <p className="font-[400] text-[14px] text-[#00000099]">SmashPro © 2025, All Rights Reserved</p>
                         <div className="flex flex-wrap items-center gap-[12px]">
-                            <img src="" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
-                            <img src="" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
-                            <img src="" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
-                            <img src="" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
-                            <img src="" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
+                            <img src="https://res.cloudinary.com/dyoestl0x/image/upload/v1740776774/Pay_mzme1e.png" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
+                            <img src="https://res.cloudinary.com/dyoestl0x/image/upload/v1740776774/G_Pay_sernis.png" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
+                            <img src="https://res.cloudinary.com/dyoestl0x/image/upload/v1740776774/Mastercard_ank8wp.png" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
+                            <img src="https://res.cloudinary.com/dyoestl0x/image/upload/v1740776774/Visa_zpsj9r.png" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
+                            <img src="https://res.cloudinary.com/dyoestl0x/image/upload/v1740776774/Paypal_zv7ldb.png" alt="" className="md:w-[47px] w-[40px] md:h-[30px] h-[26px] bg-white rounded-[5px] border border-[#D6DCE5] p-[7px] object-contain" />
                         </div>
                     </div>
                 </div>
             </footer>
         </>
-        
-    ) 
+
+    )
 }
 
 export default Footer;

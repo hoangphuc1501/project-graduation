@@ -25,6 +25,13 @@ import Comparison from "./pages/client/comparison/comparison";
 import ProductList from "./pages/admin/products/productList";
 import ProducDetailAdmin from "./pages/admin/products/productDetail";
 import SearchProduct from "./pages/client/product/searchProduct";
+import Category from "./pages/admin/category/Category";
+import BrandAdmin from "./pages/admin/brand/BrandAdmin";
+import Khachhang from "./pages/admin/users/Khachhang";
+import NewsCategoryAdmin from "./pages/admin/news/newsCategoryadmin";
+import AdminNews from "./pages/admin/news/newsAdmin";
+import Detailnew from "./pages/client/news/detailnew";
+
 
 
 function App() {
@@ -48,12 +55,14 @@ function App() {
         <Route path="confirmOtp" element={<ConfirmOtp />} />
         <Route path="contact" element={<Contact />} />
         <Route path="news" element={<News/>} />
-        <Route path="product" element={<Product />} />
+        {/* <Route path="product" element={<Product />} /> */}
+        <Route path="/products/category/:slug" element={<Product />} />
         <Route path="productDetail/:slug" element={<ProductDetail />} />
         <Route path="wishList" element={<Favorite/>} />
         <Route path="comparison" element={<Comparison/>} />
         <Route path="search" element={<SearchProduct/>} />
         <Route path="cart" element={<Cart/>} />
+        <Route path="newsDeatail" element={<Detailnew/>}/>
       </Route>
 
     
@@ -62,6 +71,11 @@ function App() {
         <Route path="dashboard" element={<Dashboard/>} />
         <Route path="product" element={<ProductList/>} />
         <Route path="product/:id" element={<ProducDetailAdmin />} />
+        <Route path="user" element={<Khachhang/>}/>
+        <Route path="category" element={<Category/>}/>
+        <Route path="brand" element={<BrandAdmin/>}/>
+        <Route path="newsCategory" element={<NewsCategoryAdmin/>}/>
+        <Route path="news" element={<AdminNews/>}/>
         {/* <Route path="users" element={<Users />} /> */}
       </Route>
 

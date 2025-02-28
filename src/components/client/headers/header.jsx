@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { toast } from 'react-toastify';
 import { UserContext } from "../../../middleware/UserContext";
@@ -10,8 +10,8 @@ import WishListModal from "../wishlist/wishListModal";
 import { ListButtonAnimation } from "../buttons/listButtonAnimation";
 import BrandList from "./brandList";
 import CategoryList from "./categoryList";
-import { FaChevronDown, FaHeart, FaMapLocationDot, FaCodeCompare,  } from "react-icons/fa6";
-import { FaUserPlus, FaUser   } from "react-icons/fa";
+import { FaChevronDown, FaHeart, FaMapLocationDot, FaCodeCompare, } from "react-icons/fa6";
+import { FaUserPlus, FaUser } from "react-icons/fa";
 import { BsBoxArrowLeft } from "react-icons/bs";
 import { nodeAPI } from "../../../utils/axiosCustom";
 import SearchForm from "./searchForm";
@@ -21,10 +21,17 @@ const Header = (props) => {
     const [showModalCart, setShowModalCart] = useState(false);
     const [showModalContactForm, setShowModalContactForm] = useState(false);
     const [showModalWishList, setShowModalWishList] = useState(false);
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser, setToken, fetchAccount  } = useContext(UserContext);
     const navigate = useNavigate();
-    
+
+
     // hàm đăng xuất
+    // const handleLogout = () => {
+    //     localStorage.removeItem('token');
+    //     localStorage.removeItem('user');
+    //     navigate("/");
+    //     toast.success("Đăng xuất thành công");
+    // };
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -32,7 +39,22 @@ const Header = (props) => {
         navigate("/");
         toast.success("Đăng xuất thành công");
     };
+    // console.log("User từ Context:", user);
 
+    // const handleLogout = () => {
+    //     setUser({
+    //         isAuthenticated: false,
+    //         user: {
+    //             email: "",
+    //             fullname: ""
+    //         }
+    //     });
+    //     setToken(null);
+    //     localStorage.removeItem("token"); 
+    //     navigate("/");
+    //     toast.success("Đăng xuất thành công");
+    // };
+    
     return (
         <header className="z-[999]">
             <div className="container mx-auto px-[16px]">
@@ -46,7 +68,7 @@ const Header = (props) => {
                     </Link>
                     <p className="flex items-center gap-[10px] text-[16px] font-[500] uppercase">
                         <span className="text-main text-[18px]">
-                            <FaMapLocationDot/>
+                            <FaMapLocationDot />
                         </span>
                         Hệ thống cửa hàng
                     </p>
@@ -57,7 +79,7 @@ const Header = (props) => {
                                 to="/comparison"
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
                                 <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%] text-[18px]">
-                                    <FaCodeCompare/>
+                                    <FaCodeCompare />
                                 </span>
                                 <span className="text-[14px] font-[500] text-[#231f20]">
                                     So sánh
@@ -69,14 +91,14 @@ const Header = (props) => {
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main "
                             >
                                 <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%] text-[18px]">
-                                <FaUser />
+                                    <FaUser />
                                 </span>
                                 <span className="text-[14px] font-[500] text-[#231f20]">
                                     Tài khoản
                                 </span>
                             </div>
                             <ul className="absolute w-[180px] bg-white text-black rounded-[10px] top-[55    px] left-[-50px] hidden group-hover:block shadow-[0_0_5px_rgba(35,31,32,0.5)] z-[999]">
-                                {!user ? (
+                                {!user  ? (
                                     <>
                                         <li>
                                             <Link
@@ -101,7 +123,7 @@ const Header = (props) => {
                                             <Link
                                                 to="/profile"
                                                 className="text-[14px] text-center text-black block py-[7px] rounded-[8px] hover:bg-main hover:!text-white">
-                                                {user.fullname}
+                                                {user?.fullname}
                                             </Link>
                                         </li>
                                         <li>
@@ -133,7 +155,7 @@ const Header = (props) => {
                                 onClick={() => setShowModalCart(true)}
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
                                 <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%] text-[18px]">
-                                    <FaCartPlus/>
+                                    <FaCartPlus />
                                 </span>
                                 <span className="text-[14px] font-[500] text-[#231f20] " >
                                     Giỏ hàng

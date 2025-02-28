@@ -15,7 +15,7 @@ const ProductSale = () => {
         const fetchProductNew = async () => {
             try {
                 const response = await nodeAPI.get("/products/productSale");
-                console.log("API Response:", response);  
+                // console.log("API Response:", response);  
                 setProductSale(response.data || []);
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
