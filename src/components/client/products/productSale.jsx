@@ -6,7 +6,7 @@ import { Pagination, Navigation, FreeMode } from 'swiper/modules';
 import ProductSaleItem from './productSaleItem';
 import CountdownTimer from '../animations/countdown';
 import { useEffect, useState } from 'react';
-import { nodeAPI } from '../../../utils/axiosCustom';
+import { laravelAPI, nodeAPI } from '../../../utils/axiosCustom';
 
 const ProductSale = () => {
     const [productSale, setProductSale] = useState([]);
@@ -14,7 +14,7 @@ const ProductSale = () => {
     useEffect(() => {
         const fetchProductNew = async () => {
             try {
-                const response = await nodeAPI.get("/products/productSale");
+                const response = await laravelAPI.get("/api/newProduct");
                 // console.log("API Response:", response);  
                 setProductSale(response.data || []);
             } catch (error) {

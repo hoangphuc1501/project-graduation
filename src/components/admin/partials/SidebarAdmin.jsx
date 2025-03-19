@@ -33,6 +33,12 @@ const SidebarAdmin = () => {
                             <Link to="/admin/product" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Danh sách sản phẩm
                             </Link>
+                            <Link to="/admin/color" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                                Màu sắc
+                            </Link>
+                            <Link to="/admin/size" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                                Kích thước
+                            </Link>
                             <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Thông số kỹ thuật
                             </Link>
@@ -94,7 +100,7 @@ const SidebarAdmin = () => {
                 <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
                     <span><MdInventory  /></span> Tồn kho
                 </Link>
-                <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
+                <Link to="/admin/orders" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
                     <span><LiaJediOrder  /></span> Đơn hàng
                 </Link>
                 <div class="group block w-full" aria-disabled="false" data-dui-accordion-container data-dui-accordion-mode="exclusive">
@@ -110,13 +116,13 @@ const SidebarAdmin = () => {
                             <FaChevronDown data-dui-accordion-icon />
                         </div>
                         <div id="customStylesAccordion4" class="overflow-hidden transition-all duration-500">
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/roles" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                                Nhóm vai trò
+                            </Link>
+                            <Link to="/admin/permissions" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Nhóm quyền
                             </Link>
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
-                                Phân quyền
-                            </Link>
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/account" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Tài khoản
                             </Link>
                         </div>

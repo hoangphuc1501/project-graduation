@@ -1,207 +1,254 @@
 import React, { useState, useEffect } from "react";
-import { fetchCategories, addCategory, updateCategory, deleteCategory } from "../../../services/admin/categoryServices";
+import { FaCirclePlus } from "react-icons/fa6";
+import { laravelAPI } from "../../../utils/axiosCustom";
+import CreateCategory from "./createCategory";
+import EditCategory from "./editCategory";
+import Swal from "sweetalert2";
+import DetailCategory from "./detailCategory";
 
-export default function CategoryList() {
+const CategoryList = () => {
   const [categories, setCategories] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [editingCategory, setEditingCategory] = useState(null);
-  const [categoryData, setCategoryData] = useState({ name: "", position: "", status: "1" });
-  const [deleteCategoryId, setDeleteCategoryId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showCreateCategory, setShowCreateCategory] = useState(false);
+  const [showDetailCategory, setShowDetailCategory] = useState(false);
+  const [categoryId, setCategoryId] = useState('');
+  const [showEditCategory, setShowEditCategory] = useState(false);
 
+  // danh sách danh mục
+  const fetchProductCategory = async () => {
+    try {
+      const response = await laravelAPI.get("/api/admin/productcategories");
+      // console.log("check category list:", response);
+      if (response.code === "success") {
+        setCategories(response.data.data || []);
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu danh mục sản phẩm:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchCategories().then(setCategories);
+    fetchProductCategory();
   }, []);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value.toLowerCase());
+  // hàm nút update
+  const handleEditClick = (categoryId) => {
+    setCategoryId(categoryId);
+    setShowEditCategory(true);
   };
 
-  const filteredCategories = categories.filter((category) =>
-    category.name.toLowerCase().includes(searchTerm)
-  );
+  // show chi tiết
+  const handleDetailClick = (categoryId) => {
+    setCategoryId(categoryId);
+    setShowDetailCategory(true);
+};
 
 
-  const handleSubmit = async () => {
-    if (editingCategory) {
-      await updateCategory(editingCategory.id, categoryData);
-    } else {
-      await addCategory(categoryData);
-    }
-    setShowModal(false);
-    fetchCategories().then(setCategories);
-    setEditingCategory(null);
-    setCategoryData({ name: "", position: "", status: "1" });
-  };
-
-  const handleDelete = async (id) => {
-    if (window) {
-      await deleteCategory(id);
-      fetchCategories().then(setCategories);
-    }
+  const handleDeleteCategory = async (categoryId) => {
+    Swal.fire({
+      title: "Bạn có chắc chắn?",
+      text: "Danh mục này sẽ bị chuyển vào thùng rác.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await laravelAPI.patch(`/api/admin/productcategories/softDelete/${categoryId}`);
+          if (response.code === "success") {
+            Swal.fire({
+              title: "Xóa thành công.",
+              icon: "success",
+            });
+            fetchProductCategory();
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "Xóa không thành công.",
+              icon: "error",
+            });
+          }
+        } catch (error) {
+          console.error("Lỗi khi xóa danh mục:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Xóa không thành công.",
+            icon: "error",
+          });
+        }
+      }
+    });
   };
 
   return (
-
-    <div className="flex-1 p-6 overflow-auto">
-      <h1 className="text-2xl font-bold text-black">Danh sách danh mục</h1>
-
-      <div className="bg-white p-4 rounded shadow mt-4">
-        <h2 className="text-lg font-semibold mb-2">Bộ lọc và tìm kiếm</h2>
-        <div className="flex items-center space-x-4">
-          <select className="border p-2 text-black rounded w-1/4">
-            <option value="desc">Vị trí giảm dần</option>
-            <option value="asc">Vị trí tăng dần</option>
-            <option value="az">Tiêu đề từ A-Z</option>
-            <option value="za">Tiêu đề từ Z-A</option>
-          </select>
-          <select className="border p-2 text-black rounded w-1/4">
-            <option value="active">Hoạt động</option>
-            <option value="inactive">Dừng hoạt động</option>
-          </select>
-          <input
-            type="text"
-            className="border p-2 text-black rounded flex-1"
-            placeholder="Nhập từ khóa"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <button className="bg-orange-500 text-white px-4 py-2 rounded">Tìm</button>
+    <div className="py-[60px]">
+      <h2 className="text-[28px] font-[700] text-[#00000] text-center pb-[30px]">Quản lý Danh Mục</h2>
+      <div className="card mb-3">
+        <div className="card-header">
+          <h3 className="text-[20px] font-[700] text-[#00000] py-[10px]">Bộ lọc và tìm kiếm</h3>
         </div>
-      </div>
-
-      <div className="bg-white p-4 justify-between rounded shadow mt-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Danh sách danh mục</h2>
-          <button
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
-            onClick={() => setShowModal(true)}
-          >
-            Thêm danh mục
-          </button>
-        </div>
-        <table className="w-full border-collapse border border-gray-300 shadow-lg rounded-lg overflow-hidden">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">STT</th>
-              <th className="border p-2">Tên danh mục</th>
-              <th className="border p-2">Vị trí</th>
-              <th className="border p-2">Trạng thái</th>
-              <th className="border p-2">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCategories.map((category, index) => (
-              <tr key={category.id} className="text-center border hover:bg-gray-100">
-                <td className="border p-2">{index + 1}</td>
-                <td className="border p-2">{category.name}</td>
-                <td className="border p-2">{category.position}</td>
-                <td className="border p-2">
-                  <span className={`px-2 py-1 rounded ${category.status === 1 ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
-                    {category.status === 1 ? "Hoạt động" : "Dừng hoạt động"}
-                  </span>
-                </td>
-                <td className="border p-2">
-                  <button
-                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
-                    onClick={() => {
-                      setEditingCategory(category);
-                      setCategoryData({ name: category.name, position: category.position, status: category.status.toString() });
-                      setShowModal(true);
-                    }}
-                  >
-                    Sửa
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-2 py-1 rounded"
-                    onClick={() => {
-                      setDeleteCategoryId(category.id);
-                      setShowDeleteModal(true);
-                    }}
-                  >
-                    Xóa
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {showDeleteModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div className="bg-white p-6 rounded shadow-lg text-center">
-              <p className="text-lg font-semibold">Bạn có chắc chắn muốn xóa danh mục này?</p>
-              <div className="mt-4 flex justify-center space-x-4">
-                <button
-                  className="bg-gray-400 text-white px-4 py-2 rounded"
-                  onClick={() => setShowDeleteModal(false)}
-                >
-                  Hủy
-                </button>
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded"
-                  onClick={() => {
-                    handleDelete(deleteCategoryId);
-                    setShowDeleteModal(false);
-                  }}
-                >
-                  Xác nhận
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <div className="flex justify-between items-center mb-4">
-              <h5 className="text-xl font-semibold">{editingCategory ? "Chỉnh sửa danh mục" : "Thêm danh mục"}</h5>
-              <button className="text-gray-500 hover:text-gray-700" onClick={() => setShowModal(false)}>✕</button>
-            </div>
-            <div className="mb-3">
-              <label className="block text-gray-700 font-medium mb-1">Tên danh mục</label>
-              <input
-                type="text"
-                className="border p-2 text-black rounded w-full"
-                placeholder="Nhập tên danh mục"
-                value={categoryData.name}
-                onChange={(e) => setCategoryData({ ...categoryData, name: e.target.value })}
-              />
-            </div>
-            <div className="mb-3">
-              <label className="block text-gray-700 font-medium mb-1">Vị trí</label>
-              <input
-                type="number"
-                min="0"
-                className="border p-2 text-black rounded w-full"
-                placeholder="Nhập vị trí"
-                value={categoryData.position}
-                onChange={(e) => setCategoryData({ ...categoryData, position: e.target.value })}
-              />
-            </div>
-            <div className="mb-3">
-              <label className="block text-gray-700 font-medium mb-1">Trạng thái</label>
-              <select
-                className="border p-2 text-black rounded w-full"
-                value={categoryData.status}
-                onChange={(e) => setCategoryData({ ...categoryData, status: e.target.value })}
-              >
-                <option value="1">Hoạt động</option>
-                <option value="0">Dừng hoạt động</option>
+        <div className="card-body">
+          <div className="row">
+            <div className="col-3">
+              <select className="form-control">
+                <option value="">Tất cả</option>
+                <option value="active">Hoạt động</option>
+                <option value="inactive">Dừng hoạt động</option>
               </select>
             </div>
-            <div className="flex justify-end space-x-2">
-              <button className="bg-gray-400 text-white px-4 py-2 rounded" onClick={() => setShowModal(false)}>Hủy</button>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleSubmit}>Lưu</button>
+            <div className="col-3">
+              <select className="form-control">
+                <option value="position-desc">Vị trí giảm dần</option>
+                <option value="position-asc">Vị trí tăng dần</option>
+                <option value="title-desc">Tiêu đề từ Z đến A</option>
+                <option value="title-asc">Tiêu đề từ A đến Z</option>
+              </select>
+            </div>
+            <div className="col-3">
+              <input type="text" className="form-control" placeholder="Tìm kiếm..." />
+            </div>
+            <div className="col-3">
+              <form action="/admin/products-category/change-multi" method="POST">
+                <div className="input-group">
+                  <select className="form-control">
+                    <option value="active">Hoạt động</option>
+                    <option value="inactive">Dừng hoạt động</option>
+                    <option value="delete">Xóa</option>
+                  </select>
+                  <div className="input-group-append">
+                    <button 
+                    className="font-[600] text-[16px] text-[#ffffff] py-[8px] px-[20px] rounded-r-[8px] bg-main flex items-center gap-[20px]"
+                    type="submit">Áp dụng</button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+      <div className="card mb-3">
+        <div className="card-header">
+          <div className="flex items-center justify-between">
+            <h3 className="text-[20px] font-[700] text-[#00000]">Danh sách danh mục</h3>
+            <button
+              onClick={() => setShowCreateCategory(true)}
+              className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]">
+              <span><FaCirclePlus /></span>
+              Thêm mới
+            </button>
 
-  );
+          </div>
+        </div>
+        <div className="card-body">
+          {loading ? (
+            <p className="text-center text-[16px] font-[600]">Đang tải dữ liệu...</p>
+          ) : (
+            <table className="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th ></th>
+                  <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">STT</th>
+                  <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Hình ảnh</th>
+                  <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Tên danh mục</th>
+                  <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Vị trí</th>
+                  <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Danh mục cha</th>
+                  <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Trạng thái</th>
+                  <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Tác vụ</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {categories.length > 0 ? (
+                  categories.map((category, index) => (
+                    <tr key={category.id}>
+                      <td className="!py-[20px]"><input type="checkbox" name="" id="" /></td>
+                      <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center"> {index + 1}</td>
+                      <td className="!py-[20px] flex items-center justify-center">
+                        <img
+                          src={category?.image}
+                          alt={category?.name}
+                          className="w-[100px] h-[100px]" />
+
+                      </td>
+                      <td className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center"> {category?.name}</td>
+                      <td className="!py-[20px] text-center">
+                        <input
+                          type="number"
+                          name="" id=""
+                          value={category?.position}
+                          min={1}
+                          className="w-[80px] border rounded-[12px] py-[4px] !border-[#000000] text-[20px] font-[400] text-center text-[#000000]" />
+                      </td>
+                      <td className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center"> {category?.parentName ? category?.parentName : "Không có"}  </td>
+                      <td className="!py-[20px] text-center">
+                        <label class="toggle-switch">
+                          <input
+                            type="checkbox"
+                            checked={category?.status === 1}
+                            onChange={() => { }}
+                          />
+                          <div class="toggle-switch-background">
+                            <div class="toggle-switch-handle"></div>
+                          </div>
+                        </label>
+                      </td>
+                      <td>
+                        <div className="flex items-center justify-center gap-[6px] !py-[20px]">
+                          <button
+                          onClick={() => handleDetailClick(category?.id)}
+                            className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[12px] py-[8px] px-[12px]">
+                            Chi tiết</button>
+                          <button
+                            onClick={() => handleEditClick(category?.id)}
+                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                            Sửa
+                          </button>
+                          <button
+                            onClick={() => handleDeleteCategory(category?.id)}
+                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                            Xóa</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="9" className="text-center py-[10px]">
+                      Không có sản phẩm nào.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+      <CreateCategory
+        showCreateCategoryModal={showCreateCategory}
+        setShowCreateCategoryModal={setShowCreateCategory}
+        fetchProductCategory={fetchProductCategory}
+      />
+
+      <EditCategory
+        showEditCategoryModal={showEditCategory}
+        setShowEditCategoryModal={setShowEditCategory}
+        fetchProductCategory={fetchProductCategory}
+        categoryId={categoryId}
+      />
+
+      <DetailCategory
+        showDetailCategoryModal={showDetailCategory}
+        setShowDetailCategoryModal={setShowDetailCategory}
+        categoryId={categoryId}
+      />
+    </div>
+  )
+
 }
+
+export default CategoryList;

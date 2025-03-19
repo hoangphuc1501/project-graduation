@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI, nodeAPI } from "../../../utils/axiosCustom";
 import { IoSearchOutline } from "react-icons/io5";
 
 
@@ -26,7 +26,7 @@ const SearchForm = () => {
 
         const fetchSuggestions = async () => {
             try {
-                const response = await nodeAPI.get(`/products/search?query=${query}`);
+                const response = await laravelAPI.get(`/api/searchProducts?query=${query}`);
                 console.log(response)
                 setSuggestions(response.data.slice(0, 3));
                 setShowSuggestions(true);

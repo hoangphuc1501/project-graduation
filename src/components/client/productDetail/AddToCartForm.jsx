@@ -1,7 +1,7 @@
 import InputNumber from "../cart/inputNumber";
 import { FaHeart } from "react-icons/fa";
 
-const AddToCartForm = ({ quantity, setQuantity, handleAddToCart }) => {
+const AddToCartForm = ({ quantity, setQuantity, handleAddToCart, handleAddToFavorites  }) => {
     return (
         <>
             <form className="pb-[10px] " onSubmit={(e) => e.preventDefault()}>
@@ -24,7 +24,9 @@ const AddToCartForm = ({ quantity, setQuantity, handleAddToCart }) => {
                     <button className="w-[80%] bg-[#008FE5] hover:bg-transparent border !border-[#008FE5] py-[16px] rounded-[8px] text-[16px] text-[#FFFFFF] hover:text-[#008FE5] font-[700]">
                         Tư vấn qua zalo
                     </button>
-                    <button className="text-[24px] text-[#ffffff] font-[700] bg-main rounded-[8px] py-[17px] px-[36px]">
+                    <button 
+                    onClick={handleAddToFavorites}
+                    className="text-[24px] text-[#ffffff] font-[700] bg-main rounded-[8px] py-[17px] px-[36px]">
                         <FaHeart/>
                     </button>
             </div>

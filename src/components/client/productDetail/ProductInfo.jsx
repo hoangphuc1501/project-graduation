@@ -1,4 +1,4 @@
-const ProductInfo = ({ product }) => {
+const ProductInfo = ({ product, selectedVariant }) => {
     return (
         <>
             <div className="pb-[20px] border-b border-[#ddd]">
@@ -19,7 +19,7 @@ const ProductInfo = ({ product }) => {
                             Thương hiệu:
                         </span>
                         <span className="text-[14px] font-[500] text-main">
-                            {product?.brands?.name ?? "Không xác định"}
+                            {product?.brand?.name ?? "Không xác định"}
                         </span>
                     </div>
                     <div className="flex items-center gap-[4px]">
@@ -27,22 +27,22 @@ const ProductInfo = ({ product }) => {
                             Tình trạng:
                         </span>
                         <span className="text-[14px] font-[500] text-main">
-                            Còn hàng
+                            {selectedVariant?.stock > 0 ? "Còn hàng" : "Hết hàng"}
                         </span>
                     </div>
                 </div>
                 <div className="flex items-center gap-[30px]">
                     <span className="text-[#e8002d] text-[22px] font-[700]">
-                        {product?.variants[0]?.specialPrice?.toLocaleString()} <sup>đ</sup>
+                        {selectedVariant?.specialPrice?.toLocaleString()} <sup>đ</sup>
                     </span>
                     <span className="text-[16px] font-[400] text-[#acacac]">
                         Giá niêm yết:
                         <strike className="ml-[4px]">
-                            {product?.variants[0]?.price?.toLocaleString()} <sup>đ</sup>
+                        {selectedVariant?.price?.toLocaleString()} <sup>đ</sup>
                         </strike>
                     </span>
                     <span className="text-[14px] font-[400] text-[#e8002d]">
-                        (-{product?.variants[0]?.discount}%)
+                    (-{selectedVariant?.discount}%)
                     </span>
                 </div>
             </div>

@@ -3,18 +3,22 @@ import { Outlet } from "react-router-dom";
 import Footer from "../components/client/footer/footer";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { UserProvider } from "../middleware/UserContext";
+// import { UserProvider } from "../middleware/UserContext";
 const ClientLayout = () => {
     return (
         <>
-            <UserProvider>
+            {/* <UserProvider>
                 <Header/>
                 <>
                     <Outlet/>
                 </>
                 <Footer/>
-            </UserProvider>
-            
+            </UserProvider> */}
+            <Header/>
+                <>
+                    <Outlet/>
+                </>
+                <Footer/>
             <ToastContainer
                 position="top-right"
                 autoClose={3000}

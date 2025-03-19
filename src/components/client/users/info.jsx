@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ButtonEditUser, ButtonUpdateUser } from "../buttons/buttonEditUser";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI, nodeAPI } from "../../../utils/axiosCustom";
 import { toast } from "react-toastify";
 const Info = () => {
     const [isFullNameDisabled, setIsFullNameDisabled] = useState(true);
@@ -39,8 +39,8 @@ const Info = () => {
     const fetchUserData = async () => {
         try {
             // const token = localStorage.getItem("token");
-            const response = await nodeAPI.get("/user/profile");
-            console.log("check info user:", response)
+            const response = await laravelAPI.get("/api/user/profile");
+            // console.log("check info user:", response)
             if (response.code === "success") {
                 setUserData({
                     fullName: response.user.fullname,
@@ -60,8 +60,8 @@ const Info = () => {
     // cập nhật thông tin
     const handleUpdateUser = async () => {
         try {
-            const response = await nodeAPI.patch(
-                "/user/updateProfile",
+            const response = await laravelAPI.patch(
+                "/api/user/updateProfile",
                 {
                     fullname: userData.fullName,
                     email: userData.email,
@@ -71,7 +71,7 @@ const Info = () => {
                     gender: userData.gender,
                 }   
             );
-    
+            console.log("check info user:", response)
             if (response.code === "success") {
                 toast.success(response.message);
                 fetchUserData(); 

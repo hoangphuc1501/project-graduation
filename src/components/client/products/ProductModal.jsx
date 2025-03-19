@@ -6,7 +6,6 @@ import ProductOptions from "../../../components/client/productDetail/ProductOpti
 import PromotionBox from "../../../components/client/productDetail/PromotionBox";
 import AddToCartForm from "../../../components/client/productDetail/AddToCartForm";
 import Description from "../../../components/client/productDetail/description";
-import Rating from "../../../components/client/productDetail/rating";
 import CommentProduct from "../../../components/client/productDetail/comment";
 import { nodeAPI } from '../../../utils/axiosCustom';
 import { toast } from 'react-toastify';

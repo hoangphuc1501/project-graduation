@@ -1,20 +1,20 @@
-import { nodeAPI } from '../../utils/axiosCustom';
+import { laravelAPI, nodeAPI } from '../../utils/axiosCustom';
 // import { toast } from 'react-toastify';
 
 
 // danh mục sản phẩm
 const categoryParentApi = async () => {
-    return await nodeAPI.get("/products/categoryParent");
+    return await laravelAPI.get("/api/categoryParent");
 }
 
 const categoryList = async () => {
-    return await nodeAPI.get("/products/category")
+    return await laravelAPI.get("/api/categories")
 }
 // end danh mục sản phẩm
 
 // danh sách hương hiệu
 const ListBrands = async () => {
-    return await nodeAPI.get("/products/brands");
+    return await laravelAPI.get("/api/brands");
 }
 // end danh sách thương hiệu
 
@@ -22,18 +22,17 @@ const ListBrands = async () => {
 
 // sản phẩm yêu thích
 const ListFavoriteApi = async () => {
-    return await nodeAPI.get("/favorite");
+    return await laravelAPI.get("/api/favorites");
 }
 
-const deleteApiFavorite = async (userId, productvariantId) =>{
-    const token = localStorage.getItem("token"); // Lấy token từ localStorage
-        if (!token) {
-            alert("Vui lòng đăng nhập!");
-            return;
-        }
-    return await nodeAPI.delete(`/favorite/delete`, {
-        data: { userId,productvariantId }});
-}
+// const deleteApiFavorite = async (userId, productvariantId) =>{
+//     const token = localStorage.getItem("token"); // Lấy token từ localStorage
+//         if (!token) {
+//             alert("Vui lòng đăng nhập!");
+//             return;
+//         }
+//     return await laravelAPI.delete(`/api/favorites/${productvariantId}`);
+// }
 // end sản phẩm yêu thích
 
 // sản phẩm
@@ -42,4 +41,4 @@ const productDetailApi = async ({slug}) => {
 }
 // end sản phẩm
 
-export {deleteApiFavorite, ListFavoriteApi, categoryParentApi, ListBrands, categoryList, productDetailApi}
+export { ListFavoriteApi, categoryParentApi, ListBrands, categoryList, productDetailApi}

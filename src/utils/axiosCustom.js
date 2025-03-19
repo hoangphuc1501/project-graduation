@@ -48,7 +48,7 @@ const addInterceptors = (instance) => {
         // console.log('Token in interceptor:', localStorage.getItem("token"));
         // config.headers.Authorization = `Bearer ${token}`;
         // const token = getToken();
-        console.log("Token trong interceptor:", token);
+        // console.log("Token trong interceptor:", token);
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         } else {

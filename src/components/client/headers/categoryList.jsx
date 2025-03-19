@@ -21,7 +21,7 @@ const CategoryList = () => {
                         <h3 className="font-[700] text-main text-[16px] mb-[10px] pb-[10px] border-b border-[#DDDDDD] uppercase">
                             {category.name}
                         </h3>
-                        {category.subCategories?.map((subCategory) => (
+                        {category.children?.map((subCategory) => (
                             <li key={subCategory.id}>
                                 <Link
                                     to={`/products/category/${subCategory.slug}`}

@@ -20,14 +20,15 @@ const ProducDetailAdmin = () => {
     // show chi tiết
     const fetchProductDetail = async () => {
         const response = await ProductDetailAdminApi(id);
+        console.log(response)
         if (response.code === "success") {
             setProduct(response.product);
         };
     }
     const handleEditVariant = (variant) => {
         console.log("Variant được chọn để chỉnh sửa:", variant);
-        setEditingVariant(variant);  
-        setShowEditVariantModal(true);  
+        setEditingVariant(variant);
+        setShowEditVariantModal(true);
     };
     // xóa mềm 
     const handleDeleteProductVariant = async (id) => {
@@ -117,30 +118,43 @@ const ProducDetailAdmin = () => {
                             </thead>
                             <tbody>
                                 {product.variants.length > 0 ? (
-                                    product.variants.map((variant, index) => (
-                                        <tr className="border-t " key={variant.id}>
-                                            <th className="py-[10px]"><input type="checkbox" name="" id="" /></th>
-                                            <th className="py-[10px] font-[400] text-[16px] text-[400] text-center"> {index + 1}</th>
-                                            <th className="py-[10px] flex items-center justify-center">
-                                                {variant.images?.[0]?.image ? (
-                                                    <img
-                                                        src={variant.images[0].image}
-                                                        alt={`Variant ${variant.color}`}
-                                                        className="w-16 h-16 object-cover"
+                                    product.variants.map((variant, index) =>
+                                        variant.sizes.map((size, sizeIndex) => (
+                                            <tr key={`${variant.id}-${sizeIndex}`} className="border-t ">
+                                                <td className=" py-[10px] text-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="cursor-pointer"
+
                                                     />
-                                                ) : (
-                                                    "No Image"
-                                                )}
-                                            </th>
-                                            <th className="py-[10px] font-[600] text-[16px] text-[#000000] text-center"> {variant.color}</th>
-                                            <th className="py-[10px] font-[600] text-[16px] text-[#000000] text-center"> {variant.size}</th>
-                                            <th className="py-[10px] font-[600] text-[16px] text-[#000000] text-center"> {variant.price !== undefined ? variant.price.toLocaleString() + "₫" : "N/A"}</th>
-                                            <th className="py-[10px] font-[600] text-[16px] text-[#000000] text-center"> {variant.discount !== undefined ? variant.discount + "%" : "N/A"}</th>
-                                            <th className="py-[10px] font-[600] text-[16px] text-[#000000] text-center"> {variant.specialPrice !== undefined ? variant.specialPrice.toLocaleString() + "₫" : "N/A"}</th>
-                                            <th className="text-center">
-                                                <input
-                                                    type="checkbox"
-                                                    className="appearance-none relative inline-block rounded-full w-12 h-6 cursor-pointer 
+                                                </td>
+                                                <td className=" py-[10px] text-center">{index + 1}</td>
+                                                <td className=" py-[10px] flex items-center justify-center">
+                                                    {variant.images.length > 0 ? (
+                                                        <img
+                                                            src={variant.images[0].image}
+                                                            alt={`Variant ${variant.color}`}
+                                                            className="w-16 h-16 object-cover"
+                                                        />
+                                                    ) : (
+                                                        "Không có ảnh"
+                                                    )}
+                                                </td>
+                                                <td className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">{variant.colors[0]?.name || "Không có"}</td>
+                                                <td className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">{size.name}</td>
+                                                <td className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
+                                                    {variant.price ? variant.price.toLocaleString() + "₫" : "N/A"}
+                                                </td>
+                                                <td className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
+                                                    {variant.discount ? variant.discount + "%" : "N/A"}
+                                                </td>
+                                                <td className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
+                                                    {variant.specialPrice ? variant.specialPrice.toLocaleString() + "₫" : "N/A"}
+                                                </td>
+                                                <td className="text-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="appearance-none relative inline-block rounded-full w-12 h-6 cursor-pointer 
                                                     before:inline-block before:absolute before:top-0 before:left-0 before:w-full before:h-full 
                                                     before:rounded-full before:bg-stone-200 before:transition-colors before:duration-200 
                                                     before:ease-in after:absolute after:top-2/4 after:left-0 after:-translate-y-2/4 
@@ -148,28 +162,29 @@ const ProducDetailAdmin = () => {
                                                     checked:after:translate-x-full after:transition-all after:duration-200 after:ease-in 
                                                     disabled:opacity-50 disabled:cursor-not-allowed dark:after:bg-white 
                                                     checked:before:bg-stone-800 checked:after:border-stone-800"
-                                                    checked={variant.status}
-                                                    onChange={() => {}}
-                                                />
-                                            </th>
-                                            <th>
-                                                <div className="flex items-center justify-center gap-[6px]">
-                                                    <button
-                                                        onClick={() => handleEditVariant(variant)}
-                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[12px] py-[8px] px-[12px]">
-                                                        Sửa
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDeleteProductVariant(variant.id)}
-                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[12px] py-[8px] px-[12px]">
-                                                        Xóa</button>
-                                                </div>
-                                            </th>
-                                        </tr>
-                                    ))
+                                                        checked={variant.status}
+                                                        onChange={() => { }}
+                                                    />
+                                                </td>
+                                                <td className=" py-[10px] font-[600] text-[16px] text-[#000000] text-center">
+                                                    <div className="flex items-center justify-center gap-[6px]">
+                                                        <button
+                                                            onClick={() => handleEditVariant(variant)}
+                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[12px] py-[8px] px-[12px]">
+                                                            Sửa
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDeleteProductVariant(variant.id)}
+                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[12px] py-[8px] px-[12px]">
+                                                            Xóa</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )
                                 ) : (
                                     <tr>
-                                        <td colSpan="7" className="text-center py-3">Không có biến thể nào.</td>
+                                        <td colSpan="9" className="text-center py-3">Không có biến thể nào.</td>
                                     </tr>
                                 )}
                             </tbody>

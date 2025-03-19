@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ButtonSeeMore from "../buttons/buttonSeeMore";
 import ProductItem from "./productItem";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI, nodeAPI } from "../../../utils/axiosCustom";
 
 
 const ProductRackets = () => {
@@ -10,7 +10,7 @@ const ProductRackets = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await nodeAPI.get(`/products/categoryID/${categoryId}`);
+                const response = await laravelAPI.get(`/api/categoryId/${categoryId}`);
                 // console.log(response)
                 if (response.code === "success") {
                     setProductRackets(response.data);
@@ -31,7 +31,7 @@ const ProductRackets = () => {
                         <ButtonSeeMore text="Xem thêm"/>
                     </div>
                     <div className="flex gap-[20px]">
-                        <div className="w-[30%] h-[710px] overflow-hidden">
+                        <div className="w-[30%] h-[750px] overflow-hidden">
                             <img src="https://static.fbshop.vn/wp-content/uploads/2024/01/Artboard-5-copy-2@2x-378x790.webp" alt="" className="w-full h-full hover:scale-[1.05] transition-all duration-700 ease-in-out" />
                         </div>
                         <div className="grid grid-cols-3 gap-[20px] w-[70%]">

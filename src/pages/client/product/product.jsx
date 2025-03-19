@@ -3,7 +3,7 @@ import { faAnglesRight, faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ProductItem from "../../../components/client/products/productItem";
-import { nodeAPI } from '../../../utils/axiosCustom';
+import { laravelAPI } from '../../../utils/axiosCustom';
 // import { toast } from "react-toastify";
 import AccordionProduct from "../../../components/client/products/accordionCatetegory";
 import Breadcrumb from "../../../components/client/breadcrumbs/Breadcrumb";
@@ -34,7 +34,7 @@ const Product = () => {
     useEffect(() => {
         const fetchProducts = async (page) => {
             try {
-                const response = await nodeAPI.get(`/products/category/${slug}`);
+                const response = await laravelAPI.get(`/api/categories/${slug}`);
                 console.log("API Response:", response);
                 // setProducts(response.data || []);
                 // setCategoryName(response.message.split("danh mục ")[1].split(" thành công")[0]); 

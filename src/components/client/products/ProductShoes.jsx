@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI, nodeAPI } from "../../../utils/axiosCustom";
 import ButtonSeeMore from "../buttons/buttonSeeMore";
 import ProductItem from "./productItem";
 
@@ -9,7 +9,9 @@ const ProductShoes = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await nodeAPI.get(`/products/categoryID/${categoryId}`);
+                const response = await laravelAPI.get(`/api/categoryId/${categoryId}`);
+                // console.log("check cate id",response)
+                
                 if (response.code === "success") {
                     setProductShoes(response.data);
                 }
@@ -38,7 +40,7 @@ const ProductShoes = () => {
                                 <p className="col-span-3 text-center text-gray-500">Không có sản phẩm nào.</p>
                             )}
                         </div>
-                        <div className="w-[30%] h-[710px] overflow-hidden">
+                        <div className="w-[30%] h-[750px] overflow-hidden">
                             <img src="https://static.fbshop.vn/wp-content/uploads/2024/01/Banner-website-balo-377x790.webp" alt="" className="w-full h-full hover:scale-[1.05] transition-all duration-700 ease-in-out" />
                         </div>
                     </div>

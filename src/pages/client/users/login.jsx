@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../../middleware/UserContext";
 import { LoginUserApi } from "../../../services/client/UserApiService";
-import { laravelAPI, nodeAPI } from "../../../utils/axiosCustom";
 
 
 

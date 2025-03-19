@@ -18,7 +18,7 @@ const ProductList = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await laravelAPI.get("/api/products");
+            const response = await laravelAPI.get("/api/admin/products");
             // console.log("API Response:", response);
             // console.log("API Response:", response.data);
             // console.log("API Response:", response.data.data);
@@ -51,7 +51,7 @@ const ProductList = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await laravelAPI.patch(`/api/products/softDelete/${id}`);
+                    const response = await laravelAPI.patch(`/api/admin/products/softDelete/${id}`);
                     if (response.code === "success") {
                         Swal.fire({
                             title: "Xóa thành công.",
@@ -83,7 +83,7 @@ const ProductList = () => {
     // Gọi API lấy chi tiết sản phẩm
     const handleViewProduct = async (id) => {
         try {
-            const response = await laravelAPI.get(`/api/products/${id}`);
+            const response = await laravelAPI.get(`/api/admin/products/${id}`);
             console.log(response)
             if (response.code === "success") {
                 setSelectedProduct(response.product);

@@ -47,8 +47,8 @@ const EditProductModal = ({ showUpdateProduct, setShowUpdateProduct, productData
         const fetchData = async () => {
             try {
                 const [productcategoriesRes, brandsRes] = await Promise.all([
-                    laravelAPI.get("/api/ListCategory"),
-                    laravelAPI.get("/api/ListBrands"),
+                    laravelAPI.get("/api/admin/ListCategory"),
+                    laravelAPI.get("/api/admin/ListBrands"),
                 ]);
                 setCategories(productcategoriesRes.data || []); 
                 setBrands(brandsRes.data || []);
@@ -95,7 +95,7 @@ const EditProductModal = ({ showUpdateProduct, setShowUpdateProduct, productData
         };
 
         try {
-            const response = await laravelAPI.patch(`/api/products/${productData.id}`, updatedProduct);
+            const response = await laravelAPI.patch(`/api/admin/products/${productData.id}`, updatedProduct);
             console.log(response)
             if (response.code === "success") {
                 toast.success("Cập nhật sản phẩm thành công!");

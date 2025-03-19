@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const AdminLayout = () => {
     return (
         <>
-            <div className="flex min-h-[1000px] bg-[]">
+            <div className="flex min-h-[1000px]">
                 <div className="w-[300px] h-full bg-[#1b1a1b] fixed">
                     <SidebarAdmin />
                 </div>

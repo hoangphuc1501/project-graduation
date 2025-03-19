@@ -35,52 +35,13 @@ const ImageSlider = ({ images = [] }) => {
             return () => viewer.destroy(); // Dọn dẹp Viewer.js khi component unmount
         }
     }, [images]);
-    useEffect(() => {
-        console.log("Images received:", images); // Debug kiểm tra dữ liệu
-    }, [images]);
+    // useEffect(() => {
+    //     console.log("Images received:", images); // Debug kiểm tra dữ liệu
+    // }, [images]);
 
 
     return (
         <>
-            {/* <Swiper
-                ref={viewerRef}
-                style={{
-                    "--swiper-navigation-color": "#E95221",
-                    "--swiper-pagination-color": "#E95221",
-                }}
-                spaceBetween={10}
-                navigation={true}
-                thumbs={{ swiper: thumbsSwiper }}
-                modules={[FreeMode, Navigation, Thumbs]}
-                className="mySwiper2"
-            >
-                {images.map((image, index) => (
-                    <SwiperSlide key={index}>
-                        <img
-                            src={image}
-                            alt=""
-                            data-src={image}
-                            ref={viewerRef}
-                            className="swiper-slide-image"
-                        />
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-            <Swiper
-                onSwiper={setThumbsSwiper}
-                spaceBetween={10}
-                slidesPerView={4}
-                freeMode={true}
-                watchSlidesProgress={true}
-                modules={[FreeMode, Navigation, Thumbs]}
-                className="mySwiper"
-            >
-                {images.map((image, index) => (
-                    <SwiperSlide key={index}>
-                        <img src={image} alt="" />
-                    </SwiperSlide>
-                ))}
-            </Swiper> */}
             {images.length > 0 ? (
                 <>
                     {/* Hiển thị ảnh lớn */}
@@ -96,7 +57,7 @@ const ImageSlider = ({ images = [] }) => {
                         modules={[FreeMode, Navigation, Thumbs]}
                         className="mySwiper2"
                     >
-                        {images.map((imgObj, index) => (
+                        {/* {images.map((imgObj, index) => (
                             <SwiperSlide key={imgObj.id || index}>
                                 <img
                                     src={imgObj.image} // Lấy đúng đường dẫn ảnh từ đối tượng
@@ -104,22 +65,28 @@ const ImageSlider = ({ images = [] }) => {
                                     className="swiper-slide-image"
                                 />
                             </SwiperSlide>
+                        ))} */}
+                        {images?.map((imgObj, index) => (
+                            <SwiperSlide key={index}>
+                                <img src={typeof imgObj === "string" ? imgObj : imgObj.image} alt="" className="swiper-slide-image" />
+                            </SwiperSlide>
                         ))}
+
                     </Swiper>
 
                     {/* Hiển thị thumbnail */}
                     <Swiper
                         onSwiper={setThumbsSwiper}
                         spaceBetween={10}
-                        slidesPerView={Math.min(images.length, 4)} // Tự động theo số lượng ảnh, tối đa 4
+                        slidesPerView={Math.min(images?.length, 4)} // Tự động theo số lượng ảnh, tối đa 4
                         freeMode={true}
                         watchSlidesProgress={true}
                         modules={[FreeMode, Navigation, Thumbs]}
                         className="mySwiper"
                     >
-                        {images.map((imgObj, index) => (
-                            <SwiperSlide key={imgObj.id || index}>
-                                <img src={imgObj.image} alt="" />
+                        {images?.map((imgObj, index) => (
+                            <SwiperSlide key={index}>
+                                <img src={typeof imgObj === "string" ? imgObj : imgObj.image} alt="" className="swiper-slide-image" />
                             </SwiperSlide>
                         ))}
                     </Swiper>

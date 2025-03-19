@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Breadcrumb from "../../../components/client/breadcrumbs/Breadcrumb";
 import ProductItem from "../../../components/client/products/productItem";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI } from "../../../utils/axiosCustom";
 import { useSearchParams } from "react-router-dom";
 
 const SearchProduct = () => {
@@ -14,7 +14,8 @@ const SearchProduct = () => {
             if (!query) return; // Nếu không có từ khóa, không gọi API
 
             try {
-                const response = await nodeAPI.get(`/products/search?query=${query}`);
+                const response = await laravelAPI.get(`/api/searchProducts?query=${query}`);
+                console.log(response)
                 setProducts(response.data || []);
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);

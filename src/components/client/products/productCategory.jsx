@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {nodeAPI} from '../../../utils/axiosCustom';
+import {laravelAPI, nodeAPI} from '../../../utils/axiosCustom';
 import ProductItem from "./productItem";
 import ButtonSeeMoreFill from "../buttons/ButtonSeeMoreFill";
 
@@ -10,8 +10,8 @@ const ProductNew = () => {
     useEffect(() => {
         const fetchProductNew = async () => {
             try {
-                const response = await nodeAPI.get("/products/newProduct");
-                // console.log("API Response:", response);  
+                const response = await laravelAPI.get("/api/newProduct");
+                // console.log("API Response new:", response);  
                 setProductNew(response.data || []);
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
@@ -47,7 +47,7 @@ const ProductFeature = () => {
     useEffect(() => {
         const fetchProductFeature = async () => {
             try {
-                const response = await nodeAPI.get("/products/feature");
+                const response = await laravelAPI.get("/api/hotProduct");
                 setProductFeature(response.data || []);
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
