@@ -5,6 +5,7 @@ import CreateRole from "./createRole";
 import EditRole from "./editRole";
 import Swal from 'sweetalert2';
 import RoleDetail from "./roleDetail";
+import ReactPaginate from "react-paginate";
 
 const ListRoles = () => {
     const [roles, setRoles] = useState([]);
@@ -13,24 +14,40 @@ const ListRoles = () => {
     const [showEditRole, setShowEditRole] = useState(false);
     const [showDetailRole, setShowDetailRole] = useState(false);
     const [selectedRoleId, setSelectedRoleId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pagination, setPagination] = useState({
+        per_page: 10,
+        total: 0,
+        last_page: 1
+    });
 
     // Hàm gọi API để lấy danh sách vai trò
     useEffect(() => {
-        fetchRoles();
-    }, []);
+        fetchRoles(currentPage);
+    }, [currentPage]);
 
-    const fetchRoles = async () => {
-        setLoading(true);
+    const fetchRoles = async (page = 1) => {
         try {
-            const response = await laravelAPI.get("/api/admin/roles");
+            setLoading(true);
+            const response = await laravelAPI.get("/api/admin/roles", {
+                params: {
+                    page: page,
+                    per_page: pagination.per_page
+                }
+            });
             // console.log("check list role", response)
             if (response.code === "success") {
-                setRoles(response.data);
+                setRoles(response.data.data);
+                setPagination({
+                    per_page: response.data.per_page,
+                    total: response.data.total,
+                    last_page: response.data.last_page
+                });
             }
         } catch (error) {
             console.error("Error fetching roles:", error);
         } finally {
-            setLoading(false); // Đặt trạng thái tải là false sau khi hoàn thành
+            setLoading(false);
         }
     };
 
@@ -76,10 +93,15 @@ const ListRoles = () => {
         });
     };
 
-     // Hàm mở modal chi tiết vai trò
+    // Hàm mở modal chi tiết vai trò
     const handleDetailClick = (roleId) => {
-        setSelectedRoleId(roleId); 
-        setShowDetailRole(true);    
+        setSelectedRoleId(roleId);
+        setShowDetailRole(true);
+    };
+
+    const handlePageClick = (event) => {
+        const selectedPage = event.selected + 1;
+        setCurrentPage(selectedPage);
     };
 
     return (
@@ -105,64 +127,89 @@ const ListRoles = () => {
                     {loading ? (
                         <div className="text-center">Loading...</div>
                     ) : (
-                        <table className="w-full " >
-                            <thead className="bg-[#EEEEEE]">
-                                <tr>
-                                    <td></td>
-                                    <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">
-                                        STT
-                                    </td>
-                                    <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">
-                                        Tên vai trò
-                                    </td>
-                                    <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">
-                                        Mô tả
-                                    </td>
-                                    <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">
-                                        Tác vụ
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {roles.map((role, index) => (
-                                    <tr className="border-t " key={role.id}>
-                                        <th className="py-[10px]">
-                                            <input type="checkbox" name="" id="" />
-                                        </th>
-                                        <th className="py-[10px] font-[400] text-[16px] text-[400] text-center">
-                                            {index + 1}
-                                        </th>
-                                        <th
-                                            className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
-
-                                            {role.name}
-                                        </th>
-                                        <th className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
-                                            {role.description}
-                                        </th>
-                                        <th>
-                                            <div className="flex items-center justify-center gap-[6px] py-[10px]">
-                                                <button
-                                                    onClick={() => handleDetailClick(role.id)} 
-                                                    className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[12px] py-[8px] px-[12px]">
-                                                    chi tiết
-                                                </button>
-                                                <button
-                                                    onClick={() => handleEditClick(role.id)}
-                                                    className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
-                                                    Sửa
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDeleteRole(role.id)}
-                                                    className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
-                                                    Xóa
-                                                </button>
-                                            </div>
-                                        </th>
+                        <>
+                            <table className="w-full " >
+                                <thead className="bg-[#EEEEEE]">
+                                    <tr>
+                                        <td></td>
+                                        <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">
+                                            STT
+                                        </td>
+                                        <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">
+                                            Tên vai trò
+                                        </td>
+                                        <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">
+                                            Mô tả
+                                        </td>
+                                        <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">
+                                            Tác vụ
+                                        </td>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {roles?.map((role, index) => (
+                                        <tr className="border-t " key={role?.id}>
+                                            <th className="py-[10px]">
+                                                <input type="checkbox" name="" id="" />
+                                            </th>
+                                            <th className="py-[10px] font-[400] text-[16px] text-[400] text-center">
+                                                {index + 1 + (currentPage - 1) * 10}
+                                            </th>
+                                            <th
+                                                className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
+
+                                                {role?.name}
+                                            </th>
+                                            <th
+                                                className="py-[10px] font-[600] text-[16px] text-[#000000] text-center"
+                                                dangerouslySetInnerHTML={{ __html: role?.description || "" }}
+                                            ></th>
+                                            <th>
+                                                <div className="flex items-center justify-center gap-[6px] py-[10px]">
+                                                    <button
+                                                        onClick={() => handleDetailClick(role?.id)}
+                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[12px] py-[8px] px-[12px]">
+                                                        chi tiết
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleEditClick(role?.id)}
+                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                        Sửa
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDeleteRole(role?.id)}
+                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                                        Xóa
+                                                    </button>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            <div className="flex items-center justify-center mt-[20px]">
+                                <ReactPaginate
+                                    breakLabel="..."
+                                    nextLabel="›"
+                                    onPageChange={handlePageClick}
+                                    pageRangeDisplayed={3}
+                                    marginPagesDisplayed={1}
+                                    pageCount={pagination.last_page}
+                                    previousLabel="‹"
+                                    forcePage={currentPage - 1}
+                                    containerClassName="pagination"
+                                    pageClassName="page-item"
+                                    pageLinkClassName="page-link"
+                                    previousClassName="page-item"
+                                    previousLinkClassName="page-link"
+                                    nextClassName="page-item"
+                                    nextLinkClassName="page-link"
+                                    breakClassName="page-item"
+                                    breakLinkClassName="page-link"
+                                    activeClassName="active"
+                                />
+                            </div>
+                        </>
                     )}
                 </div>
             </div>

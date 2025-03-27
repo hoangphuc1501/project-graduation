@@ -195,8 +195,6 @@ const Cart = () => {
                                         Tổng cộng
                                     </h2>
                                     <form
-                                        action=""
-                                        method="post"
                                         className="border !border-main h-[50px] rounded-[8px] mt-[16px] flex items-center overflow-hidden"
                                     >
                                         <input type="text"
@@ -207,21 +205,6 @@ const Cart = () => {
                                     <div className="flex items-center justify-between mt-[16px]  text-[#000000]">
                                         <span className="font-[400] text-[16px]">Tạm tính:</span>
                                         <span className="font-[700] text-[16px]">{totalPrice.toLocaleString()}<sup>đ</sup></span>
-                                    </div>
-                                    <h3 className="font-[700] text-[16px] text-[#000000] mt-[16px]">Giảm giá đơn hàng</h3>
-                                    <div className="flex items-center justify-between mt-[16px]">
-                                        <div className="flex items-center gap-[8px] text-[14px] text-[#999999]">
-                                            <span className=""><MdOutlineDiscount /></span>
-                                            <span>8def8e (giảm 20.000đ)</span>
-                                        </div>
-                                        <span className="font-[400] text-[14px] text-[#000000]">- 20.000 <sup>đ</sup></span>
-                                    </div>
-                                    <div className="flex items-center justify-between mt-[10px]">
-                                        <div className="flex items-center gap-[8px] text-[14px] text-[#999999]">
-                                            <span className=""><MdOutlineDiscount /></span>
-                                            <span>8def8e (giảm 20.000đ)</span>
-                                        </div>
-                                        <span className="font-[400] text-[14px] text-[#000000]">- 20.000 <sup>đ</sup></span>
                                     </div>
                                     <div className="flex items-center justify-between my-[25px]">
                                         <span className="text-[20px] font-[700] text-[#000000]">Tổng tiền:</span>

@@ -20,6 +20,7 @@ const DetailCategory = (props) => {
         setLoading(true);
         try {
             const response = await laravelAPI.get(`/api/admin/productcategories/${id}`);
+            //  console.log("check voucher detail", response)
             if (response.code === "success") {
                 setCategory(response.data);
             }

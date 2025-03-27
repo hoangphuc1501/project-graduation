@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { laravelAPI } from '../../../utils/axiosCustom';
 import uploadToCloudinary from '../../../utils/cloudinaryUpload';
@@ -28,7 +27,7 @@ const EditBrand = (props) => {
     const fetchBrandDetail = async (id) => {
         try {
             const response = await laravelAPI.get(`/api/admin/brands/${id}`);
-            console.log("check detail", response)
+            // console.log("check detail", response)
             if (response.code === 'success') {
                 const category = response.data;
                 setFormData({

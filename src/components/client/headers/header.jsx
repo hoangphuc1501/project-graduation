@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
 import { toast } from 'react-toastify';
 import { UserContext } from "../../../middleware/UserContext";
@@ -13,7 +13,6 @@ import CategoryList from "./categoryList";
 import { FaChevronDown, FaHeart, FaMapLocationDot, FaCodeCompare, } from "react-icons/fa6";
 import { FaUserPlus, FaUser } from "react-icons/fa";
 import { BsBoxArrowLeft } from "react-icons/bs";
-import { nodeAPI } from "../../../utils/axiosCustom";
 import SearchForm from "./searchForm";
 import { FaCartPlus } from "react-icons/fa";
 

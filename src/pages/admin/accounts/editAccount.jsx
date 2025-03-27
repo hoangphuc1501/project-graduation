@@ -19,7 +19,7 @@ const EditAccount = (props) => {
             const fetchUserData = async () => {
                 try {
                     const userResponse = await laravelAPI.get(`/api/admin/users/${userId}`);
-                    console.log("check user detail", userResponse)
+                    // console.log("check user detail", userResponse)
                     if (userResponse.code === "success") {
                         const userData = userResponse.user;
                         setFormData({
@@ -35,9 +35,9 @@ const EditAccount = (props) => {
             const fetchRoles = async () => {
                 try {
                     const response = await laravelAPI.get("/api/admin/roles");
-                    console.log("Roles data:", response);
+                    // console.log("Roles data:", response);
                     if (response.code === "success") {
-                        setRoles(response.data); 
+                        setRoles(response.data.data); 
                     }
                 } catch (error) {
                     console.error("Lỗi khi lấy danh sách vai trò:", error);

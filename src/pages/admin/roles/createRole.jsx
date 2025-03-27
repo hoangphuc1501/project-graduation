@@ -18,8 +18,8 @@ const CreateRole = (props) => {
     useEffect(() => {
         const fetchPermissions = async () => {
             try {
-                const response = await laravelAPI.get('/api/admin/permissions');
-                console.log('Permissions data:', response.data);
+                const response = await laravelAPI.get('/api/admin/permissionGetAll');
+                console.log('Permissions data:', response);
                 if (response.code === 'success') {
                     setPermissions(response.data);
                 }

@@ -12,7 +12,7 @@ const DetailAccount = (props) => {
             const fetchUserDetails = async () => {
                 try {
                     const response = await laravelAPI.get(`/api/admin/users/${userId}`);
-                    console.log("User Details:", response);
+                    // console.log("User Details:", response);
 
                     if (response.code === "success") {
                         setUser(response.user);

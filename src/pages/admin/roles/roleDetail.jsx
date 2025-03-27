@@ -47,7 +47,7 @@ const RoleDetail = (props) => {
                 </div>
                 <div className="mt-3">
                     <h5 className="font-[700]">Mô tả:</h5>
-                    <p>{description}</p>
+                    <p dangerouslySetInnerHTML={{ __html: description || "" }}></p>
                 </div>
                 <div className="mt-3">
                     <h5 className="font-[700]">Các quyền của vai trò:</h5>

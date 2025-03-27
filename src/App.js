@@ -26,9 +26,6 @@ import ProductList from "./pages/admin/products/productList";
 import ProducDetailAdmin from "./pages/admin/products/productDetail";
 import SearchProduct from "./pages/client/product/searchProduct";
 import Category from "./pages/admin/category/Category";
-import Khachhang from "./pages/admin/users/Khachhang";
-import NewsCategoryAdmin from "./pages/admin/news/newsCategoryadmin";
-import AdminNews from "./pages/admin/news/newsAdmin";
 import Detailnew from "./pages/client/news/detailnew";
 import ColorList from "./pages/admin/products/colorList";
 import SizeList from "./pages/admin/products/sizeList";
@@ -36,7 +33,6 @@ import Order from "./pages/client/cart/order";
 import OrderSuccessfully from "./pages/client/cart/orderSuccess";
 import OrderDetail from "./pages/client/order/orderDetail";
 import OrderList from "./pages/admin/orders/orderList";
-import TestVnpay from "./pages/client/order/testVnpay";
 import OrderDetailAdmin from "./pages/admin/orders/orderDetail";
 import ZaloPayButton from "./pages/client/cart/zaloPayTest";
 import PaymentSuccess from "./pages/client/cart/PaymentSuccess";
@@ -47,6 +43,23 @@ import PrivateRoute from "./middleware/PrivateRoute";
 import { UserProvider } from "./middleware/UserContext";
 import LoginLayout from "./layouts/loginLayout";
 import ListBrand from "./pages/admin/brand/listBrand";
+import CommentList from "./pages/admin/comments/commentList";
+import RatingList from "./pages/admin/comments/ratingList";
+import VoucherList from "./pages/admin/vouchers/voucherList";
+import VoucherListClient from "./pages/client/users/voucherList";
+import PaymentResult from "./pages/client/order/paymentResult";
+import ContactList from "./pages/admin/contacts/contactList";
+import NewsCategoryList from "./pages/admin/newsCategory/newsCategoryList";
+import NewsList from "./pages/admin/news/newsList";
+import TrashLayout from "./layouts/trashLayout";
+import TrashProductList from "./pages/admin/trash/trashProductList";
+import TrashProductCategoryList from "./pages/admin/trash/trashProductCategoryList";
+import TrashBrandList from "./pages/admin/trash/trashBrandList";
+import TrashColorList from "./pages/admin/trash/trashColorList";
+import TrashSizeList from "./pages/admin/trash/trashSizeList";
+import TrashVoucherList from "./pages/admin/trash/trashVoucherList";
+import TrashCategoryNewsList from "./pages/admin/trash/trashCategoryNewsList";
+import TrashNewsList from "./pages/admin/trash/trashNewsList";
 
 
 
@@ -68,6 +81,7 @@ function App() {
               <Route path="history" element={<ShoppingHistory />} />
               <Route path="changePass" element={<ChangePass />} />
               <Route path="discount" element={<Discount />} />
+              <Route path="vouchers" element={<VoucherListClient />} />
             </Route>
             <Route path="forgotPassword" element={<ForgotPassword />} />
             <Route path="confirmOtp" element={<ConfirmOtp />} />
@@ -83,7 +97,7 @@ function App() {
             <Route path="order" element={<Order />} />
             <Route path="orderSuccess" element={<OrderSuccessfully />} />
             <Route path="orderDetail/:orderId" element={<OrderDetail />} />
-            <Route path="orderpayment" element={<TestVnpay />} />
+            <Route path="payment-result" element={<PaymentResult />} />
             <Route path="newsDeatail" element={<Detailnew />} />
             <Route path="/paymentzalo" element={<ZaloPayButton amount={100000} />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
@@ -91,42 +105,38 @@ function App() {
 
 
           {/* Admin Layout */}
-          {/* <Route path="/admin" element={<AdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="product" element={<ProductList />} />
-          <Route path="product/:id" element={<ProducDetailAdmin />} />
-          <Route path="user" element={<Khachhang />} />
-          <Route path="account" element={<Account />} />
-          <Route path="category" element={<Category />} />
-          <Route path="color" element={<ColorList />} />
-          <Route path="size" element={<SizeList />} />
-          <Route path="brand" element={<BrandAdmin />} />
-          <Route path="newsCategory" element={<NewsCategoryAdmin />} />
-          <Route path="news" element={<AdminNews />} />
-          <Route path="orders" element={<OrderList />} />
-          <Route path="roles" element={<ListRoles />} />
-          <Route path="permissions" element={<ListPermission />} />
-          <Route path="orderDetail/:id" element={<OrderDetailAdmin />} />
-          
-        </Route> */}
           <Route path="loginAdmin" element={<LoginLayout />} />
           <Route path="/admin" element={<PrivateRoute />}>
             <Route path="" element={<AdminLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="product" element={<ProductList />} />
               <Route path="product/:id" element={<ProducDetailAdmin />} />
-              <Route path="user" element={<Khachhang />} />
               <Route path="account" element={<Account />} />
               <Route path="category" element={<Category />} />
               <Route path="color" element={<ColorList />} />
               <Route path="size" element={<SizeList />} />
               <Route path="brand" element={<ListBrand />} />
-              <Route path="newsCategory" element={<NewsCategoryAdmin />} />
-              <Route path="news" element={<AdminNews />} />
+              <Route path="comments" element={<CommentList />} />
+              <Route path="ratings" element={<RatingList />} />
+              <Route path="contacts" element={<ContactList />} />
               <Route path="orders" element={<OrderList />} />
+              <Route path="vouchers" element={<VoucherList />} />
               <Route path="roles" element={<ListRoles />} />
               <Route path="permissions" element={<ListPermission />} />
               <Route path="orderDetail/:id" element={<OrderDetailAdmin />} />
+              <Route path="newsCategory" element={<NewsCategoryList />} />
+              <Route path="news" element={<NewsList />} />
+            </Route>
+            {/* Layout cho Trash */}
+            <Route path="trashs" element={<TrashLayout />}>
+              <Route path="products" element={<TrashProductList />} />
+              <Route path="categoryProduct" element={<TrashProductCategoryList />} />
+              <Route path="brands" element={<TrashBrandList />} />
+              <Route path="colors" element={<TrashColorList />} />
+              <Route path="sizes" element={<TrashSizeList />} />
+              <Route path="vouchers" element={<TrashVoucherList />} />
+              <Route path="newsCategory" element={<TrashCategoryNewsList />} />
+              <Route path="news" element={<TrashNewsList />} />
             </Route>
           </Route>;
 

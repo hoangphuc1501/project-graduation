@@ -40,7 +40,7 @@ const ProfileLeft = () => {
                     </li>
                     <li>
                         <Link 
-                        to="discount"
+                        to="vouchers"
                         className={`flex items-center gap-[15px] text-[16px] py-[8px] px-[10px] font-[500] hover:text-main mb-[4px] hover:!bg-[#fee] rounded-[8px] ${location.pathname === "/profile/discount" ? "profile-active" : "text-[#686868] bg-transparent border-none" }`}>
                             <span className="text-[20px]"><CiDiscount1 /></span>
                             Ưu đãi của bạn

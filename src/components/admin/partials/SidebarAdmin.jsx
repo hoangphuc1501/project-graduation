@@ -1,9 +1,10 @@
 import { FaHouseUser, FaChevronDown } from "react-icons/fa";
-import { MdDashboardCustomize, MdInventory  } from "react-icons/md";
+import { MdDashboardCustomize } from "react-icons/md";
 import { FaRegTrashAlt, FaRegNewspaper,  FaUser } from "react-icons/fa";
 import { CiSettings, CiLogout, CiViewTable } from "react-icons/ci";
-import { LiaJediOrder } from "react-icons/lia";
+import { BiSolidDiscount } from "react-icons/bi";
 import { TbBrand4Chan } from "react-icons/tb";
+import { GiShoppingBag } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import "./sidebar.css";
 const SidebarAdmin = () => {
@@ -62,16 +63,13 @@ const SidebarAdmin = () => {
                             <FaChevronDown data-dui-accordion-icon />
                         </div>
                         <div id="customStylesAccordion2" class="overflow-hidden transition-all duration-500">
-                            <Link to="/admin/user" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
-                                Danh sách khách hàng
-                            </Link>
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/contacts" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Liên hệ
                             </Link>
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/comments" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Bình luận
                             </Link>
-                            <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
+                            <Link to="/admin/ratings" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-main px-[5px] flex items-center pl-[30px] hover:bg-[rgba(255,255,255,0.3)] rounded-l-[12px]">
                                 Đánh giá
                             </Link>
                         </div>
@@ -97,11 +95,11 @@ const SidebarAdmin = () => {
                         </div>
                     </div>
                 </div>
-                <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
-                    <span><MdInventory  /></span> Tồn kho
+                <Link to="/admin/vouchers" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
+                    <span><BiSolidDiscount /></span> Mã khuyến mãi
                 </Link>
                 <Link to="/admin/orders" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
-                    <span><LiaJediOrder  /></span> Đơn hàng
+                    <span><GiShoppingBag /></span> Đơn hàng
                 </Link>
                 <div class="group block w-full" aria-disabled="false" data-dui-accordion-container data-dui-accordion-mode="exclusive">
                     <div class=" rounded-[12px]">
@@ -128,7 +126,7 @@ const SidebarAdmin = () => {
                         </div>
                     </div>
                 </div>
-                <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
+                <Link to="/admin/trashs/categoryProduct" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
                     <span><FaRegTrashAlt /></span> Thùng rác
                 </Link>
                 <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px] mt-[150px]">

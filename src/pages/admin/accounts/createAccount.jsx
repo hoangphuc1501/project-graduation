@@ -26,7 +26,7 @@ const CreteAccount = (props) => {
                 const response = await laravelAPI.get("/api/admin/roles");
                 // console.log("Roles data:", response);
                 if (response.code === "success") {
-                    setRoles(response.data);
+                    setRoles(response.data.data);
                 }
             } catch (error) {
                 console.error("Lỗi khi lấy danh sách vai trò:", error);
@@ -49,7 +49,7 @@ const CreteAccount = (props) => {
         e.preventDefault();
         try {
             const response = await laravelAPI.post("/api/admin/users", formData);
-            console.log("Register response:", response);
+            // console.log("Register response:", response);
             if (response.code === "success") {
                 toast.success(response.message);
                 setFormData({

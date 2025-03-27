@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 const Order = () => {
     const [cartItems, setCartItems] = useState([]);
+    const [voucherCode, setVoucherCode] = useState("");
+    const [discountAmount, setDiscountAmount] = useState(0);
+    const [appliedVoucher, setAppliedVoucher] = useState(null);
+    
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -51,8 +55,18 @@ const Order = () => {
     };
 
     useEffect(() => {
-        fetchUserData();
-        fetchCart();
+        const fetchData = async () => {
+            try {
+                await fetchUserData();
+                await fetchCart();
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu:", error);
+            } finally {
+                setLoading(false); 
+            }
+        };
+        
+        fetchData();
     }, []);
     // Xử lý thay đổi trong form
     const handleChange = (e) => {
@@ -66,6 +80,38 @@ const Order = () => {
     const totalPrice = cartItems.reduce((total, item) => {
         return total + item.quantity * item.variant.specialPrice;
     }, 0);
+    // Tính tổng tiền sau giảm giá
+    const finalTotalPrice = totalPrice - discountAmount;
+
+    // hàm thêm voucher
+    const handleApplyVoucher = async () => {
+        if (!voucherCode) {
+            toast.error("Vui lòng nhập mã giảm giá!");
+            return;
+        }
+
+        try {
+            const response = await laravelAPI.post("/api/vouchers/validate", {
+                code: voucherCode,
+                totalPrice: totalPrice
+            });
+            console.log("check voucher", response)
+            if (response.code === "success") {
+                // setDiscountAmount(response.discountAmount);
+                setAppliedVoucher(response.voucher);
+                setDiscountAmount(response.voucher.discountAmount);
+                setVoucherCode("")
+                toast.success("Áp dụng mã giảm giá thành công!");
+            } else {
+                setAppliedVoucher(null);
+                toast.error(response.message);
+            }
+        } catch (error) {
+            setAppliedVoucher(null);
+            toast.error("Lỗi khi kiểm tra mã giảm giá!");
+            console.error(error);
+        }
+    };
 
     // hàm đặt hàng
     // const handleOrderSubmit = async (e) => {
@@ -92,28 +138,18 @@ const Order = () => {
     //     }
     // };
 
-      // Hàm gọi API `/simulate` khi thanh toán bằng ZaloPay
-    // const simulateZaloPayPayment = async (mTransId) => {
-    //     try {
-    //         const response = await laravelAPI.post("/api/zalopay/simulate", {
-    //             app_id: 2554, // Thay bằng APP ID của bạn
-    //             m_trans_id: mTransId,
-    //         });
-    //         console.log("check simulate", response)
-    //         if (response.return_code === 1) {
-    //             toast.success("Thanh toán ZaloPay thành công!");
-    //             navigate(`/payment-success?orderId=${response.order_id}`);
-    //         } else {
-    //             toast.error("Lỗi khi xác nhận thanh toán!");
-    //         }
-    //     } catch (error) {
-    //         console.error("Lỗi khi gửi simulate ZaloPay:", error);
-    //     }
-    // };
 
     const handleOrderSubmit = async (e) => {
         e.preventDefault();
-    
+        console.log("Dữ liệu gửi lên API:", {
+            fullName: formData.fullName,
+            phone: formData.phone,
+            email: formData.email,
+            note: formData.note,
+            shippingAddress: formData.shippingAddress,
+            paymentMethod: formData.paymentMethod,
+            code: appliedVoucher ? appliedVoucher.code : null, 
+        });
         try {
             const response = await laravelAPI.post("/api/order", {
                 fullName: formData.fullName,
@@ -122,11 +158,12 @@ const Order = () => {
                 note: formData.note,
                 shippingAddress: formData.shippingAddress,
                 paymentMethod: formData.paymentMethod,
+                code: appliedVoucher ? appliedVoucher.code : null
             });
-            console.log("check zalo",response)
+            console.log("check zalo", response)
             console.log("app_trans_id:", response.app_trans_id);
             if (response.code === "success") {
-                if (formData.paymentMethod === "Thanh toán bằng ZaloPay") {
+                if (formData.paymentMethod === "Thanh toán bằng ZaloPay" || formData.paymentMethod === "Thanh toán bằng VNPay") {
                     window.location.href = response.order_url; // Redirect đến trang thanh toán ZaloPay
                     // window.open(response.order_url, "_blank");
                 } else {
@@ -140,9 +177,18 @@ const Order = () => {
             console.error("Lỗi khi đặt hàng:", error);
         }
     };
-    
 
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-main"></div>
+                    <p className="mt-2 text-gray-500 text-lg">Đang tải dữ liệu...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -226,13 +272,13 @@ const Order = () => {
                                         <div className="flex items-center gap-[10px]">
                                             <input
                                                 type="radio"
-                                                id="momo"
+                                                id="vnpay"
                                                 name="paymentMethod"
-                                                value="Thanh toán bàng VnPay"
-                                                checked={formData.paymentMethod === "Thanh toán bàng VnPay"}
-                                                onChange={handleChange}
+                                                value="Thanh toán bằng VNPay"
+                                                checked={formData.paymentMethod === "Thanh toán bằng VNPay"}
+                                                onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
                                             />
-                                            <label htmlFor="momo" className="text-[16px] font-[400] text-[#000000]">Thanh toán bằng VnPay</label>
+                                            <label htmlFor="vnpay" className="text-[16px] font-[400] text-[#000000]">Thanh toán bằng VnPay</label>
                                         </div>
                                         <div className="flex items-center gap-[10px]">
                                             <input
@@ -242,7 +288,7 @@ const Order = () => {
                                                 value="Thanh toán bằng ZaloPay"
                                                 checked={formData.paymentMethod === "Thanh toán bằng ZaloPay"}
                                                 // onChange={handleChange}
-                                                onChange={(e) => setFormData({...formData, paymentMethod: e.target.value})}
+                                                onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
                                             />
                                             <label htmlFor="zalopay" className="text-[16px] font-[400] text-[#000000]">
                                                 Thanh toán bằng ZaloPay
@@ -282,24 +328,34 @@ const Order = () => {
                                         <span className="font-[400] text-[16px]">Tổng giá trị sản phẩm:</span>
                                         <span className="font-[700] text-[16px]">{totalPrice.toLocaleString()}<sup>đ</sup></span>
                                     </div>
+                                    <div
+                                        className="border !border-main h-[50px] rounded-[8px] mt-[16px] flex items-center overflow-hidden"
+                                    >
+                                        <input
+                                            type="text"
+                                            placeholder="Nhập mã giảm giá"
+                                            value={voucherCode}
+                                            onChange={(e) => setVoucherCode(e.target.value)}
+                                            className="text-[#000000] font-[500] text-[16px] px-[8px] flex-1" />
+                                        <button
+                                            onClick={handleApplyVoucher}
+                                            className="font-[500] text-[16px] text-[#ffffff] bg-main h-[50px] rounded-[8px] px-[10px]">
+                                            Áp dụng
+                                        </button>
+                                    </div>
                                     <h3 className="font-[700] text-[16px] text-[#000000] mt-[16px]">Giảm giá đơn hàng</h3>
-                                    <div className="flex items-center justify-between mt-[16px]">
-                                        <div className="flex items-center gap-[8px] text-[14px] text-[#999999]">
+                                    {appliedVoucher && (
+                                        <div className="flex items-center justify-between mt-4 text-[#000000]">
+                                            <div className="flex items-center gap-[8px] text-[14px] text-[#999999]">
                                             <span className=""><MdOutlineDiscount /></span>
-                                            <span>8def8e (giảm 20.000đ)</span>
+                                            <span>{appliedVoucher.code}</span>
                                         </div>
-                                        <span className="font-[400] text-[14px] text-[#000000]">- 20.000 <sup>đ</sup></span>
-                                    </div>
-                                    <div className="flex items-center justify-between mt-[10px]">
-                                        <div className="flex items-center gap-[8px] text-[14px] text-[#999999]">
-                                            <span className=""><MdOutlineDiscount /></span>
-                                            <span>8def8e (giảm 20.000đ)</span>
+                                            <span className="font-[700] text-[16px] text-red-500">- {appliedVoucher.discountAmount.toLocaleString()}<sup>đ</sup></span>
                                         </div>
-                                        <span className="font-[400] text-[14px] text-[#000000]">- 20.000 <sup>đ</sup></span>
-                                    </div>
+                                    )}
                                     <div className="flex items-center justify-between my-[25px]">
                                         <span className="text-[20px] font-[700] text-[#000000]">Tổng tiền:</span>
-                                        <span className="text-[20px] font-[700] text-[#000000]">{totalPrice.toLocaleString()} <sup>đ</sup></span>
+                                        <span className="text-[20px] font-[700] text-[#000000]">{finalTotalPrice.toLocaleString()} <sup>đ</sup></span>
                                     </div>
                                 </div>
                             </div>

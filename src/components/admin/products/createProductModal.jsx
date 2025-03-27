@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import "../css/style.css";
 import TextEditor from '../tinymce/tinymce';
@@ -8,20 +7,18 @@ import { toast } from "react-toastify";
 import uploadToCloudinary from '../../../utils/cloudinaryUpload';
 
 
-const CreateProductModal = () => {
-    const [show, setShow] = useState(false);
+const CreateProductModal = (props) => {
+    const {showCreateProductModal, setShowCreateProductModal, fetchProducts } = props;
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => setShowCreateProductModal(false);
     const [content1, setContent1] = useState('');
     const [content2, setContent2] = useState('');
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
     const [colors, setColors] = useState([]);
     const [sizes, setSizes] = useState([]);
-    const [selectedSizes, setSelectedSizes] = useState([]); // Lưu các kích thước đã chọn
-
-    const [sizeToAdd, setSizeToAdd] = useState(""); // Lưu giá trị đang chọn trong dropdown
+    const [selectedSizes, setSelectedSizes] = useState([]); 
+    const [sizeToAdd, setSizeToAdd] = useState(""); 
     const [product, setProduct] = useState({
         title: "",
         brandID: "",
@@ -202,8 +199,8 @@ const CreateProductModal = () => {
         // console.log("Dữ liệu gửi lên:", JSON.stringify(formData, null, 2));
         try {
             const response = await laravelAPI.post("/api/admin/products", formData);
-            console.log("check:", response);
-            toast.success("Tạo sản phẩm thành công!");
+            // console.log("check:", response);
+            toast.success(response.message);
             setProduct({
                 title: "",
                 brandID: "",
@@ -218,6 +215,7 @@ const CreateProductModal = () => {
             setContent1("");
             setContent2("");
             handleClose();
+            fetchProducts();
         } catch (error) {
             console.error("Lỗi khi gửi API:", error);
             toast.error("Tạo sản phẩm không thành công.");
@@ -227,12 +225,9 @@ const CreateProductModal = () => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Thêm mới sản phẩm
-            </Button>
 
             <Modal
-                show={show}
+                show={showCreateProductModal}
                 onHide={handleClose}
                 backdrop="static"
                 keyboard={false}
@@ -247,7 +242,7 @@ const CreateProductModal = () => {
                             <label className='text-[18px] text-[#000000] font-[700] pb-[8px]' >Tên sản phẩm</label>
                             <div className="border border-[#b3b3b3] px-[20px] py-[15px] rounded-[25px]">
                                 <input
-                                    value={product.title}
+                                    value={product?.title}
                                     onChange={(e) => handleProductChange("title", e.target.value)}
                                     type="text"
                                     name='title'
@@ -261,7 +256,7 @@ const CreateProductModal = () => {
                                     type="radio"
                                     name="feature"
                                     id="feature1"
-                                    checked={product.featured}
+                                    checked={product?.featured}
                                     onChange={() => handleProductChange("featured", true)}
                                 />
                                 <label htmlFor="feature1" className='text-[16px] text-[#000000] font-[500]'>Nổi bật</label>
@@ -271,7 +266,7 @@ const CreateProductModal = () => {
                                     type="radio"
                                     name="feature"
                                     id="feature2"
-                                    checked={!product.featured}
+                                    checked={!product?.featured}
                                     onChange={() => handleProductChange("featured", false)}
                                 />
                                 <label htmlFor="feature2" className='text-[16px] text-[#000000] font-[500]'>Không nổi bật</label>
@@ -280,16 +275,16 @@ const CreateProductModal = () => {
                         <div className='px-[10px] mb-[20px] flex flex-col'>
                             <label className='text-[18px] text-[#000000] font-[700] pb-[8px]'>Danh mục sản phẩm</label>
                             <select
-                                value={product.categoriesID || ""}
+                                value={product?.categoriesID || ""}
                                 onChange={(e) => handleProductChange("categoriesID", e.target.value)}
                                 name="categoriesID"
                                 id=""
                                 className='w-full h-[50px] border outline-none px-[20px] rounded-[25px] text-[#000000] text-[16px] font-[500]'>
                                 <option value="">Chọn danh mục</option>
                                 {categories && categories.length > 0 ? (
-                                    categories.map((category) => (
-                                        <option key={category.id} value={category.id}>
-                                            {category.name}
+                                    categories?.map((category) => (
+                                        <option key={category?.id} value={category?.id}>
+                                            {category?.name}
                                         </option>
                                     ))
                                 ) : (
@@ -300,16 +295,16 @@ const CreateProductModal = () => {
                         <div className='px-[10px] mb-[20px] flex flex-col'>
                             <label className='text-[18px] text-[#000000] font-[700] pb-[8px]'>Thương hiệu</label>
                             <select
-                                value={product.brandID || ""}
+                                value={product?.brandID || ""}
                                 onChange={(e) => handleProductChange("brandID", e.target.value)}
                                 name="brandID"
                                 id=""
                                 className='w-full h-[50px] border outline-none px-[20px] rounded-[25px] text-[#000000] text-[16px] font-[500]'>
                                 <option value="">Chọn Thương hiệu</option>
                                 {brands && brands.length > 0 ? (
-                                    brands.map((brand) => (
-                                        <option key={brand.id} value={brand.id}>
-                                            {brand.name}
+                                    brands?.map((brand) => (
+                                        <option key={brand?.id} value={brand?.id}>
+                                            {brand?.name}
                                         </option>
                                     ))
                                 ) : (
@@ -322,7 +317,7 @@ const CreateProductModal = () => {
                             <label className='text-[18px] text-[#000000] font-[700] pb-[8px]' >Mã sản phẩm</label>
                             <div className="border border-[#b3b3b3] px-[20px] py-[15px] rounded-[25px]">
                                 <input
-                                    value={product.codeProduct}
+                                    value={product?.codeProduct}
                                     onChange={(e) => handleProductChange("codeProduct", e.target.value)}
                                     type="text"
                                     name='codeProduct'
@@ -334,7 +329,7 @@ const CreateProductModal = () => {
                             <label className='text-[18px] text-[#000000] font-[700] pb-[8px]' >Vị trí</label>
                             <div className="border border-[#b3b3b3] px-[20px] py-[15px] rounded-[25px]">
                                 <input
-                                    value={product.position}
+                                    value={product?.position}
                                     onChange={(e) => handleProductChange("position", e.target.value)}
                                     type="number"
                                     name='position'
@@ -352,8 +347,8 @@ const CreateProductModal = () => {
                                     value=""
                                     onChange={(e) => addVariant(e.target.value)}>
                                     <option value="">Chọn màu sắc</option>
-                                    {colors.map(color => (
-                                        <option key={color.id} value={color.id}>{color.name}</option>
+                                    {colors?.map(color => (
+                                        <option key={color?.id} value={color?.id}>{color?.name}</option>
                                     ))}
                                 </select>
                             </div>
@@ -361,7 +356,7 @@ const CreateProductModal = () => {
                             {/*Hiển Thị Biến Thể Theo Màu */}
                             {Object.keys(variants).map((color) => (
                                 <div key={color} className="mt-[20px] shadow-[0_0_5px_#dddddd] p-[20px] rounded-[8px]">
-                                    <h3 className='text-[16px] font-[700] text-[#000000] pb-[10px]'>Màu: {colors.find(c => c.id === parseInt(color))?.name}</h3>
+                                    <h3 className='text-[16px] font-[700] text-[#000000] pb-[10px]'>Màu: {colors?.find(c => c.id === parseInt(color))?.name}</h3>
 
                                     {/*  Giá - Giảm Giá - Giá KM */}
                                     <div className='flex items-center justify-between my-[20px]'>
@@ -426,8 +421,8 @@ const CreateProductModal = () => {
                                             className="border !border-[#000000] px-[10px] py-[8px] rounded-[8px] text-[16px] text-[#000000] font-[600] outline-none"
                                         >
                                             <option value="">Chọn kích thước</option>
-                                            {sizes.map((size) => (
-                                                <option key={size.id} value={size.id}>{size.name}</option>
+                                            {sizes?.map((size) => (
+                                                <option key={size?.id} value={size?.id}>{size?.name}</option>
                                             ))}
                                         </select>
 
@@ -438,7 +433,7 @@ const CreateProductModal = () => {
                                         >Thêm</button>
                                     </div>
                                     <div className="mt-[20px]">
-                                        {selectedSizes.map((size, index) => (
+                                        {selectedSizes?.map((size, index) => (
                                             <div key={index} className="flex items-center gap-[40px] border-b pb-[10px] mb-[10px]">
                                                 <span className='font-[700] text-[16px] text-[#000000]'>Kích thước: {sizes.find(s => s.id === parseInt(size))?.name}</span>
                                                 <div className='flex items-center gap-[10px] '>
@@ -484,7 +479,7 @@ const CreateProductModal = () => {
                                     type="radio"
                                     name="status"
                                     id="statusProduct"
-                                    checked={product.status}
+                                    checked={product?.status}
                                     onChange={() => handleProductChange("status", true)}
                                 />
                                 <label htmlFor="statusProduct" className='text-[16px] text-[#000000] font-[500]'>Hoạt động</label>
@@ -494,7 +489,7 @@ const CreateProductModal = () => {
                                     type="radio"
                                     name="status"
                                     id="statusProduct1"
-                                    checked={!product.status} onChange={() => handleProductChange("status", false)}
+                                    checked={!product?.status} onChange={() => handleProductChange("status", false)}
                                 />
                                 <label htmlFor="statusProduct1" className='text-[16px] text-[#000000] font-[500]'>Dừng hoạt động</label>
                             </div>

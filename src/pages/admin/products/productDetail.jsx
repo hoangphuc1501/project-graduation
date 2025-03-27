@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { ProductDetailAdminApi, SoftDeletelVariantApi } from "../../../services/admin/productAdminApiService";
-import Swal from "sweetalert2";
-import CreateVariantModal from "../../../components/admin/products/createVariantModal";
-import EditVariantModal from "../../../components/admin/products/editVariantModal";
+// import Swal from "sweetalert2";
+// import CreateVariantModal from "../../../components/admin/products/createVariantModal";
+// import EditVariantModal from "../../../components/admin/products/editVariantModal";
 
 const ProducDetailAdmin = () => {
 
-    const [showVariantModal, setShowVariantModal] = useState(false);
-    const [showEditVariantModal, setShowEditVariantModal] = useState(false);
+    // const [showVariantModal, setShowVariantModal] = useState(false);
+    // const [showEditVariantModal, setShowEditVariantModal] = useState(false);
     const { id } = useParams();
     const [product, setProduct] = useState(null);
-    const [editingVariant, setEditingVariant] = useState(null);
+    // const [editingVariant, setEditingVariant] = useState(null);
     useEffect(() => {
         fetchProductDetail();
     }, [id]);
@@ -25,51 +25,51 @@ const ProducDetailAdmin = () => {
             setProduct(response.product);
         };
     }
-    const handleEditVariant = (variant) => {
-        console.log("Variant được chọn để chỉnh sửa:", variant);
-        setEditingVariant(variant);
-        setShowEditVariantModal(true);
-    };
-    // xóa mềm 
-    const handleDeleteProductVariant = async (id) => {
-        Swal.fire({
-            title: "Bạn có chắn chắn muốn xóa không?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Đồng ý",
-            cancelButtonText: "Hủy"
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = await SoftDeletelVariantApi(id);
-                    console.log(response)
-                    if (response.code === "success") {
-                        Swal.fire({
-                            title: "Xóa thành công.",
-                            icon: "success"
-                        });
+    // const handleEditVariant = (variant) => {
+    //     console.log("Variant được chọn để chỉnh sửa:", variant);
+    //     setEditingVariant(variant);
+    //     setShowEditVariantModal(true);
+    // };
+    // // xóa mềm 
+    // const handleDeleteProductVariant = async (id) => {
+    //     Swal.fire({
+    //         title: "Bạn có chắn chắn muốn xóa không?",
+    //         icon: "warning",
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Đồng ý",
+    //         cancelButtonText: "Hủy"
+    //     }).then(async (result) => {
+    //         if (result.isConfirmed) {
+    //             try {
+    //                 const response = await SoftDeletelVariantApi(id);
+    //                 console.log(response)
+    //                 if (response.code === "success") {
+    //                     Swal.fire({
+    //                         title: "Xóa thành công.",
+    //                         icon: "success"
+    //                     });
 
-                        fetchProductDetail();
-                    } else {
-                        Swal.fire({
-                            title: "Lỗi!",
-                            text: "Có lỗi xảy ra khi xóa sản phẩm.",
-                            icon: "error"
-                        });
-                    }
-                } catch (error) {
-                    console.error("Lỗi khi xóa sản phẩm:", error);
-                    Swal.fire({
-                        title: "Lỗi hệ thống!",
-                        text: "Không thể xóa biến thể sản phẩm .",
-                        icon: "error"
-                    });
-                }
-            }
-        });
-    };
+    //                     fetchProductDetail();
+    //                 } else {
+    //                     Swal.fire({
+    //                         title: "Lỗi!",
+    //                         text: "Có lỗi xảy ra khi xóa sản phẩm.",
+    //                         icon: "error"
+    //                     });
+    //                 }
+    //             } catch (error) {
+    //                 console.error("Lỗi khi xóa sản phẩm:", error);
+    //                 Swal.fire({
+    //                     title: "Lỗi hệ thống!",
+    //                     text: "Không thể xóa biến thể sản phẩm .",
+    //                     icon: "error"
+    //                 });
+    //             }
+    //         }
+    //     });
+    // };
 
 
     if (!product) {
@@ -87,15 +87,16 @@ const ProducDetailAdmin = () => {
                     <h3>{product.brandID}</h3>
                     <h3>Nổi bật:{product.featured ? "Có" : "Không"}</h3>
                     <h3>{product.position}</h3>
-                    <h3>Trạng thái: {product.status ? "Hiện" : "Ẩn"}</h3>
+                    <h3>Trạng thái: {product.status ? "Hoạt động" : "Dừng hoạt động"}</h3>
                     <div>{product.codeProduct}</div>
                     <h3>{product.slug}</h3>
-                    <h3>{product.description}</h3>
-                    <h3>{product.descriptionPromotion}</h3>
+                    <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: product.description }} />
+                    <div className="prose max-w-none mt-6" dangerouslySetInnerHTML={{ __html: product.descriptionPromotion }} />
+
                 </div>
                 <div className="">
                     <button
-                        onClick={() => setShowVariantModal(true)}
+                        // onClick={() => setShowVariantModal(true)}
                         className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main my-[20px] flex items-center gap-[20px]">
                         <span><FaCirclePlus /></span>
                         Thêm mới
@@ -113,7 +114,7 @@ const ProducDetailAdmin = () => {
                                     <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">% giảm giá</td>
                                     <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Giá khuyến mãi</td>
                                     <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Trạng thái</td>
-                                    <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Hành động</td>
+                                    {/* <td className="font-[700] text-[16px] text-[#000000] py-[10px] text-center">Hành động</td> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -166,7 +167,7 @@ const ProducDetailAdmin = () => {
                                                         onChange={() => { }}
                                                     />
                                                 </td>
-                                                <td className=" py-[10px] font-[600] text-[16px] text-[#000000] text-center">
+                                                {/* <td className=" py-[10px] font-[600] text-[16px] text-[#000000] text-center">
                                                     <div className="flex items-center justify-center gap-[6px]">
                                                         <button
                                                             onClick={() => handleEditVariant(variant)}
@@ -178,7 +179,7 @@ const ProducDetailAdmin = () => {
                                                             className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[12px] py-[8px] px-[12px]">
                                                             Xóa</button>
                                                     </div>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))
                                     )
@@ -189,7 +190,7 @@ const ProducDetailAdmin = () => {
                                 )}
                             </tbody>
                         </table>
-                        <CreateVariantModal
+                        {/* <CreateVariantModal
                             showCreateVariant={showVariantModal}
                             setShowCreateVariant={setShowVariantModal}
                         />
@@ -197,7 +198,7 @@ const ProducDetailAdmin = () => {
                             showEditVariant={showEditVariantModal}
                             setShowEditVariant={setShowEditVariantModal}
                             variantData={editingVariant}  // Truyền dữ liệu vào modal
-                        />
+                        /> */}
                     </div>
                 </div>
             </div>
