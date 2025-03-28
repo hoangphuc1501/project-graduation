@@ -27,7 +27,7 @@ const HomePage = () => {
             
             <SaleOff/>
             <Brand/>
-            <SmashPro/>
+            {/* <SmashPro/> */}
             <ServiceSection/>
             <NewsSection/>
             

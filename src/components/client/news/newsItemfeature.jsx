@@ -20,8 +20,9 @@ const NewsItemFeature = ({ news }) => {
                         </div>
                     </div>
                     <Link to={`/news/${news.slug}`} className="font-[700] text-[20px] text-main mb-[12px] leading-[1.5] line-clamp-2 hover:text-[#000000]">  {news.title}</Link>
-                    <p className="font-[300] text-[14px] text-[#000000] mb-[16px] leading-[1.5] line-clamp-5 ">
-                    {news.content}
+                    <p className="font-[300] text-[14px] text-[#000000] mb-[16px] leading-[1.5] line-clamp-5 "
+                    dangerouslySetInnerHTML={{ __html: news?.content || "" }}
+                    >
                     </p>
                 </div>
                 <Link to="*" className="font-[400] text-[16px] text-[#000000] flex items-center gap-[8px] hover:text-main">

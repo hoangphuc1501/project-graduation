@@ -93,7 +93,7 @@ const StatisticsList = () => {
                     <div className="flex justify-between items-center shadow-[0_0_6px_#dddddd] py-[20px] px-[30px] rounded-[10px]">
                         <div className="flex flex-col items-center gap-[8px] justify-center ">
                             <span className="text-[16px] font-[700] text-[#999999]">Tổng bài viết</span>
-                            <span className="text-[20px] font-[700] text-[#000000]">20.000.00</span>
+                            <span className="text-[20px] font-[700] text-[#000000]">{data.total_posts}</span>
                         </div>
                         <div className="text-[20px] font-[700] text-[#ffffff] p-[10px] rounded-[100%] bg-[#0033FF]">
                         <IoNewspaperSharp />

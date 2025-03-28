@@ -113,11 +113,15 @@ const VoucherListClient = () => {
                                     </div>
                                     <div className="my-[20px]">
                                         <div className="relative w-full h-[30px] bg-gray-200 rounded-full overflow-hidden">
-                                            <div
-                                                className="absolute top-0 left-0 h-full bg-gradient-to-r from-red-500 to-orange-400 text-[12px] text-center leading-[30px] font-[600]"
-                                                style={{
-                                                    width: `${(voucher.usageLimit - voucher.numberOfUses) / voucher.usageLimit * 100}%`
-                                                }}>
+                                            {voucher.usageLimit - voucher.numberOfUses > 0 && (
+                                                <div
+                                                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-red-500 to-orange-400"
+                                                    style={{
+                                                        width: `${((voucher.usageLimit - voucher.numberOfUses) / voucher.usageLimit) * 100}%`,
+                                                    }}
+                                                />
+                                            )}
+                                            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center text-[12px] font-[600] text-[#000000]">
                                                 Còn lại {voucher.usageLimit - voucher.numberOfUses}
                                             </div>
                                         </div>
@@ -141,7 +145,7 @@ const VoucherListClient = () => {
                             marginPagesDisplayed={2}
                             pageRangeDisplayed={3}
                             onPageChange={handlePageClick}
-                            forcePage={currentPage} 
+                            forcePage={currentPage}
                             containerClassName="pagination"
                             pageClassName="page-item"
                             pageLinkClassName="page-link"

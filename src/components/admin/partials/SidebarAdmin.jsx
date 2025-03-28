@@ -5,9 +5,22 @@ import { CiSettings, CiLogout, CiViewTable } from "react-icons/ci";
 import { BiSolidDiscount } from "react-icons/bi";
 import { TbBrand4Chan } from "react-icons/tb";
 import { GiShoppingBag } from "react-icons/gi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./sidebar.css";
+import { toast } from "react-toastify";
+// import { useContext } from "react";
+// import { UserContext } from "../../../middleware/UserContext";
 const SidebarAdmin = () => {
+// const { user, setUser, setToken, fetchAccount  } = useContext(UserContext);
+const navigate = useNavigate();
+    const handleLogout = () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            // setUser(null);
+            navigate("/loginAdmin");
+            toast.success("Đăng xuất thành công");
+        };
+
     return (
         <div className=" w-full h-full py-[20px] pl-[20px] sidebar">
             <h2 className="flex items-center py-[15px] gap-[30px] text-[20px] text-[#fff] font-[500] pt-[20px] pb-[60px]"><span><FaHouseUser /></span> Trang quản trị</h2>
@@ -129,7 +142,9 @@ const SidebarAdmin = () => {
                 <Link to="/admin/trashs/categoryProduct" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px]">
                     <span><FaRegTrashAlt /></span> Thùng rác
                 </Link>
-                <Link to="" className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px] mt-[150px]">
+                <Link 
+                onClick={handleLogout}
+                className="text-[16px] text-[#fff] font-[500] py-[15px] hover:text-[#fff] hover:bg-[rgba(255,255,255,0.3)] px-[5px] flex items-center gap-[20px] rounded-l-[12px] mt-[150px]">
                     <span><CiLogout /></span> Đăng xuất
                 </Link>
             </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI } from "../../../utils/axiosCustom";
 
 const NewsCategory = () => {
 
@@ -12,7 +12,7 @@ const NewsCategory = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await nodeAPI.get("/news/category");
+            const response = await laravelAPI.get("/api/newsCategory");
             setCategories(response.categories);
         } catch (error) {
             console.error("Lỗi khi lấy danh mục tin tức:", error);

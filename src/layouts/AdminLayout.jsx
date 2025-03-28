@@ -1,10 +1,20 @@
 
+import { useEffect } from "react";
 import HeaderAdmin from "../components/admin/partials/HeaderAdmin";
 import SidebarAdmin from "../components/admin/partials/SidebarAdmin";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const AdminLayout = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/loginAdmin');
+        }
+    }, [navigate]);
+
     return (
         <>
             <div className="flex min-h-[1000px]">

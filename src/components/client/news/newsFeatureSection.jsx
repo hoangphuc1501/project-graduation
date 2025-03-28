@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import NewsItemFeature from './newsItemfeature';
 import { useEffect, useState } from 'react';
-import { nodeAPI } from '../../../utils/axiosCustom';
+import { laravelAPI } from '../../../utils/axiosCustom';
 
 
 const NewsFeatureSection = () => {
@@ -19,7 +19,7 @@ const NewsFeatureSection = () => {
 
     const fetchFeaturedNews = async () => {
         try {
-            const response = await nodeAPI.get("/news/newsFeature");
+            const response = await laravelAPI.get("/api/newsFeature");
             // console.log(response)
             setNewsList(response.newsList);
         } catch (error) {

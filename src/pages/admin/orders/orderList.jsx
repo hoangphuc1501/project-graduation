@@ -58,6 +58,14 @@ const OrderList = () => {
             completed: [],
             canceled: []
         };
+         // Lấy đơn hàng tương ứng
+    const currentOrder = orders.find(order => order.id === orderId);
+
+    // Nếu đang cố hủy đơn và là thanh toán ZaloPay thì không cho phép
+    if (newStatus === "canceled" && currentOrder?.paymentMethod === "Thanh toán bằng ZaloPay") {
+        toast.error("Không thể hủy đơn hàng đã thanh toán qua ZaloPay!");
+        return;
+    }
 
         // Kiểm tra nếu trạng thái mới không hợp lệ
         if (!validStatusFlow[currentStatus].includes(newStatus)) {

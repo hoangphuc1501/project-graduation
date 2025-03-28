@@ -34,7 +34,6 @@ import OrderSuccessfully from "./pages/client/cart/orderSuccess";
 import OrderDetail from "./pages/client/order/orderDetail";
 import OrderList from "./pages/admin/orders/orderList";
 import OrderDetailAdmin from "./pages/admin/orders/orderDetail";
-import ZaloPayButton from "./pages/client/cart/zaloPayTest";
 import PaymentSuccess from "./pages/client/cart/PaymentSuccess";
 import ListRoles from "./pages/admin/roles/ListRole";
 import ListPermission from "./pages/admin/permissions/ListPermission";
@@ -47,7 +46,6 @@ import CommentList from "./pages/admin/comments/commentList";
 import RatingList from "./pages/admin/comments/ratingList";
 import VoucherList from "./pages/admin/vouchers/voucherList";
 import VoucherListClient from "./pages/client/users/voucherList";
-import PaymentResult from "./pages/client/order/paymentResult";
 import ContactList from "./pages/admin/contacts/contactList";
 import NewsCategoryList from "./pages/admin/newsCategory/newsCategoryList";
 import NewsList from "./pages/admin/news/newsList";
@@ -97,9 +95,7 @@ function App() {
             <Route path="order" element={<Order />} />
             <Route path="orderSuccess" element={<OrderSuccessfully />} />
             <Route path="orderDetail/:orderId" element={<OrderDetail />} />
-            <Route path="payment-result" element={<PaymentResult />} />
             <Route path="newsDeatail" element={<Detailnew />} />
-            <Route path="/paymentzalo" element={<ZaloPayButton amount={100000} />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
           </Route>
 

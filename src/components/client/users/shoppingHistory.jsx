@@ -177,8 +177,8 @@ const ShoppingHistory = () => {
                                             </div>
                                         </div>
                                         <div className="flex items-center justify-between mt-[15px]">
-                                            <span className="text-[14px] text-[#AAAAAA] font-[400]">Thanh toán online và đơn hàng đang vận chuyển sẽ không hủy được</span>
-                                            {(order?.status === "pending" || order?.status === "confirmed") && (
+                                            <span className="text-[14px] text-[#D32F2F] font-[400]">Thanh toán online và đơn hàng đang vận chuyển sẽ không hủy được</span>
+                                            {(order?.status === "pending" || order?.status === "confirmed") && order?.paymentMethod !== "Thanh toán bằng ZaloPay" && (
                                                 <button
                                                     onClick={() => handleCancelOrder(order?.id)}
                                                     className="text-[14px] text-main font-[400] py-[4px] px-[20px] border !border-main rounded-[8px]"

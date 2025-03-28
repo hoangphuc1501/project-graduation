@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import NewsCategory from "./newsCategory";
 import NewsItem from "./newsItem";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI } from "../../../utils/axiosCustom";
 
 const ListNews = () => {
 
@@ -14,7 +14,7 @@ const ListNews = () => {
 
     const fetchNews = async () => {
         try {
-            const response = await nodeAPI.get("/news");
+            const response = await laravelAPI.get("/api/news");
                 // console.log("API Response:", response);  
                 setNewsList(response.newsList || []);
         } catch (error) {

@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import { useEffect, useState } from "react";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI, nodeAPI } from "../../../utils/axiosCustom";
 
 const NewsSection = () => {
     const [newsList, setNewsList] = useState([]);
@@ -17,7 +17,7 @@ const NewsSection = () => {
 
     const fetchHomedNews = async () => {
         try {
-            const response = await nodeAPI.get("/news/newsHome");
+            const response = await laravelAPI.get("/api/newsHomePage");
             // console.log(response)
             setNewsList(response.newsList);
         } catch (error) {
