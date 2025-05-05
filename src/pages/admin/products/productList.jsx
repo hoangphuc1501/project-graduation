@@ -169,8 +169,8 @@ const ProductList = () => {
     const handleEditClick = async (product) => {
         try {
             const response = await laravelAPI.get(`/api/admin/products/${product.id}`);
-            // console.log("Variant được chọn để chỉnh sửa:", response);
-            if (response.code === "success") {
+            console.log("sản phẩm được chọn để chỉnh sửa:", response);
+            if (response) {
                 setSelectedProduct(response.product);
                 setShowEditModal(true);
             } else {
@@ -447,11 +447,16 @@ const ProductList = () => {
                                                         </button>
                                                         {canEdit && (
                                                             <button
-                                                                onClick={() => handleEditClick(product?.id)}
+                                                                onClick={() => handleEditClick(product)}
                                                                 className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
                                                                 Sửa
                                                             </button>
                                                         )}
+                                                         {/* <button
+                                                                onClick={() => handleEditClick(product?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                                Sửa
+                                                            </button> */}
                                                         {canDelete && (
                                                             <button
                                                                 onClick={() => handleDeleteProduct(product?.id)}

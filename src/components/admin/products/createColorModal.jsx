@@ -24,6 +24,9 @@ const CreateModalColor = (props) => {
             toast.success(response.message);
             refreshColor(); 
             handleClose();
+            setName("");
+            setPosition("");
+            setStatus("");
         } catch (error) {
             console.error("Lỗi khi thêm màu sắc:", error);
             toast.error(error.response?.message || "Có lỗi xảy ra!");

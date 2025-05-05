@@ -9,6 +9,7 @@ const AccordionProduct = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             const response = await categoryList()
+            console.log("list cate",response)
             setCategories(response.categories);
         };
 
@@ -22,17 +23,13 @@ const AccordionProduct = () => {
                 {categories.map((category) => (
                     <Accordion.Item eventKey={category.id} key={category.id}>
                         <Accordion.Header>{category.name}</Accordion.Header>
-                        {category.subCategories?.map((subCategory) => (
-                            <Accordion.Body >
-                                {/* {subCategory.name} */}
-                                <Link
-                                    to={`/products/category/${subCategory.slug}`}
-                                    // className="text-[##666] text-[16px] font-[400] hover:text-main block py-[10px] capitalize hover:text-main py-[10px]"
-                                >
-                                    {subCategory.name}
-                                </Link>
-                            </Accordion.Body>
-                        ))}
+                        {category.children?.map((subCategory) => (
+    <Accordion.Body key={subCategory.id}>
+        <Link to={`/products/category/${subCategory.slug}`}>
+            {subCategory.name}
+        </Link>
+    </Accordion.Body>
+))}
                     </Accordion.Item>
                 ))}
             </Accordion>

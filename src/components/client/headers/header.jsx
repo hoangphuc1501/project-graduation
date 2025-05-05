@@ -150,7 +150,8 @@ const Header = (props) => {
                         </div>
                         <div className="relative group">
                             <Link
-                                onClick={() => setShowModalCart(true)}
+                                // onClick={() => setShowModalCart(true)}
+                                to="/cart"
                                 className="flex flex-col justify-center items-center gap-y-[4px] hover:text-main ">
                                 <span className="border border-[#dddddd] py-[4px] px-[8px] text-main  rounded-[50%] text-[18px]">
                                     <FaCartPlus />

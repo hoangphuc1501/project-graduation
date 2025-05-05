@@ -77,7 +77,7 @@ const Product = () => {
     return (
         <>
             <Breadcrumb />
-            <div className="py-[100px]">
+            <div className="py-[60px]">
                 <div className="container mx-auto px-[16px]">
                     {loading ? (
                         <div className="flex justify-center items-center h-[300px]">
@@ -86,7 +86,10 @@ const Product = () => {
                     ) : (
                         <div className="flex justify-center gap-[20px]">
                             <div className="w-[calc(25%-20px)]">
-                                <div className="border rounded-[12px] overflow-hidden">
+                                <div className="border">
+                                    <AccordionProduct />
+                                </div>
+                                <div className="border rounded-[12px] overflow-hidden  mt-[40px]">
                                     {/* <h2 className="text-[20px] font-[500] text-[#333333] pb-[12px] uppercase text-center border py-[10px] rounded-t-[4px]">bộ lọc</h2> */}
                                     {/* <FilterProduct onFilterChange={handleFilterChange} /> */}
                                     <FilterProduct
@@ -98,9 +101,6 @@ const Product = () => {
                                         }}
                                     />
 
-                                </div>
-                                <div className="border mt-[40px]">
-                                    <AccordionProduct />
                                 </div>
                             </div>
                             <div className="w-[75%] ">
