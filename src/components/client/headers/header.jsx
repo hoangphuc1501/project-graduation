@@ -20,9 +20,8 @@ const Header = (props) => {
     const [showModalCart, setShowModalCart] = useState(false);
     const [showModalContactForm, setShowModalContactForm] = useState(false);
     const [showModalWishList, setShowModalWishList] = useState(false);
-    const { user, setUser, setToken, fetchAccount  } = useContext(UserContext);
+    const { user, setUser, setToken, fetchAccount } = useContext(UserContext);
     const navigate = useNavigate();
-
 
     // hàm đăng xuất
     // const handleLogout = () => {
@@ -53,7 +52,7 @@ const Header = (props) => {
     //     navigate("/");
     //     toast.success("Đăng xuất thành công");
     // };
-    
+
     return (
         <header className="z-[999]">
             <div className="container mx-auto px-[16px]">
@@ -97,7 +96,7 @@ const Header = (props) => {
                                 </span>
                             </div>
                             <ul className="absolute w-[180px] bg-white text-black rounded-[10px] top-[55    px] left-[-50px] hidden group-hover:block shadow-[0_0_5px_rgba(35,31,32,0.5)] z-[999]">
-                                {!user  ? (
+                                {!user ? (
                                     <>
                                         <li>
                                             <Link

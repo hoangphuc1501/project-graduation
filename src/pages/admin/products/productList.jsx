@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 import { FaCirclePlus } from "react-icons/fa6";
+import { usePermission } from "../../../hooks/usePermission";
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -30,6 +31,10 @@ const ProductList = () => {
         total: 0,
         last_page: 1
     });
+    const canCreate = usePermission("create_product");
+    const canEdit = usePermission("edit_product");
+    const canDelete = usePermission("softDelete_product");
+    const canView = usePermission("view_product");
 
     // danh sách danh mục
     const fetchCategories = async () => {
@@ -235,6 +240,10 @@ const ProductList = () => {
         }
     };
 
+    if (!canView) {
+        return <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">Bạn không có quyền truy cập trang này.</p>;
+    }
+
     return (
         <div className="py-[20px]">
             <h2 className="text-[28px] text-[#000000] font-[700] text-center py-[40px]">Quản lý sản phẩm</h2>
@@ -319,15 +328,14 @@ const ProductList = () => {
                 <div className="card-header">
                     <div className="flex items-center justify-between py-[10px]">
                         <h3 className="text-[20px] text-[#000000] font-[700] ">Danh sách sản phẩm</h3>
-                        <button
-                            onClick={() => setShowCreateModal(true)}
-                            className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px]"
-                        >
-                            <span>
-                                <FaCirclePlus />
-                            </span>
-                            Thêm mới
-                        </button>
+                        {canCreate && (
+                            <button
+                                onClick={() => setShowCreateModal(true)}
+                                className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]">
+                                <span><FaCirclePlus /></span>
+                                Thêm mới
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div className="card-body">
@@ -371,37 +379,58 @@ const ProductList = () => {
                                                 </td>
                                                 <td className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center w-[25%]"> {product?.title} </td>
                                                 <td className="!py-[20px] text-center">
-                                                    <input
-                                                        type="number"
-                                                        name="position"
-                                                        value={product?.position}
-                                                        min={1}
-                                                        onChange={(e) => handlePositionChange(product?.id, e.target.value)}
-                                                        className="w-[80px] border rounded-[12px] py-[4px]  text-[16px] font-[400] text-center text-[#000000]" />
+                                                    {canEdit ? (
+                                                        <input
+                                                            type="number"
+                                                            name="position"
+                                                            value={product?.position}
+                                                            min={1}
+                                                            onChange={(e) => handlePositionChange(product?.id, e.target.value)}
+                                                            className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
+                                                        />
+                                                    ) : (
+                                                        <span className="font-[600] text-[16px] text-[#000000]">{product?.position}</span>
+                                                    )}
                                                 </td>
                                                 <td className="text-center !py-[20px]">
-                                                    <label class="toggle-switch">
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={product?.status === 1}
-                                                            onChange={() => handleToggleStatus(product?.id, product?.status)}
-                                                        />
-                                                        <div class="toggle-switch-background">
-                                                            <div class="toggle-switch-handle"></div>
-                                                        </div>
-                                                    </label>
+                                                    {canEdit ? (
+                                                        <label className="toggle-switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={product?.status === 1}
+                                                                onChange={() => handleToggleStatus(product?.id, product?.status)}
+                                                            />
+                                                            <div className="toggle-switch-background">
+                                                                <div className="toggle-switch-handle"></div>
+                                                            </div>
+                                                        </label>
+                                                    ) : (
+                                                        <span
+                                                            className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${product?.status === 1 ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                                                            {product?.status === 1 ? "Đang hoạt động" : "Không hoạt động"}
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td className=" text-center !py-[20px]">
-                                                    <label class="toggle-switch">
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={product.featured === 1}
-                                                            onChange={() => handleToggleFeature(product?.id, product?.featured)}
-                                                        />
-                                                        <div class="toggle-switch-background">
-                                                            <div class="toggle-switch-handle"></div>
-                                                        </div>
-                                                    </label>
+                                                    {canEdit ? (
+                                                        <label className="toggle-switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={product?.featured === 1}
+                                                                onChange={() => handleToggleFeature(product?.id, product?.featured)}
+                                                            />
+                                                            <div className="toggle-switch-background">
+                                                                <div className="toggle-switch-handle"></div>
+                                                            </div>
+                                                        </label>
+                                                    ) : (
+                                                        <span
+                                                            className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${product?.featured === 1 ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                                                            {product?.featured === 1 ? "Nổi bật" : "Không nổi bật"}
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td className=" text-center !py-[20px] font-[600] text-[16px] text-[#000000]">
                                                     {product?.category?.name}
@@ -416,15 +445,20 @@ const ProductList = () => {
                                                             className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[8px] py-[8px] px-[12px]">
                                                             Chi tiết
                                                         </button>
-                                                        <button
-                                                            onClick={() => handleEditClick(product)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
-                                                            Sửa
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDeleteProduct(product.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
-                                                            Xóa</button>
+                                                        {canEdit && (
+                                                            <button
+                                                                onClick={() => handleEditClick(product?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                                Sửa
+                                                            </button>
+                                                        )}
+                                                        {canDelete && (
+                                                            <button
+                                                                onClick={() => handleDeleteProduct(product?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                                                Xóa
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>

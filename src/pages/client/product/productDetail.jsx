@@ -15,6 +15,7 @@ import Breadcrumb from '../../../components/client/breadcrumbs/Breadcrumb';
 import { UserContext } from '../../../middleware/UserContext';
 import { toast } from 'react-toastify';
 import AddToCartForm from '../../../components/client/productDetail/AddToCartForm';
+import Loading from '../../../components/client/animations/loading';
 
 initTabs();
 
@@ -28,13 +29,15 @@ const ProductDetail = () => {
     const [quantity, setQuantity] = useState(1);
     const { token, user } = useContext(UserContext);
     const [loading, setLoading] = useState(true);
+    const [addToCartloading, setAddToCartloading] = useState(false);
+    const [addToFavoriteLoading, setAddToFavoriteLoading] = useState(false);
     const navigate = useNavigate();
 
     // call api show chi tiết sản phẩm
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                setLoading(true); // Bắt đầu loading
+                setLoading(true);
 
                 const response = await laravelAPI.get(`/api/products/${slug}`);
                 if (response.product) {
@@ -128,7 +131,7 @@ const ProductDetail = () => {
             quantity: quantity
         };
         // console.log("Đang gửi dữ liệu giỏ hàng:", cartData);
-
+        setAddToCartloading(true)
         try {
             const response = await laravelAPI.post("/api/addToCart", cartData);
             // console.log("cehck add to cart", response)
@@ -141,6 +144,58 @@ const ProductDetail = () => {
         } catch (error) {
             console.error("Lỗi thêm vào giỏ hàng!:", error);
             toast.error(error.message);
+        }
+        finally {
+            setAddToCartloading(false);
+        }
+    };
+
+    const handleBuyProduct = async (e) => {
+        e.preventDefault();
+
+        if (!token) {
+            toast.error("Vui lòng đăng nhập!")
+            navigate("/login")
+            return;
+        }
+        if (!product) {
+            toast.error("Sản phẩm không tồn tại!")
+            return;
+        }
+        const selectedVariant = product?.variants?.find(
+            (variant) =>
+                variant.colorId === selectedColor &&
+                variant.sizes.some((size) => size.id === selectedSize)
+        );
+        // kiểm tra
+        if (!selectedVariant) {
+            toast.error("Vui lòng chọn màu sắc và kích thước!");
+            return;
+        }
+        const cartData = {
+            productVariantId: selectedVariant.id,
+            sizeId: selectedSize,
+            colorId: selectedColor,
+            quantity: quantity
+        };
+        // console.log("Đang gửi dữ liệu giỏ hàng:", cartData);
+        setAddToCartloading(true)
+        try {
+            const response = await laravelAPI.post("/api/addToCart", cartData);
+            // console.log("cehck add to cart", response)
+            if (response.code === "success") {
+                toast.success(response.message);
+                setQuantity(1);
+                navigate("/cart");
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            console.error("Lỗi thêm vào giỏ hàng!:", error);
+            toast.error(error.message);
+        }
+        finally {
+            setAddToCartloading(false);
         }
     };
 
@@ -175,7 +230,7 @@ const ProductDetail = () => {
         };
 
         // console.log("Đang gửi dữ liệu yêu thích:", favoriteData);
-
+        setAddToFavoriteLoading(true)
         try {
             const response = await laravelAPI.post("/api/favorites/add", favoriteData);
             // console.log("check thêm yêu thích", response)
@@ -187,14 +242,16 @@ const ProductDetail = () => {
         } catch (error) {
             console.error("Lỗi thêm vào danh sách yêu thích:", error);
             toast.error("Lỗi server, vui lòng thử lại!");
+        } finally {
+            setAddToFavoriteLoading(false);
         }
     };
 
     return (
         <>
             {loading ? (
-                <div className="flex justify-center items-center h-screen">
-                    <p className="text-xl font-bold text-gray-500">Đang tải sản phẩm...</p>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff] bg-opacity-[1]">
+                    <Loading />
                 </div>
             ) : (
                 <>
@@ -316,12 +373,22 @@ const ProductDetail = () => {
                                                 </div>
                                             </div>
                                             <PromotionBox content={product?.descriptionPromotion} />
-
+                                            {addToCartloading && (
+                                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#000000] bg-opacity-[0.6]">
+                                                    <Loading />
+                                                </div>
+                                            )}
+                                            {addToFavoriteLoading && (
+                                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#000000] bg-opacity-[0.6]">
+                                                    <Loading />
+                                                </div>
+                                            )}
                                             <AddToCartForm
                                                 quantity={quantity}
                                                 setQuantity={setQuantity}
                                                 handleAddToCart={handleAddToCart}
                                                 handleAddToFavorites={handleAddToFavorites}
+                                                handleBuyProduct={handleBuyProduct}
                                             />
                                             {/* <form className="pb-[10px] " onSubmit={(e) => e.preventDefault()}>
                                         <InputNumber

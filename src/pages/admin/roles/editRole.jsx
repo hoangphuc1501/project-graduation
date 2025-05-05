@@ -24,7 +24,7 @@ const EditRole = (props) => {
     const fetchRoleData = async (id) => {
         try {
             const response = await laravelAPI.get(`/api/admin/roles/${id}`);
-            console.log("check detail", response)
+            // console.log("check detail", response)
             if (response.code === 'success') {
                 setRoleName(response.data.name);
                 setDescription(response.data.description);
@@ -33,8 +33,8 @@ const EditRole = (props) => {
                 }
 
             }
-            const permissionResponse = await laravelAPI.get('/api/admin/permissions');
-            console.log("check permission list", permissionResponse);
+            const permissionResponse = await laravelAPI.get('/api/admin/permissionGetAll');
+            // console.log("check permission list", permissionResponse);
             if (permissionResponse.code === 'success') {
                 setPermissions(permissionResponse.data);
             }
@@ -88,7 +88,7 @@ const EditRole = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={handleSubmit}>
-                        <h2 className='text-[24px] text-[#000000] font-[700] text-center pb-[20px]'>Thêm mới vai trò</h2>
+                        <h2 className='text-[24px] text-[#000000] font-[700] text-center pb-[20px]'>Sửa vai trò</h2>
                         <div className='px-[10px] mb-[20px]'>
                             <label className='text-[18px] text-[#000000] font-[700] pb-[8px]' >Tên vai trò</label>
                             <div className="border border-[#b3b3b3] px-[20px] py-[15px] rounded-[25px]">
@@ -105,29 +105,33 @@ const EditRole = (props) => {
                             <label className='text-[18px] text-[#000000] font-[700] pb-[8px]' >Mô tả</label>
                             <TextEditor initialValue={description} onChange={setDescription} height={300} name="description" />
                         </div>
-                        <div>
-                            <h4 className="font-[700]">Vai trò này có quyền gì?</h4>
-                            <p>Chọn vào module hoặc các hành động dưới đây để chọn quyền.</p>
+                        <div className='px-[10px] mb-[20px]'>
+                            <h4 className="text-[16px] text-[#000000] font-[700] pb-[8px]">Vai trò này có quyền gì?</h4>
+                            <p className='text-[16px] text-[#000000] font-[400]'>Chọn vào module hoặc các hành động dưới đây để chọn quyền.</p>
                         </div>
 
                         {/* Hiển thị các quyền */}
                         {Object.keys(permissions).length > 0 ? (
                         Object.keys(permissions).map((moduleName) => (
-                            <div key={moduleName}>
-                                <h5 className="font-[700]">{moduleName}</h5>
+                            <div 
+                            className='card mb-[20px] px-[20px] py-[20px] rounded-[10px]'
+                            key={moduleName}>
+                                <h5 className="text-[16px] text-[#000000] font-[700] pb-[8px]">{moduleName}</h5>
+                                <div className="flex items-center gap-[30px] flex-wrap">
                                 {permissions[moduleName].map((permission) => (
-                                    <div key={permission.id} className="mb-3">
-                                        <label>
+                                    <div key={permission.id}>
+                                        <label className='flex items-center gap-[6px] py-[4px]'>
                                             <input
                                                 type="checkbox"
                                                 value={permission.id}
                                                 checked={selectedPermissions.includes(permission.id)}
                                                 onChange={() => handlePermissionChange(permission.id)}
                                             />
-                                            {permission.name}
+                                            <span className='text-[16px] text-[#000000] font-[400] cursor-pointer'>{permission.name}</span>
                                         </label>
                                     </div>
                                 ))}
+                                </div>
                             </div>
                         ))
                     ) : (

@@ -3,10 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import {ListFavoriteApi } from "../../../services/client/productApiService";
+import { ListFavoriteApi } from "../../../services/client/productApiService";
 import { toast } from 'react-toastify';
 import Swal from "sweetalert2";
 import { laravelAPI } from "../../../utils/axiosCustom";
+import Loading from "../../../components/client/animations/loading";
+import Breadcrumb from "../../../components/client/breadcrumbs/Breadcrumb";
 
 
 
@@ -16,6 +18,7 @@ const Favorite = () => {
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const [addToCartloading, setAddToCartloading] = useState(false);
 
     // danh sách yêu thích
     useEffect(() => {
@@ -113,7 +116,7 @@ const Favorite = () => {
             colorId: favorite.color?.id ?? null,
             quantity: 1  // Mặc định thêm 1 sản phẩm vào giỏ hàng
         };
-
+        setAddToCartloading(true)
         try {
             const response = await laravelAPI.post("/api/addToCart", cartData);
             if (response.code === "success") {
@@ -124,18 +127,21 @@ const Favorite = () => {
         } catch (error) {
             console.error("Lỗi thêm vào giỏ hàng!:", error);
             toast.error("Lỗi khi thêm sản phẩm vào giỏ hàng.");
+        } finally {
+            setAddToCartloading(false);
         }
     };
 
     return (
         <>
+            <Breadcrumb />
             <div className="py-[60px] mb-20px">
                 <div className="container px-[16px] mx-auto">
                     <div className="">
                         <h2 className="font-[700] text-[40px] text-main text-center">Danh sách yêu thích</h2>
                         {loading ? (
-                            <div className="text-center text-[18px] font-[500] text-[#333] py-5">
-                                Đang tải dữ liệu...
+                            <div className="flex justify-center items-center h-[300px]">
+                                <Loading />
                             </div>
                         ) : (
                             <table className="my-[60px] w-full">
@@ -157,8 +163,6 @@ const Favorite = () => {
                                             return (
                                                 <tr className="text-center border-b py-[10px]" key={variant.id}>
                                                     <td className="py-[10px] text-[16px] font-[500] text-[#000000]">{index + 1}</td>
-
-                                                    {/* Kiểm tra ảnh trước khi hiển thị */}
                                                     <td className="flex items-center justify-center py-[10px]">
                                                         <img
                                                             src={variant.images?.[0]?.image || "/default-image.jpg"}
@@ -166,8 +170,6 @@ const Favorite = () => {
                                                             className="w-[100px] h-[100px] object-cover"
                                                         />
                                                     </td>
-
-                                                    {/* Hiển thị thông tin sản phẩm */}
                                                     <td className="py-[10px] text-[16px] font-[500] text-[#000000]">
                                                         <Link to={`/product/${variant.id}`} className="hover:text-main">
                                                             {variant.product?.title || "Tên sản phẩm"}
@@ -178,28 +180,27 @@ const Favorite = () => {
                                                             <span>Size: {favorite.size?.name || "Không có"}</span>
                                                         </div>
                                                     </td>
-
-                                                    {/*  Kiểm tra giá trước khi hiển thị */}
                                                     <td className="py-[10px] text-[16px] font-[500] text-[#000000]">
                                                         {variant.specialPrice?.toLocaleString("vi-VN") || "0"} <sup>đ</sup>
                                                     </td>
-
-                                                    {/* Nút thêm vào giỏ hàng */}
                                                     <td className="py-[10px]">
-                                                        <button 
-                                                        onClick={() => handleAddToCart(favorite)}
-                                                        className="py-[10px] text-[16px] font-[500] text-[#000000] inline-flex items-center gap-[10px] justify-center hover:text-main">
+                                                        {addToCartloading && (
+                                                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#000000] bg-opacity-[0.6]">
+                                                                <Loading />
+                                                            </div>
+                                                        )}
+                                                        <button
+                                                            onClick={() => handleAddToCart(favorite)}
+                                                            className="py-[10px] text-[16px] font-[500] text-[#000000] inline-flex items-center gap-[10px] justify-center hover:text-main">
                                                             <span>
                                                                 <FontAwesomeIcon icon={faCartShopping} />
                                                             </span>
                                                             Thêm giỏ hàng
                                                         </button>
                                                     </td>
-
-                                                    {/* Nút xóa yêu thích */}
                                                     <td className="py-[10px]">
                                                         <button
-                                                            onClick={() => handleDeleteFavorite(favorite.id)} 
+                                                            onClick={() => handleDeleteFavorite(favorite.id)}
                                                             className="py-[10px] text-[16px] font-[500] text-[#FF0000] p-[10px] hover:text-[#000000]">
                                                             <FontAwesomeIcon icon={faTrash} />
                                                         </button>

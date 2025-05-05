@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { laravelAPI } from "../../../utils/axiosCustom";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
+import { usePermission } from "../../../hooks/usePermission";
 
 const CommentList = () => {
     const [loading, setLoading] = useState(true);
@@ -11,9 +12,10 @@ const CommentList = () => {
     const [pagination, setPagination] = useState({
         per_page: 10,
         total: 0,
-        last_page: 1
+        last_page: 1,
     });
-
+    const canDelete = usePermission("delete_comment");
+    const canView = usePermission("view_comment");
     useEffect(() => {
         fetchComments(currentPage);
     }, [currentPage, searchKeyword]);
@@ -25,8 +27,8 @@ const CommentList = () => {
                 params: {
                     page: page,
                     per_page: pagination.per_page,
-                    search: searchKeyword
-                }
+                    search: searchKeyword,
+                },
             });
             // console.log("check list comment", response)
             if (response.code === "success") {
@@ -34,7 +36,7 @@ const CommentList = () => {
                 setPagination({
                     per_page: response.data.per_page,
                     total: response.data.total,
-                    last_page: response.data.last_page
+                    last_page: response.data.last_page,
                 });
             }
         } catch (error) {
@@ -64,7 +66,7 @@ const CommentList = () => {
                         Swal.fire({
                             title: "Đã xóa!",
                             text: "Bình luận đã được xóa thành công.",
-                            icon: "success"
+                            icon: "success",
                         });
 
                         fetchComments();
@@ -72,7 +74,7 @@ const CommentList = () => {
                         Swal.fire({
                             title: "Lỗi!",
                             text: "Không thể xóa bình luận. Vui lòng thử lại!",
-                            icon: "error"
+                            icon: "error",
                         });
                     }
                 } catch (error) {
@@ -80,7 +82,7 @@ const CommentList = () => {
                     Swal.fire({
                         title: "Lỗi!",
                         text: "Có lỗi xảy ra, vui lòng thử lại!",
-                        icon: "error"
+                        icon: "error",
                     });
                 }
             }
@@ -91,10 +93,18 @@ const CommentList = () => {
         const selectedPage = event.selected + 1;
         setCurrentPage(selectedPage);
     };
-
+    if (!canView) {
+        return (
+            <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">
+                Bạn không có quyền truy cập trang này.
+            </p>
+        );
+    }
     return (
         <div className="py-[60px]">
-            <h2 className="text-[28px] font-[700] text-[#00000] text-center pb-[30px]">Quản lý bình luận</h2>
+            <h2 className="text-[28px] font-[700] text-[#00000] text-center pb-[30px]">
+                Quản lý bình luận
+            </h2>
             <div className="card mb-3">
                 <div className="card-header">
                     <h3 className="text-[20px] font-[700] text-[#00000] py-[10px]">
@@ -116,43 +126,75 @@ const CommentList = () => {
             <div className="card mb-3">
                 <div className="card-body">
                     {loading ? (
-                        <p className="text-center text-[16px] font-[600]">Đang tải dữ liệu...</p>
+                        <p className="text-center text-[16px] font-[600]">
+                            Đang tải dữ liệu...
+                        </p>
                     ) : (
                         <>
                             <table className="table table-hover table-sm">
                                 <thead className="bg-[#EEEEEE]">
                                     <tr>
-                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">STT</th>
-                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Tên sản phẩm</th>
-                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Tên khách hàng</th>
-                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Nội dung</th>
-                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Thời gian bình luận</th>
-                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">Tác vụ</th>
+                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">
+                                            STT
+                                        </th>
+                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">
+                                            Tên sản phẩm
+                                        </th>
+                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">
+                                            Tên khách hàng
+                                        </th>
+                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">
+                                            Nội dung
+                                        </th>
+                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">
+                                            Thời gian bình luận
+                                        </th>
+                                        <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">
+                                            Tác vụ
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {comments.length > 0 ? (
                                         comments.map((comment, index) => (
                                             <tr key={comment.id}>
-                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">{index + 1 + (currentPage - 1) * 10}</td>
-                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">{comment.product?.title || "Không xác định"}</td>
-                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">{comment.user?.fullname || "Không xác định"}</td>
-                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">{comment.content}</td>
-                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">{new Date(comment.createdAt).toLocaleString()}</td>
+                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">
+                                                    {index + 1 + (currentPage - 1) * 10}
+                                                </td>
+                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">
+                                                    {comment.product?.title || "Không xác định"}
+                                                </td>
+                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">
+                                                    {comment.user?.fullname || "Không xác định"}
+                                                </td>
+                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">
+                                                    {comment.content}
+                                                </td>
+                                                <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">
+                                                    {new Date(comment.createdAt).toLocaleString()}
+                                                </td>
                                                 <td className="flex items-center justify-center gap-[6px] !py-[20px]">
                                                     <div className="">
-                                                        <button
-                                                            onClick={() => handleDelete(comment.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
-                                                            Xóa
-                                                        </button>
+                                                        {canDelete && (
+                                                            <button
+                                                                onClick={() => handleDelete(comment?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
+                                                            >
+                                                                Xóa
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan="6" className="text-center py-4 text-[16px] font-[600]">Không có bình luận nào.</td>
+                                            <td
+                                                colSpan="6"
+                                                className="text-center py-4 text-[16px] font-[600]"
+                                            >
+                                                Không có bình luận nào.
+                                            </td>
                                         </tr>
                                     )}
                                 </tbody>
@@ -179,14 +221,12 @@ const CommentList = () => {
                                     activeClassName="active"
                                 />
                             </div>
-
                         </>
                     )}
                 </div>
             </div>
         </div>
-    )
-
-}
+    );
+};
 
 export default CommentList;

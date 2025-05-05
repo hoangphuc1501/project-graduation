@@ -2,11 +2,11 @@ import { FaCirclePlus } from "react-icons/fa6";
 import React, { useState, useEffect } from "react";
 import { laravelAPI } from "../../../utils/axiosCustom";
 
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import CreatePermission from "./createPermission";
 import EditPermission from "./editPermission";
 import ReactPaginate from "react-paginate";
-
+import { usePermission } from "../../../hooks/usePermission";
 
 const ListPermission = () => {
     const [permissions, setPermissions] = useState([]);
@@ -16,32 +16,35 @@ const ListPermission = () => {
     const [selectedPermissionId, setSelectedPermissionId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [pagination, setPagination] = useState({
-        per_page: 10,
+        per_page: 12,
         total: 0,
-        last_page: 1
+        last_page: 1,
     });
+    const canCreate = usePermission("create_permission");
+    const canEdit = usePermission("edit_permission");
+    const canDelete = usePermission("delete_permission");
+    const canView = usePermission("view_permission");
     // Hàm gọi API để lấy danh sách quyền
     useEffect(() => {
         fetchPermissions(currentPage);
     }, [currentPage]);
 
     const fetchPermissions = async (page = 1) => {
-
         try {
             setLoading(true);
             const response = await laravelAPI.get("/api/admin/permissions", {
                 params: {
                     page: page,
-                    per_page: pagination.per_page
-                }
+                    per_page: pagination.per_page,
+                },
             });
-            console.log("check list permissions", response)
+            console.log("check list permissions", response);
             if (response.code === "success") {
                 setPermissions(response.data.data);
                 setPagination({
                     per_page: response.data.per_page,
                     total: response.data.total,
-                    last_page: response.data.last_page
+                    last_page: response.data.last_page,
                 });
             }
         } catch (error) {
@@ -78,7 +81,8 @@ const ListPermission = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 // Gọi API xóa quyền
-                laravelAPI.delete(`/api/admin/permissions/${permissionId}`)
+                laravelAPI
+                    .delete(`/api/admin/permissions/${permissionId}`)
                     .then((response) => {
                         if (response.code === "success") {
                             Swal.fire({
@@ -106,6 +110,13 @@ const ListPermission = () => {
     };
     const groupedPermissions = groupPermissionsByModule(permissions);
 
+    if (!canView) {
+        return (
+            <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">
+                Bạn không có quyền truy cập trang này.
+            </p>
+        );
+    }
     return (
         <>
             <div className="py-[20px]">
@@ -113,21 +124,24 @@ const ListPermission = () => {
                     Danh sách quyền
                 </h2>
                 <div className="flex items-center justify-between py-[10px] mb-[10px]">
-                    <button
-                        onClick={() => setShowCreatePermission(true)}
-                        className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main my-[20px] flex items-center gap-[20px]">
-                        <span>
-                            <FaCirclePlus />
-                        </span>
-                        Thêm mới
-                    </button>
+                    {canCreate && (
+                        <button
+                            onClick={() => setShowCreatePermission(true)}
+                            className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]"
+                        >
+                            <span>
+                                <FaCirclePlus />
+                            </span>
+                            Thêm mới
+                        </button>
+                    )}
                 </div>
                 <div className="">
                     {loading ? (
                         <div className="text-center">Loading...</div>
                     ) : (
                         <>
-                            <table className="w-full " >
+                            <table className="w-full ">
                                 <thead className="bg-[#EEEEEE]">
                                     <tr>
                                         <td></td>
@@ -149,32 +163,51 @@ const ListPermission = () => {
                                     {Object.keys(groupedPermissions).map((module, idx) => (
                                         <React.Fragment key={idx}>
                                             <tr className="border-t bg-gray-200">
-                                                <th colSpan="5" className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
+                                                <th
+                                                    colSpan="5"
+                                                    className="py-[10px] font-[600] text-[16px] text-[#000000] text-center"
+                                                >
                                                     {module}
                                                 </th>
                                             </tr>
                                             {groupedPermissions[module].map((permission, index) => (
-                                                    <tr key={permission?.id} className="border-t">
-                                                        <td></td>
-                                                        <td className="font-[400] text-[16px] text-[400] text-center">{index + 1 + (currentPage - 1) * 10}</td>
-                                                        <td className="font-[600] text-[16px] text-[#000000] text-center">{permission?.name}</td>
-                                                        <td className="font-[600] text-[16px] text-[#000000] text-center" dangerouslySetInnerHTML={{ __html: permission?.description || "" }}></td>
-                                                        <td>
-                                                            <div className="flex items-center justify-center gap-[6px] py-[10px]">
-                                                                <button
-                                                                    onClick={() => handleEditClick(permission?.id)}
-                                                                    className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
-                                                                    Sửa
-                                                                </button>
-                                                                <button
-                                                                    onClick={() => handleDeletePermission(permission?.id)}
-                                                                    className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
-                                                                    Xóa
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                                <tr key={permission?.id} className="border-t">
+                                                    <td></td>
+                                                    <td className="font-[400] text-[16px] text-[400] text-center">
+                                                        {index + 1 + (currentPage - 1) * 10}
+                                                    </td>
+                                                    <td className="font-[600] text-[16px] text-[#000000] text-center">
+                                                        {permission?.name}
+                                                    </td>
+                                                    <td
+                                                        className="font-[600] text-[16px] text-[#000000] text-center"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: permission?.description || "",
+                                                        }}
+                                                    ></td>
+                                                    <td>
+                                                        <div className="flex items-center justify-center gap-[6px] py-[10px]">
+                                                        {canEdit && (
+                                                            <button
+                                                            onClick={() => handleEditClick(permission?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                                Sửa
+                                                            </button>
+                                                        )}
+
+                                                        {canDelete && (
+                                                            <button
+                                                            onClick={() =>
+                                                                handleDeletePermission(permission?.id)
+                                                            }
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                                                Xóa
+                                                            </button>
+                                                        )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         </React.Fragment>
                                     ))}
                                 </tbody>

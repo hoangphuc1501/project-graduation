@@ -21,9 +21,6 @@ function CartModal(props) {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <CartModalItem/>
-                    <CartModalItem/>
-                    <CartModalItem/>
-                    <CartModalItem/>
 
                     <div className='flex items-center justify-between'>
                         <ButtonViewCart/>

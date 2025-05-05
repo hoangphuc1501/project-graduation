@@ -6,7 +6,7 @@ import { Pagination, Navigation, FreeMode } from 'swiper/modules';
 import ProductSaleItem from './productSaleItem';
 import CountdownTimer from '../animations/countdown';
 import { useEffect, useState } from 'react';
-import { laravelAPI, nodeAPI } from '../../../utils/axiosCustom';
+import { laravelAPI } from '../../../utils/axiosCustom';
 
 const ProductSale = () => {
     const [productSale, setProductSale] = useState([]);
@@ -14,7 +14,7 @@ const ProductSale = () => {
     useEffect(() => {
         const fetchProductNew = async () => {
             try {
-                const response = await laravelAPI.get("/api/newProduct");
+                const response = await laravelAPI.get("/api/saleProduct");
                 // console.log("API Response:", response);  
                 setProductSale(response.data || []);
             } catch (error) {
@@ -38,7 +38,7 @@ const ProductSale = () => {
                                 src="https://cdnv2.tgdd.vn/mwg-static/common/Campaign/10/0d/100d3018ffd23afe20324b164d0412cc.png" alt="" />
                         </div>
                         <div className='bg-[#FEA200] rounded-[40px] py-[12px] w-[400px] ml-[360px] flex items-center justify-center'>
-                            <CountdownTimer targetDate="2025-03-31T23:59:59" />
+                            <CountdownTimer targetDate="2025-05-31T23:59:59" />
                         </div>
                     </div>
                     <div className="news-swiper bg-[#ffffff] py-[10px] px-[10px] rounded-b-[12px]">

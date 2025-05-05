@@ -14,11 +14,11 @@ const ClientLayout = () => {
                 </>
                 <Footer/>
             </UserProvider> */}
-            <Header/>
-                <>
-                    <Outlet/>
-                </>
-                <Footer/>
+                <Header />
+            <>
+                <Outlet />
+            </>
+            <Footer />
             <ToastContainer
                 position="top-right"
                 autoClose={3000}

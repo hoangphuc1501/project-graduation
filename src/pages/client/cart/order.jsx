@@ -3,13 +3,14 @@ import { laravelAPI } from "../../../utils/axiosCustom";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../../components/client/animations/loading";
 
 const Order = () => {
     const [cartItems, setCartItems] = useState([]);
     const [voucherCode, setVoucherCode] = useState("");
     const [discountAmount, setDiscountAmount] = useState(0);
     const [appliedVoucher, setAppliedVoucher] = useState(null);
-    
+
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -62,10 +63,10 @@ const Order = () => {
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu:", error);
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
-        
+
         fetchData();
     }, []);
     // Xử lý thay đổi trong form
@@ -148,7 +149,7 @@ const Order = () => {
             note: formData.note,
             shippingAddress: formData.shippingAddress,
             paymentMethod: formData.paymentMethod,
-            code: appliedVoucher ? appliedVoucher.code : null, 
+            code: appliedVoucher ? appliedVoucher.code : null,
         });
         try {
             const response = await laravelAPI.post("/api/order", {
@@ -181,11 +182,8 @@ const Order = () => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-main"></div>
-                    <p className="mt-2 text-gray-500 text-lg">Đang tải dữ liệu...</p>
-                </div>
+            <div className="flex justify-center items-center h-[300px]">
+                <Loading />
             </div>
         );
     }
@@ -347,9 +345,9 @@ const Order = () => {
                                     {appliedVoucher && (
                                         <div className="flex items-center justify-between mt-4 text-[#000000]">
                                             <div className="flex items-center gap-[8px] text-[14px] text-[#999999]">
-                                            <span className=""><MdOutlineDiscount /></span>
-                                            <span>{appliedVoucher.code}</span>
-                                        </div>
+                                                <span className=""><MdOutlineDiscount /></span>
+                                                <span>{appliedVoucher.code}</span>
+                                            </div>
                                             <span className="font-[700] text-[16px] text-red-500">- {appliedVoucher.discountAmount.toLocaleString()}<sup>đ</sup></span>
                                         </div>
                                     )}

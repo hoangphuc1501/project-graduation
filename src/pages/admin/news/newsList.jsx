@@ -7,6 +7,7 @@ import CreateNews from "./createNews";
 import EditNews from "./editNews";
 import DetailNews from "./detailNews";
 import { toast } from "react-toastify";
+import { usePermission } from "../../../hooks/usePermission";
 
 
 const NewsList = () => {
@@ -28,7 +29,10 @@ const NewsList = () => {
         total: 0,
         last_page: 1,
     });
-
+    const canCreate = usePermission("create_news");
+    const canEdit = usePermission("edit_news");
+    const canDelete = usePermission("softDelete_news");
+    const canView = usePermission("view_news");
 
     // fetch lại khi lọc
     useEffect(() => {
@@ -187,6 +191,10 @@ const NewsList = () => {
         }
     };
 
+    if (!canView) {
+        return <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">Bạn không có quyền truy cập trang này.</p>;
+    }
+
     return (
         <div className="py-[60px]">
             <h2 className="text-[28px] font-[700] text-[#00000] text-center pb-[30px]">
@@ -263,15 +271,17 @@ const NewsList = () => {
                         <h3 className="text-[20px] font-[700] text-[#00000]">
                             Danh sách bài viết
                         </h3>
-                        <button
-                            onClick={() => setShowCreateNews(true)}
-                            className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]"
-                        >
-                            <span>
-                                <FaCirclePlus />
-                            </span>
-                            Thêm mới
-                        </button>
+                        {canCreate && (
+                            <button
+                                onClick={() => setShowCreateNews(true)}
+                                className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]"
+                            >
+                                <span>
+                                    <FaCirclePlus />
+                                </span>
+                                Thêm mới
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div className="card-body">
@@ -328,42 +338,61 @@ const NewsList = () => {
                                                     {item.title}
                                                 </td>
                                                 <td className="!py-[20px] text-center">
-                                                    <input
-                                                        type="number"
-                                                        name="position"
-                                                        value={item?.position}
-                                                        min={1}
-                                                        onChange={(e) => handlePositionChange(item?.id, e.target.value)}
-                                                        className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
-                                                    />
+                                                    {canEdit ? (
+                                                        <input
+                                                            type="number"
+                                                            name="position"
+                                                            value={item?.position}
+                                                            min={1}
+                                                            onChange={(e) => handlePositionChange(item?.id, e.target.value)}
+                                                            className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
+                                                        />
+                                                    ) : (
+                                                        <span className="font-[600] text-[16px] text-[#000000]">{item?.position}</span>
+                                                    )}
                                                 </td>
                                                 <td className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center w-[15%]">
-
                                                     {item.category?.name || "Không có"}
                                                 </td>
                                                 <td className="!py-[20px] text-center">
-                                                    <label class="toggle-switch">
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={item?.featured === 1}
-                                                            onChange={() => handleToggleFeature(item.id, item.featured)}
-                                                        />
-                                                        <div class="toggle-switch-background">
-                                                            <div class="toggle-switch-handle"></div>
-                                                        </div>
-                                                    </label>
+                                                    {canEdit ? (
+                                                        <label className="toggle-switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={item?.featured === 1}
+                                                                onChange={() => handleToggleFeature(item?.id, item?.featured)}
+                                                            />
+                                                            <div className="toggle-switch-background">
+                                                                <div className="toggle-switch-handle"></div>
+                                                            </div>
+                                                        </label>
+                                                    ) : (
+                                                        <span
+                                                            className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${item?.featured === 1 ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                                                            {item?.featured === 1 ? "Nổi bật" : "Không nổi bật"}
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td className="!py-[20px] text-center">
-                                                    <label class="toggle-switch">
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={item?.status === 1}
-                                                            onChange={() => handleToggleStatus(item.id, item.status)}
-                                                        />
-                                                        <div class="toggle-switch-background">
-                                                            <div class="toggle-switch-handle"></div>
-                                                        </div>
-                                                    </label>
+                                                    {canEdit ? (
+                                                        <label className="toggle-switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={item?.status === 1}
+                                                                onChange={() => handleToggleStatus(item?.id, item?.status)}
+                                                            />
+                                                            <div className="toggle-switch-background">
+                                                                <div className="toggle-switch-handle"></div>
+                                                            </div>
+                                                        </label>
+                                                    ) : (
+                                                        <span
+                                                            className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${item?.status === 1 ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                                                            {item?.status === 1 ? "Đang hoạt động" : "Không hoạt động"}
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td>
                                                     <div className="flex items-center justify-center gap-[6px] !py-[20px]">
@@ -373,18 +402,20 @@ const NewsList = () => {
                                                         >
                                                             Chi tiết
                                                         </button>
-                                                        <button
-                                                            onClick={() => handleEditClick(item?.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]"
-                                                        >
-                                                            Sửa
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDeleteNews(item?.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
-                                                        >
-                                                            Xóa
-                                                        </button>
+                                                        {canEdit && (
+                                                            <button
+                                                                onClick={() => handleEditClick(item?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                                Sửa
+                                                            </button>
+                                                        )}
+                                                        {canDelete && (
+                                                            <button
+                                                                onClick={() => handleDeleteNews(item?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                                                Xóa
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>

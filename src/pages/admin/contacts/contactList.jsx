@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { laravelAPI } from '../../../utils/axiosCustom';
 import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
+import { usePermission } from '../../../hooks/usePermission';
 
 const ContactList = () => {
     const [contacts, setContacts] = useState([]);
@@ -14,7 +15,8 @@ const ContactList = () => {
         total: 0,
         last_page: 1
     });
-
+    const canDelete = usePermission("delete_contact");
+    const canView = usePermission("view_contact");
     useEffect(() => {
         fetchContacts(currentPage);
     }, [sortOption, searchKeyword, currentPage]);
@@ -88,7 +90,9 @@ const ContactList = () => {
             }
         });
     };
-
+    if (!canView) {
+        return <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">Bạn không có quyền truy cập trang này.</p>;
+    }
     return (
         <div className="py-[20px]">
             <h2 className="text-[28px] text-[#000000] font-[700] text-center py-[40px]">
@@ -205,13 +209,14 @@ const ContactList = () => {
                                                     {new Date(contact?.createdAt).toLocaleString()}
                                                 </th>
                                                 <th>
-                                                    <div className="flex items-center justify-center gap-[6px]">
-                                                        <button
-                                                            onClick={() => handleDeleteClick(contact?.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
-                                                        >
-                                                            Xóa
-                                                        </button>
+                                                    <div className="flex items-center justify-center gap-[6px] mt-[10px]">
+                                                        {canDelete && (
+                                                            <button
+                                                                onClick={() => handleDeleteClick(contact?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                                                Xóa
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </th>
                                             </tr>

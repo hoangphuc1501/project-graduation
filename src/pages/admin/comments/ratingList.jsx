@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { laravelAPI } from "../../../utils/axiosCustom";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
+import { usePermission } from "../../../hooks/usePermission";
 
 const RatingList = () => {
     const [loading, setLoading] = useState(true);
@@ -13,7 +14,8 @@ const RatingList = () => {
         total: 0,
         last_page: 1
     });
-
+const canDelete = usePermission("delete_review");
+    const canView = usePermission("view_review");
     useEffect(() => {
         fetchRatings(currentPage);
     }, [currentPage, searchKeyword]);
@@ -91,7 +93,13 @@ const RatingList = () => {
         const selectedPage = event.selected + 1;
         setCurrentPage(selectedPage);
     };
-
+    if (!canView) {
+        return (
+            <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">
+                Bạn không có quyền truy cập trang này.
+            </p>
+        );
+    }
     return (
         <div className="py-[60px]">
             <h2 className="text-[28px] font-[700] text-[#00000] text-center pb-[30px]">Quản lý đánh giá</h2>
@@ -143,11 +151,14 @@ const RatingList = () => {
                                                 <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">{new Date(rating.createdAt).toLocaleString()}</td>
                                                 <td className="flex items-center justify-center gap-[6px] !py-[20px]">
                                                     <div className="">
-                                                        <button
-                                                            onClick={() => handleDelete(rating.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
-                                                            Xóa
-                                                        </button>
+                                                        {canDelete && (
+                                                            <button
+                                                                onClick={() => handleDelete(rating?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
+                                                            >
+                                                                Xóa
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>

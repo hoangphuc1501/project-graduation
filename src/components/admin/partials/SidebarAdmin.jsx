@@ -16,6 +16,7 @@ const navigate = useNavigate();
     const handleLogout = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('permissions');
             // setUser(null);
             navigate("/loginAdmin");
             toast.success("Đăng xuất thành công");

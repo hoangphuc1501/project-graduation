@@ -11,6 +11,19 @@ const LoginAdmin = () => {
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
+    const syncPermissions = async () => {
+        try {
+            const response = await laravelAPI.get("/api/admin/getMyPermissions");
+            // console.log("check gọi permissin", response)
+            if (response.code === "success") {
+                localStorage.setItem("permissions", JSON.stringify(response.permissions));
+            }
+        } catch (error) {
+            console.error("Lỗi khi đồng bộ quyền:", error);
+        }
+    };
+    
+
     const handleSubmitLogin = async (e) => {
         e.preventDefault();
 
@@ -35,7 +48,9 @@ const LoginAdmin = () => {
                 // Lưu token và user vào localStorage
                 localStorage.setItem("token", token);
                 localStorage.setItem("user", JSON.stringify(userData));
+                // localStorage.setItem("permissions", JSON.stringify(userData.permissions));
 
+                await syncPermissions();
                 // Cập nhật state user
                 setUser(userData);
                 window.dispatchEvent(new Event("storage"));

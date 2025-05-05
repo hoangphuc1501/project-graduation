@@ -7,6 +7,7 @@ import EditBrand from "./editBrand";
 import DetailBrand from "./detailBrand";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import { usePermission } from "../../../hooks/usePermission";
 
 
 const ListBrand = () => {
@@ -26,6 +27,10 @@ const ListBrand = () => {
         total: 0,
         last_page: 1
     });
+    const canCreate = usePermission("create_brand");
+    const canEdit = usePermission("edit_brand");
+    const canDelete = usePermission("softDelete_brand");
+    const canView = usePermission("view_brand");
 
     // danh sách thương hiệu
     const fetchBrands = async (page = 1) => {
@@ -150,6 +155,10 @@ const ListBrand = () => {
         }
     };
 
+    if (!canView) {
+        return <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">Bạn không có quyền truy cập trang này.</p>;
+    }
+
     return (
         <div className="py-[60px]">
             <h2 className="text-[28px] font-[700] text-[#00000] text-center pb-[30px]">Quản lý thương hiệu</h2>
@@ -199,13 +208,14 @@ const ListBrand = () => {
                 <div className="card-header">
                     <div className="flex items-center justify-between">
                         <h3 className="text-[20px] font-[700] text-[#00000]">Danh sách thương hiệu</h3>
-                        <button
-                            onClick={() => setShowCreateBrand(true)}
-                            className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]">
-                            <span><FaCirclePlus /></span>
-                            Thêm mới
-                        </button>
-
+                        {canCreate && (
+                            <button
+                                onClick={() => setShowCreateBrand(true)}
+                                className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]">
+                                <span><FaCirclePlus /></span>
+                                Thêm mới
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div className="card-body">
@@ -239,43 +249,64 @@ const ListBrand = () => {
                                                         className="w-[100px] h-[100px]" />
 
                                                 </td>
-                                                <td className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center"> {brand?.name}</td>
-                                                <td className="!py-[20px] text-center">
-                                                    <input
-                                                        type="number"
-                                                        name="position"
-                                                        value={brand?.position}
-                                                        min={1}
-                                                        onChange={(e) => handlePositionChange(brand?.id, e.target.value)}
-                                                        className="w-[80px] border rounded-[12px] py-[4px]  text-[16px] font-[400] text-center text-[#000000]" />
+                                                <td className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center">
+                                                    {brand?.name}
                                                 </td>
                                                 <td className="!py-[20px] text-center">
-                                                    <label class="toggle-switch">
+                                                    {canEdit ? (
                                                         <input
-                                                            type="checkbox"
-                                                            checked={brand?.status === 1}
-                                                            onChange={() => handleToggleStatus(brand?.id, brand?.status)}
+                                                            type="number"
+                                                            name="position"
+                                                            value={brand?.position}
+                                                            min={1}
+                                                            onChange={(e) => handlePositionChange(brand?.id, e.target.value)}
+                                                            className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
                                                         />
-                                                        <div class="toggle-switch-background">
-                                                            <div class="toggle-switch-handle"></div>
-                                                        </div>
-                                                    </label>
+                                                    ) : (
+                                                        <span className="font-[600] text-[16px] text-[#000000]">{brand?.position}</span>
+                                                    )}
+                                                </td>
+                                                <td className="!py-[20px] text-center">
+                                                    {canEdit ? (
+                                                        <label className="toggle-switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={brand?.status === 1}
+                                                                onChange={() => handleToggleStatus(brand?.id, brand?.status)}
+                                                            />
+                                                            <div className="toggle-switch-background">
+                                                                <div className="toggle-switch-handle"></div>
+                                                            </div>
+                                                        </label>
+                                                    ) : (
+                                                        <span
+                                                            className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${brand?.status === 1 ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                                                            {brand?.status === 1 ? "Đang hoạt động" : "Không hoạt động"}
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td>
-                                                    <div className="flex items-center justify-center gap-[6px] !py-[20px]">
+                                                    <div className="flex items-center justify-center gap-[6px] !py-[10px]">
                                                         <button
                                                             onClick={() => handleDetailClick(brand?.id)}
                                                             className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[12px] py-[8px] px-[12px]">
                                                             Chi tiết</button>
-                                                        <button
-                                                            onClick={() => handleEditClick(brand?.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
-                                                            Sửa
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDeleteBrand(brand?.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
-                                                            Xóa</button>
+                                                        {canEdit && (
+                                                            <button
+                                                                onClick={() => handleEditClick(brand?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                                Sửa
+                                                            </button>
+                                                        )}
+
+                                                        {canDelete && (
+                                                            <button
+                                                                onClick={() => handleDeleteBrand(brand?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                                                Xóa
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>

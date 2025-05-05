@@ -28,7 +28,7 @@ const TrashNewsList = () => {
                     per_page: pagination.per_page
                 },
             });
-            // console.log("check news list:", response);
+            console.log("check news list:", response);
             setNews(response.data.data);
             setPagination({
                 per_page: response.data.per_page,

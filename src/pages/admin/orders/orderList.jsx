@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import OrderDetailAdmin from "./orderDetail";
 import ReactPaginate from "react-paginate";
+import { usePermission } from "../../../hooks/usePermission";
 
 const OrderList = () => {
 
@@ -23,7 +24,7 @@ const OrderList = () => {
     useEffect(() => {
         fetchOrders(currentPage);
     }, [currentPage]);
-
+    const canView = usePermission("view_order");
     // hàm lấy danh sách
     const fetchOrders = async (page = 1) => {
         try {
@@ -155,7 +156,13 @@ const OrderList = () => {
         const selectedPage = event.selected + 1;
         setCurrentPage(selectedPage);
     };
-
+    if (!canView) {
+        return (
+            <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">
+                Bạn không có quyền truy cập trang này.
+            </p>
+        );
+    }
     return (
         <>
             <div className="py-[20px]">

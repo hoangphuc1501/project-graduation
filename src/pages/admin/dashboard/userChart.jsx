@@ -9,17 +9,17 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const UserRegisterChart = () => {
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [type, setType] = useState("day");
 
-    useEffect(() => {
         const fetchUserRegistrationData = async () => {
             try {
-                const response = await laravelAPI.get("/api/admin/dashboard/user-registration-statistics?days=7");
+                const response = await laravelAPI.get(`/api/admin/dashboard/user-registration-statistics?type=${type}`);
                 // console.log("check thống kê user", response)
                 if (response.code === "success") {
                     const data = response.data;
 
                     // Tạo danh sách ngày và số lượng user đăng ký
-                    const labels = data.map(item => item.date);
+                    const labels = data.map(item => item.label);
                     const userCounts = data.map(item => item.userCount);
 
                     setChartData({
@@ -42,44 +42,53 @@ const UserRegisterChart = () => {
             }
         };
 
+    useEffect(() => {
         fetchUserRegistrationData();
-    }, []);
+    }, [type]);
 
-    if (loading) return <p>Đang tải biểu đồ...</p>;
 
     return (
-        <div className="w-[100%] mt-[60px]">
-            <h3 className="text-[20px] text-[#000000] font-[700] mb-[20px] text-center">📊 Thống kê số lượng người dùng đăng ký theo ngày</h3>
-            <Bar
-                data={chartData}
-                options={{
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: "Số lượng người dùng đăng ký mỗi ngày"
-                        },
-                        legend: {
-                            display: true
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: "Số lượng người dùng"
+        <div className="w-full mt-[60px]">
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-[20px] text-[#000000] font-[700] text-center w-full">
+                    📈 Thống kê số lượng người dùng đăng ký
+                </h3>
+                <select
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                    className="border text-[16px] font-[400] text-[#000000] py-[10px] px-[10px] rounded-[10px]"
+                >
+                    <option value="day">Ngày</option>
+                    <option value="month">Tháng</option>
+                    <option value="year">Năm</option>
+                </select>
+            </div>
+
+            {loading ? (
+                <p>Đang tải biểu đồ...</p>
+            ) : (
+                <Bar
+                    data={chartData}
+                    options={{
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: "Số lượng"
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: type === "day" ? "Ngày" : type === "month" ? "Tháng" : "Năm"
+                                }
                             }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: "Ngày"
-                            }
                         }
-                    }
-                }}
-            />
+                    }}
+                />
+            )}
         </div>
     );
 };

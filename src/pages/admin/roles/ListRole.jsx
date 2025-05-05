@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { laravelAPI } from "../../../utils/axiosCustom";
 import CreateRole from "./createRole";
 import EditRole from "./editRole";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import RoleDetail from "./roleDetail";
 import ReactPaginate from "react-paginate";
+import { usePermission } from "../../../hooks/usePermission";
 
 const ListRoles = () => {
     const [roles, setRoles] = useState([]);
@@ -18,9 +19,12 @@ const ListRoles = () => {
     const [pagination, setPagination] = useState({
         per_page: 10,
         total: 0,
-        last_page: 1
+        last_page: 1,
     });
-
+    const canCreate = usePermission("create_role");
+    const canEdit = usePermission("edit_role");
+    const canDelete = usePermission("delete_role");
+    const canView = usePermission("view_role");
     // Hàm gọi API để lấy danh sách vai trò
     useEffect(() => {
         fetchRoles(currentPage);
@@ -32,8 +36,8 @@ const ListRoles = () => {
             const response = await laravelAPI.get("/api/admin/roles", {
                 params: {
                     page: page,
-                    per_page: pagination.per_page
-                }
+                    per_page: pagination.per_page,
+                },
             });
             // console.log("check list role", response)
             if (response.code === "success") {
@@ -41,7 +45,7 @@ const ListRoles = () => {
                 setPagination({
                     per_page: response.data.per_page,
                     total: response.data.total,
-                    last_page: response.data.last_page
+                    last_page: response.data.last_page,
                 });
             }
         } catch (error) {
@@ -71,7 +75,8 @@ const ListRoles = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 // Gọi API xóa vai trò
-                laravelAPI.delete(`/api/admin/roles/${roleId}`)
+                laravelAPI
+                    .delete(`/api/admin/roles/${roleId}`)
                     .then((response) => {
                         if (response.code === "success") {
                             Swal.fire({
@@ -103,7 +108,13 @@ const ListRoles = () => {
         const selectedPage = event.selected + 1;
         setCurrentPage(selectedPage);
     };
-
+    if (!canView) {
+        return (
+            <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">
+                Bạn không có quyền truy cập trang này.
+            </p>
+        );
+    }
     return (
         <>
             <div className="py-[20px]">
@@ -114,21 +125,24 @@ const ListRoles = () => {
                     <h3 className="text-[20px] text-[#000000] font-[700] ">
                         Danh sách vai trò
                     </h3>
-                    <button
-                        onClick={() => setShowCreateRole(true)}
-                        className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main my-[20px] flex items-center gap-[20px]">
-                        <span>
-                            <FaCirclePlus />
-                        </span>
-                        Thêm mới
-                    </button>
+                    {canCreate && (
+                        <button
+                            onClick={() => setShowCreateRole(true)}
+                            className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]"
+                        >
+                            <span>
+                                <FaCirclePlus />
+                            </span>
+                            Thêm mới
+                        </button>
+                    )}
                 </div>
                 <div className="">
                     {loading ? (
                         <div className="text-center">Loading...</div>
                     ) : (
                         <>
-                            <table className="w-full " >
+                            <table className="w-full ">
                                 <thead className="bg-[#EEEEEE]">
                                     <tr>
                                         <td></td>
@@ -155,32 +169,40 @@ const ListRoles = () => {
                                             <th className="py-[10px] font-[400] text-[16px] text-[400] text-center">
                                                 {index + 1 + (currentPage - 1) * 10}
                                             </th>
-                                            <th
-                                                className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
-
+                                            <th className="py-[10px] font-[600] text-[16px] text-[#000000] text-center">
                                                 {role?.name}
                                             </th>
                                             <th
                                                 className="py-[10px] font-[600] text-[16px] text-[#000000] text-center"
-                                                dangerouslySetInnerHTML={{ __html: role?.description || "" }}
+                                                dangerouslySetInnerHTML={{
+                                                    __html: role?.description || "",
+                                                }}
                                             ></th>
                                             <th>
                                                 <div className="flex items-center justify-center gap-[6px] py-[10px]">
                                                     <button
                                                         onClick={() => handleDetailClick(role?.id)}
-                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[12px] py-[8px] px-[12px]">
+                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#0d6efd] rounded-[12px] py-[8px] px-[12px]"
+                                                    >
                                                         chi tiết
                                                     </button>
-                                                    <button
-                                                        onClick={() => handleEditClick(role?.id)}
-                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
-                                                        Sửa
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDeleteRole(role?.id)}
-                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
-                                                        Xóa
-                                                    </button>
+                                                    {canEdit && (
+                                                        <button
+                                                            onClick={() => handleEditClick(role?.id)}
+                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]"
+                                                        >
+                                                            Sửa
+                                                        </button>
+                                                    )}
+
+                                                    {canDelete && (
+                                                        <button
+                                                            onClick={() => handleDeleteRole(role?.id)}
+                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
+                                                        >
+                                                            Xóa
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </th>
                                         </tr>

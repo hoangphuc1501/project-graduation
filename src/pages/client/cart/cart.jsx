@@ -4,10 +4,10 @@ import { laravelAPI } from '../../../utils/axiosCustom';
 import { CiSquarePlus, CiSquareMinus } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { MdOutlineDiscount } from "react-icons/md";
 
 import Swal from "sweetalert2";
 import { ButtonFill } from "../../../components/client/buttons/listButton";
+import Loading from "../../../components/client/animations/loading";
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -17,9 +17,10 @@ const Cart = () => {
     // call api sho dữ liệu
     useEffect(() => {
         const fetchCart = async () => {
+            setLoading(true);
             try {
                 const response = await laravelAPI.get("/api/carts");
-                console.log("check dữ liệu giỏ hàng ",response)
+                // console.log("check dữ liệu giỏ hàng ",response)
                 if (response.code === "success") {
                     setCartItems(response.cart);
                 }
@@ -38,7 +39,7 @@ const Cart = () => {
         const updatedCart = [...cartItems];
         updatedCart[index].quantity = newQuantity;
         setCartItems(updatedCart);
-
+        setLoading(true);
         try {
             await laravelAPI.patch("/api/carts/updateQuantity", {
                 cartId: updatedCart[index].id,
@@ -48,12 +49,14 @@ const Cart = () => {
 
             // Gọi lại API để đảm bảo dữ liệu đồng bộ
             const response = await laravelAPI.get("/api/carts");
-            console.log(response)
+            // console.log(response)
             if (response.code === "success") {
                 setCartItems(response.cart);
             }
         } catch (error) {
             console.error("Lỗi khi cập nhật số lượng giỏ hàng:", error);
+        }finally {
+            setLoading(false);
         }
     };
 
@@ -107,7 +110,9 @@ const Cart = () => {
                             <div className="w-[68%]">
                                 {/* <CartLeft/> */}
                                 {loading ? (
-                                    <p>Đang tải giỏ hàng...</p>
+                                    <div className="flex justify-center items-center h-[300px]">
+                                    <Loading />
+                                </div>
                                 ) : cartItems.length === 0 ? (
                                     <p className="text-center text-gray-500">Giỏ hàng trống</p>
                                 ) : (

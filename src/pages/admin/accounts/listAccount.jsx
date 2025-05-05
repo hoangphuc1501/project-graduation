@@ -6,6 +6,7 @@ import EditAccount from "./editAccount";
 import DetailAccount from "./detailAccount";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import { usePermission } from "../../../hooks/usePermission";
 
 const Account = () => {
     const [users, setUsers] = useState([]);
@@ -25,9 +26,13 @@ const Account = () => {
         total: 0,
         last_page: 1,
     });
-
+    const canCreate = usePermission("create_account");
+    const canEdit = usePermission("edit_account");
+    // const canDelete = usePermission("softDelete_account");
+    const canView = usePermission("view_account");
     // lấy danh sách user
     const fetchUsers = async (page = 1) => {
+        setLoading(true)
         try {
             const response = await laravelAPI.get('/api/admin/users', {
                 params: {
@@ -95,43 +100,46 @@ const Account = () => {
     };
 
 
-     // hàm cập nhật trạng thái
-        const handleToggleStatus = async (id, currentStatus) => {
-            try {
-                const response = await laravelAPI.patch(`/api/admin/users/${id}/status`, {
-                    status: !currentStatus 
-                });
-    
-                if (response.code === 'success') {
-                    toast.success(response.message);
-                    fetchUsers();
-                }
-            } catch (err) {
-                console.error("Lỗi khi cập nhật trạng thái:", err);
-                toast.error("Cập nhật trạng thái thất bại!");
+    // hàm cập nhật trạng thái
+    const handleToggleStatus = async (id, currentStatus) => {
+        try {
+            const response = await laravelAPI.patch(`/api/admin/users/${id}/status`, {
+                status: !currentStatus
+            });
+
+            if (response.code === 'success') {
+                toast.success(response.message);
+                fetchUsers();
             }
-        };
-    
-        // hàm cập nhật vị trí
-        const handlePositionChange = async (userId, newPosition) => {
-            try {
-                const response = await laravelAPI.patch(`/api/admin/users/${userId}/position`, {
-                    position: parseInt(newPosition),
-                });
-    
-                if (response.code === 'success') {
-                    toast.success(response.message);
-                    fetchUsers();
-                }
-            } catch (error) {
-                console.error("Lỗi khi cập nhật vị trí:", error);
-                toast.error("Cập nhật vị trí thất bại!");
+        } catch (err) {
+            console.error("Lỗi khi cập nhật trạng thái:", err);
+            toast.error("Cập nhật trạng thái thất bại!");
+        }
+    };
+
+    // hàm cập nhật vị trí
+    const handlePositionChange = async (userId, newPosition) => {
+        try {
+            const response = await laravelAPI.patch(`/api/admin/users/${userId}/position`, {
+                position: parseInt(newPosition),
+            });
+
+            if (response.code === 'success') {
+                toast.success(response.message);
+                fetchUsers();
             }
-        };
-        
+        } catch (error) {
+            console.error("Lỗi khi cập nhật vị trí:", error);
+            toast.error("Cập nhật vị trí thất bại!");
+        }
+    };
+
 
     if (loading) {
         return <div>Loading...</div>;
+    }
+    if (!canView) {
+        return <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">Bạn không có quyền truy cập trang này.</p>;
     }
     return (
         <>
@@ -177,11 +185,11 @@ const Account = () => {
                             <div className="flex flex-col gap-[10px]">
                                 <label className="text-[16px] font-[700] text-[#000000]">Vai trò</label>
                                 <select className="form-control" onChange={(e) => setFilterRole(e.target.value)}>
-                                        <option value="">Tất cả</option>
-                                        {roles.map(role => (
-                                            <option key={role.id} value={role.id}>{role.name}</option>
-                                        ))}
-                                    </select>
+                                    <option value="">Tất cả</option>
+                                    {roles.map(role => (
+                                        <option key={role.id} value={role.id}>{role.name}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -192,12 +200,14 @@ const Account = () => {
                             <h3 className="text-[20px] text-[#000000] font-[700] ">
                                 Danh sách tài khoản
                             </h3>
-                            <button
-                                onClick={() => setShowCreateAccount(true)}
-                                className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px]">
-                                <span><FaCirclePlus /></span>
-                                Thêm mới
-                            </button>
+                            {canCreate && (
+                                <button
+                                    onClick={() => setShowCreateAccount(true)}
+                                    className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px]">
+                                    <span><FaCirclePlus /></span>
+                                    Thêm mới
+                                </button>
+                            )}
                         </div>
                     </div>
                     <div className="card-body">
@@ -231,7 +241,7 @@ const Account = () => {
                                 {users.map((user, index) => (
                                     <tr className="border-t ">
                                         <th className="!py-[20px] font-[400] text-[16px] text-[400] text-center">
-                                            {index + 1}
+                                            {index + 1 + (currentPage - 1) * 10}
                                         </th>
                                         <th className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center">
                                             {user.fullname}
@@ -240,13 +250,18 @@ const Account = () => {
                                             {user.email}
                                         </th>
                                         <th className="!py-[20px] text-center">
-                                            <input
-                                                type="number"
-                                                name="position"
-                                                value={user.position}
-                                                onChange={(e) => handlePositionChange(user?.id, e.target.value)}
-                                                className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
-                                            />
+                                            {canEdit ? (
+                                                <input
+                                                    type="number"
+                                                    name="position"
+                                                    value={user?.position}
+                                                    min={1}
+                                                    onChange={(e) => handlePositionChange(user?.id, e.target.value)}
+                                                    className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
+                                                />
+                                            ) : (
+                                                <span className="font-[600] text-[16px] text-[#000000]">{user?.position}</span>
+                                            )}
                                         </th>
                                         <th className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center w-[400px]">
                                             <div className="flex flex-wrap justify-center gap-[10px]">
@@ -258,16 +273,24 @@ const Account = () => {
                                             </div>
                                         </th>
                                         <th className="text-center !py-[20px]">
-                                            <label class="toggle-switch">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={user.status === 1}
-                                                    onChange={() => handleToggleStatus(user.id, user.status)}
-                                                />
-                                                <div class="toggle-switch-background">
-                                                    <div class="toggle-switch-handle"></div>
-                                                </div>
-                                            </label>
+                                            {canEdit ? (
+                                                <label className="toggle-switch">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={user?.status === 1}
+                                                        onChange={() => handleToggleStatus(user?.id, user?.status)}
+                                                    />
+                                                    <div className="toggle-switch-background">
+                                                        <div className="toggle-switch-handle"></div>
+                                                    </div>
+                                                </label>
+                                            ) : (
+                                                <span
+                                                    className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${user?.status === 1 ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                                                    {user?.status === 1 ? "Đang hoạt động" : "Không hoạt động"}
+                                                </span>
+                                            )}
                                         </th>
                                         <th>
                                             <div className="!py-[20px] flex items-center justify-center gap-[6px]">
@@ -277,12 +300,13 @@ const Account = () => {
                                                 >
                                                     Chi tiết
                                                 </button>
-                                                <button
-                                                    onClick={() => handleEditClick(user.id)}
-                                                    className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]"
-                                                >
-                                                    Sửa
-                                                </button>
+                                                {canEdit && (
+                                                    <button
+                                                        onClick={() => handleEditClick(user?.id)}
+                                                        className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                        Sửa
+                                                    </button>
+                                                )}
                                                 {/* <button
                                                 className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
                                             >

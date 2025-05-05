@@ -61,11 +61,13 @@ const ProductItem = ({ product, slug }) => {
                     </Link>
                 </h3>
                 <div className="flex items-center gap-x-[4px] pb-[12px] text-[#FF9900]">
-                    <FontAwesomeIcon icon={faSolidStar} />
-                    <FontAwesomeIcon icon={faSolidStar} />
-                    <FontAwesomeIcon icon={faSolidStar} />
-                    <FontAwesomeIcon icon={faSolidStar} />
-                    <FontAwesomeIcon icon={faRegularStar} />
+                    {[1, 2, 3, 4, 5].map((i) => (
+                        <FontAwesomeIcon
+                            key={i}
+                            icon={i <= Math.round(product.average_rating || 0) ? faSolidStar : faRegularStar}
+                        />
+                    ))}
+                    <span className="text-[12px] text-[#555] ml-2">({product.total_reviews || 0})</span>
                 </div>
                 <div className="flex items-center gap-x-[12px]">
                     <span className="text-[16px] font-[700] text-main">

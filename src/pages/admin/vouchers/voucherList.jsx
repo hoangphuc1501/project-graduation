@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import DetailVoucher from "./detailVoucher";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import { usePermission } from "../../../hooks/usePermission";
 
 const VoucherList = () => {
     const [vouchers, setVouchers] = useState([]);
@@ -24,7 +25,10 @@ const VoucherList = () => {
         total: 0,
         last_page: 1,
     });
-
+    const canCreate = usePermission("create_voucher");
+    const canEdit = usePermission("edit_voucher");
+    const canDelete = usePermission("softDelete_voucher");
+    const canView = usePermission("view_voucher");
     useEffect(() => {
         fetchVouchers(currentPage);
     }, [currentPage, filterStatus, sortOption, searchKeyword]);
@@ -122,6 +126,10 @@ const VoucherList = () => {
         }
     };
 
+    if (!canView) {
+        return <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">Bạn không có quyền truy cập trang này.</p>;
+    }
+
     return (
         <>
             <div className="py-[60px]">
@@ -181,15 +189,17 @@ const VoucherList = () => {
                             <h3 className="text-[20px] font-[700] text-[#00000]">
                                 Danh sách mã khuyến mãi
                             </h3>
-                            <button
-                                onClick={() => setShowCreatevoucher(true)}
-                                className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]"
-                            >
-                                <span>
-                                    <FaCirclePlus />
-                                </span>
-                                Thêm mới
-                            </button>
+                            {canCreate && (
+                                <button
+                                    onClick={() => setShowCreatevoucher(true)}
+                                    className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]"
+                                >
+                                    <span>
+                                        <FaCirclePlus />
+                                    </span>
+                                    Thêm mới
+                                </button>
+                            )}
                         </div>
                     </div>
                     <div className="card-body">
@@ -238,7 +248,7 @@ const VoucherList = () => {
                                                         <input type="checkbox" name="" id="" />
                                                     </td>
                                                     <td className="!py-[20px] font-[400] text-[16px] text-[400] text-center">
-                                                    {index + 1 + (currentPage - 1) * 10}
+                                                        {index + 1 + (currentPage - 1) * 10}
                                                     </td>
                                                     <td className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center">
                                                         {voucher?.name}
@@ -264,17 +274,25 @@ const VoucherList = () => {
                                                         {new Date(voucher?.endDate).toLocaleDateString()}
                                                     </td>
                                                     <td className="text-center !py-[20px]">
-                                                    <label class="toggle-switch">
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={voucher?.status === "active"}
-                                                            onChange={() => handleToggleStatus(voucher?.id, voucher?.status)}
-                                                        />
-                                                        <div class="toggle-switch-background">
-                                                            <div class="toggle-switch-handle"></div>
-                                                        </div>
-                                                    </label>
-                                                </td>
+                                                        {canEdit ? (
+                                                            <label className="toggle-switch">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={voucher?.status === "active"}
+                                                                    onChange={() => handleToggleStatus(voucher?.id, voucher?.status)}
+                                                                />
+                                                                <div className="toggle-switch-background">
+                                                                    <div className="toggle-switch-handle"></div>
+                                                                </div>
+                                                            </label>
+                                                        ) : (
+                                                            <span
+                                                                className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${voucher?.status === "active" ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                                                                {voucher?.status === "active" ? "Đang hoạt động" : "Không hoạt động"}
+                                                            </span>
+                                                        )}
+                                                    </td>
 
                                                     <td className="!py-[20px]">
                                                         <div className="flex items-center justify-center gap-[6px]">
@@ -284,18 +302,21 @@ const VoucherList = () => {
                                                             >
                                                                 Chi tiết
                                                             </button>
-                                                            <button
-                                                                onClick={() => handleEditClick(voucher?.id)}
-                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]"
-                                                            >
-                                                                Sửa
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleSoftDelete(voucher?.id)}
-                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
-                                                            >
-                                                                Xóa
-                                                            </button>
+                                                            {canEdit && (
+                                                                <button
+                                                                    onClick={() => handleEditClick(voucher?.id)}
+                                                                    className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                                    Sửa
+                                                                </button>
+                                                            )}
+
+                                                            {canDelete && (
+                                                                <button
+                                                                    onClick={() => handleSoftDelete(voucher?.id)}
+                                                                    className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                                                    Xóa
+                                                                </button>
+                                                            )}
                                                         </div>
                                                     </td>
                                                 </tr>

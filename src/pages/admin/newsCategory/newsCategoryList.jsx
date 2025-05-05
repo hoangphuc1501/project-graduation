@@ -7,6 +7,7 @@ import CreateNewsCategory from "./createNewsCategory";
 import EditNewsCategory from "./editNewsCategory";
 import DetailNewsCategory from "./detailNewsCategory";
 import { toast } from "react-toastify";
+import { usePermission } from "../../../hooks/usePermission";
 
 
 const NewsCategoryList = () => {
@@ -25,7 +26,10 @@ const NewsCategoryList = () => {
     total: 0,
     last_page: 1,
   });
-
+  const canCreate = usePermission("create_newsCategory");
+  const canEdit = usePermission("edit_newsCategory");
+  const canDelete = usePermission("softDelete_newsCategory");
+  const canView = usePermission("view_newsCategory");
   // danh sách danh mục
   const fetchNewsCategory = async (page = 1) => {
     setLoading(true);
@@ -151,7 +155,9 @@ const NewsCategoryList = () => {
       toast.error("Cập nhật vị trí thất bại!");
     }
   };
-
+  if (!canView) {
+    return <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">Bạn không có quyền truy cập trang này.</p>;
+  }
 
   return (
     <div className="py-[60px]">
@@ -206,15 +212,17 @@ const NewsCategoryList = () => {
             <h3 className="text-[20px] font-[700] text-[#00000]">
               Danh sách danh mục
             </h3>
-            <button
-              onClick={() => setShowCreateCategory(true)}
-              className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]"
-            >
-              <span>
-                <FaCirclePlus />
-              </span>
-              Thêm mới
-            </button>
+            {canCreate && (
+              <button
+                onClick={() => setShowCreateCategory(true)}
+                className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px] my-[10px]"
+              >
+                <span>
+                  <FaCirclePlus />
+                </span>
+                Thêm mới
+              </button>
+            )}
           </div>
         </div>
         <div className="card-body">
@@ -269,14 +277,18 @@ const NewsCategoryList = () => {
                           {category?.name}
                         </td>
                         <td className="!py-[20px] text-center">
-                          <input
-                            type="number"
-                            name="position"
-                            value={category?.position}
-                            min={1}
-                            onChange={(e) => handlePositionChange(category?.id, e.target.value)}
-                            className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
-                          />
+                          {canEdit ? (
+                            <input
+                              type="number"
+                              name="position"
+                              value={category?.position}
+                              min={1}
+                              onChange={(e) => handlePositionChange(category?.id, e.target.value)}
+                              className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
+                            />
+                          ) : (
+                            <span className="font-[600] text-[16px] text-[#000000]">{category?.position}</span>
+                          )}
                         </td>
                         <td className="!py-[20px] font-[600] text-[16px] text-[#000000] text-center">
                           {category?.parentName
@@ -284,16 +296,25 @@ const NewsCategoryList = () => {
                             : "Không có"}{" "}
                         </td>
                         <td className="!py-[20px] text-center">
-                          <label class="toggle-switch">
-                            <input
-                              type="checkbox"
-                              checked={category?.status === 1}
-                              onChange={() => handleToggleStatus(category?.id, category?.status)}
-                            />
-                            <div class="toggle-switch-background">
-                              <div class="toggle-switch-handle"></div>
-                            </div>
-                          </label>
+
+                          {canEdit ? (
+                            <label className="toggle-switch">
+                              <input
+                                type="checkbox"
+                                checked={category?.status === 1}
+                                onChange={() => handleToggleStatus(category?.id, category?.status)}
+                              />
+                              <div className="toggle-switch-background">
+                                <div className="toggle-switch-handle"></div>
+                              </div>
+                            </label>
+                          ) : (
+                            <span
+                              className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${category?.status === 1 ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                              {category?.status === 1 ? "Đang hoạt động" : "Không hoạt động"}
+                            </span>
+                          )}
                         </td>
                         <td>
                           <div className="flex items-center justify-center gap-[6px] !py-[20px]">
@@ -303,18 +324,20 @@ const NewsCategoryList = () => {
                             >
                               Chi tiết
                             </button>
-                            <button
-                              onClick={() => handleEditClick(category?.id)}
-                              className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]"
-                            >
-                              Sửa
-                            </button>
-                            <button
-                              onClick={() => handleDeleteCategory(category?.id)}
-                              className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
-                            >
-                              Xóa
-                            </button>
+                            {canEdit && (
+                              <button
+                                onClick={() => handleEditClick(category?.id)}
+                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                Sửa
+                              </button>
+                            )}
+                            {canDelete && (
+                              <button
+                                onClick={() => handleDeleteCategory(category?.id)}
+                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                Xóa
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>

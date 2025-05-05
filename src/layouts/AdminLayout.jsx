@@ -5,6 +5,7 @@ import SidebarAdmin from "../components/admin/partials/SidebarAdmin";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { laravelAPI } from "../utils/axiosCustom";
 const AdminLayout = () => {
     const navigate = useNavigate();
 
@@ -14,7 +15,22 @@ const AdminLayout = () => {
             navigate('/loginAdmin');
         }
     }, [navigate]);
-
+    
+    const syncPermissions = async () => {
+        try {
+            const response = await laravelAPI.get("/api/admin/getMyPermissions");
+            // console.log("check gọi permissin", response)
+            if (response.code === "success") {
+                localStorage.setItem("permissions", JSON.stringify(response.permissions));
+            }
+        } catch (error) {
+            console.error("Lỗi khi đồng bộ quyền:", error);
+        }
+    };
+    
+    useEffect(() => {
+        syncPermissions();
+    }, []);
     return (
         <>
             <div className="flex min-h-[1000px]">

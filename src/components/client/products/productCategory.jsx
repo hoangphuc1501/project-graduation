@@ -48,6 +48,7 @@ const ProductFeature = () => {
         const fetchProductFeature = async () => {
             try {
                 const response = await laravelAPI.get("/api/hotProduct");
+                console.log("hot product", response)
                 setProductFeature(response.data || []);
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);

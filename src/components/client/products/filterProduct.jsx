@@ -1,17 +1,39 @@
 import { useState } from "react";
 
-const FilterProduct = () => {
+const FilterProduct = ({ selectedPrices = [], onFilterChange }) => {
 
-    const [selectedPrices, setSelectedPrices] = useState([]);
+    // const [selectedPrices, setSelectedPrices] = useState([]);
 
     // mãng giá
     const priceOptions = [
-        { label: "Giá dưới 500.000", value: "under_500k" },
-        { label: "500.000 - 1 triệu", value: "500k_1m" },
-        { label: "1 - 2 triệu", value: "1m_2m" },
-        { label: "2 - 3 triệu", value: "2m_3m" },
-        { label: "Giá trên 3 triệu", value: "above_3m" },
+        { label: "Giá dưới 500.000", value: "under_500k", min: 0, max: 500000 },
+        { label: "500.000 - 1 triệu", value: "500k_1m", min: 500000, max: 1000000 },
+        { label: "1 - 2 triệu", value: "1m_2m", min: 1000000, max: 2000000 },
+        { label: "2 - 3 triệu", value: "2m_3m", min: 2000000, max: 3000000 },
+        { label: "Giá trên 3 triệu", value: "above_3m", min: 3000000, max: null },
     ];
+
+    const handlePriceChange = (value) => {
+        const updated = selectedPrices.includes(value)
+            ? selectedPrices.filter((v) => v !== value)
+            : [...selectedPrices, value];
+
+        const selectedRanges = priceOptions.filter(p => updated.includes(p.value));
+        let min = null;
+        let max = null;
+
+        if (selectedRanges.length > 0) {
+            min = Math.min(...selectedRanges.map(p => p.min));
+            max = Math.max(...selectedRanges.map(p => p.max || Infinity));
+            if (max === Infinity) max = null;
+        }
+
+        const newFilters = {};
+        if (min !== null) newFilters.price_min = min;
+        if (max !== null) newFilters.price_max = max;
+
+        onFilterChange && onFilterChange(newFilters, updated);
+    };
 
     // mãng chiều dài vợt
     const length = [
@@ -52,7 +74,7 @@ const FilterProduct = () => {
     ];
     return (
         <>
-            <div className="">
+            <>
                 <div className="px-[20px] py-[10px]">
                     <h3 className="font-[700] text-[16px] text-[#282828] uppercase py-[4px]">Chọn Mức giá</h3>
                     <div className="py-[10px] border-b">
@@ -61,6 +83,8 @@ const FilterProduct = () => {
                                 <input
                                     type="checkbox"
                                     id={`price${index}`}
+                                    checked={selectedPrices.includes(value)}
+                                    onChange={() => handlePriceChange(value)}
                                 />
                                 <label
                                     className="text-[14px] font-[400] text-[#282828] hover:text-main cursor-pointer"
@@ -92,7 +116,7 @@ const FilterProduct = () => {
                 <div className="px-[20px] py-[10px]">
                     <h3 className="font-[700] text-[16px] text-[#282828] uppercase py-[4px]">Chiều dài cán vợt</h3>
                     <div className="py-[10px] border-b">
-                    {racketHandleSize.map(({ label, value }, index) => (
+                        {racketHandleSize.map(({ label, value }, index) => (
                             <div key={index} className="flex items-center gap-[10px] pb-[10px]">
                                 <input
                                     type="checkbox"
@@ -110,7 +134,7 @@ const FilterProduct = () => {
                 <div className="px-[20px] py-[10px]">
                     <h3 className="font-[700] text-[16px] text-[#282828] uppercase py-[4px]">Swingweight</h3>
                     <div className="py-[10px] border-b">
-                    {Swingweight.map(({ label, value }, index) => (
+                        {Swingweight.map(({ label, value }, index) => (
                             <div key={index} className="flex items-center gap-[10px] pb-[10px]">
                                 <input
                                     type="checkbox"
@@ -128,7 +152,7 @@ const FilterProduct = () => {
                 <div className="px-[20px] py-[10px]">
                     <h3 className="font-[700] text-[16px] text-[#282828] uppercase py-[4px]">Trọng Lượng</h3>
                     <div className="py-[10px] border-b">
-                    {weight.map(({ label, value }, index) => (
+                        {weight.map(({ label, value }, index) => (
                             <div key={index} className="flex items-center gap-[10px] pb-[10px]">
                                 <input
                                     type="checkbox"
@@ -146,7 +170,7 @@ const FilterProduct = () => {
                 <div className="px-[20px] py-[10px]">
                     <h3 className="font-[700] text-[16px] text-[#282828] uppercase py-[4px]">Điểm Cân Bằng</h3>
                     <div className="py-[10px] border-b">
-                    {balancepoint.map(({ label, value }, index) => (
+                        {balancepoint.map(({ label, value }, index) => (
                             <div key={index} className="flex items-center gap-[10px] pb-[10px]">
                                 <input
                                     type="checkbox"
@@ -164,7 +188,7 @@ const FilterProduct = () => {
                 <div className="px-[20px] py-[10px]">
                     <h3 className="font-[700] text-[16px] text-[#282828] uppercase py-[4px]">Độ Cứng Đũa</h3>
                     <div className="py-[10px]">
-                    {stiffness.map(({ label, value }, index) => (
+                        {stiffness.map(({ label, value }, index) => (
                             <div key={index} className="flex items-center gap-[10px] pb-[10px]">
                                 <input
                                     type="checkbox"
@@ -179,7 +203,7 @@ const FilterProduct = () => {
                         ))}
                     </div>
                 </div>
-            </div>
+            </>
         </>
     )
 }

@@ -6,6 +6,7 @@ import EditModalSize from "../../../components/admin/products/editSizeModal";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import { usePermission } from "../../../hooks/usePermission";
 
 const SizeList = () => {
     const [sizes, setsizes] = useState([]);
@@ -22,6 +23,11 @@ const SizeList = () => {
         total: 0,
         last_page: 1
     });
+
+    const canCreate = usePermission("create_size");
+    const canEdit = usePermission("edit_size");
+    const canDelete = usePermission("softDelete_size");
+    const canView = usePermission("view_size");
 
     useEffect(() => {
         fetchSizes(currentPage);
@@ -140,7 +146,10 @@ const SizeList = () => {
         }
     };
 
-    
+    if (!canView) {
+        return <p className="text-[28px] font-[700] text-[#FF0000] text-center py-[30px]">Bạn không có quyền truy cập trang này.</p>;
+    }
+
 
     return (
         <div className="py-[20px]">
@@ -197,12 +206,14 @@ const SizeList = () => {
                         <h3 className="text-[20px] text-[#000000] font-[700] ">
                             Danh sách kích thước
                         </h3>
-                        <button
-                            onClick={() => setShowModalSize(true)}
-                            className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px]">
-                            <span><FaCirclePlus /></span>
-                            Thêm mới
-                        </button>
+                        {canCreate && (
+                            <button
+                                onClick={() => setShowModalSize(true)}
+                                className="font-[600] text-[20px] text-[#ffffff] py-[8px] px-[20px] rounded-[12px] bg-main flex items-center gap-[20px]">
+                                <span><FaCirclePlus /></span>
+                                Thêm mới
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div className="card-body">
@@ -228,7 +239,7 @@ const SizeList = () => {
                                             Trạng thái
                                         </th>
                                         <th className="font-[700] text-[16px] text-[#000000] !py-[10px] text-center">
-                                            Hành động
+                                            Tác vụ
                                         </th>
                                     </tr>
                                 </thead>
@@ -243,26 +254,38 @@ const SizeList = () => {
                                                     {size?.name}
                                                 </td>
                                                 <td className="!py-[20px] text-center">
-                                                    <input
-                                                        type="number"
-                                                        name="position"
-                                                        value={size?.position}
-                                                        min={1}
-                                                        onChange={(e) => handlePositionChange(size?.id, e.target.value)}
-                                                        className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
-                                                    />
+                                                    {canEdit ? (
+                                                        <input
+                                                            type="number"
+                                                            name="position"
+                                                            value={size?.position}
+                                                            min={1}
+                                                            onChange={(e) => handlePositionChange(size?.id, e.target.value)}
+                                                            className="w-[80px] border rounded-[12px] py-[4px] text-[16px] font-[400] text-center text-[#000000]"
+                                                        />
+                                                    ) : (
+                                                        <span className="font-[600] text-[16px] text-[#000000]">{size?.position}</span>
+                                                    )}
                                                 </td>
                                                 <td className="text-center !py-[20px]">
-                                                    <label class="toggle-switch">
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={size?.status === 1}
-                                                            onChange={() => handleToggleStatus(size?.id, size?.status)}
-                                                        />
-                                                        <div class="toggle-switch-background">
-                                                            <div class="toggle-switch-handle"></div>
-                                                        </div>
-                                                    </label>
+                                                    {canEdit ? (
+                                                        <label className="toggle-switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={size?.status === 1}
+                                                                onChange={() => handleToggleStatus(size?.id, size?.status)}
+                                                            />
+                                                            <div className="toggle-switch-background">
+                                                                <div className="toggle-switch-handle"></div>
+                                                            </div>
+                                                        </label>
+                                                    ) : (
+                                                        <span
+                                                            className={`inline-block px-[12px] py-[6px] rounded-[12px] text-[14px] font-[600] text-[#ffffff] 
+                ${size?.status === 1 ? 'bg-[#339900] ' : 'bg-[#FF0000]'}`}>
+                                                            {size?.status === 1 ? "Đang hoạt động" : "Không hoạt động"}
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td>
                                                     <div className="flex items-center justify-center gap-[6px] !py-[20px]">
@@ -272,18 +295,21 @@ const SizeList = () => {
                                                         >
                                                             Chi tiết
                                                         </button>
-                                                        <button
-                                                            onClick={() => handleEditClick(size?.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]"
-                                                        >
-                                                            Sửa
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDeleteClick(size?.id)}
-                                                            className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]"
-                                                        >
-                                                            Xóa
-                                                        </button>
+                                                        {canEdit && (
+                                                            <button
+                                                                onClick={() => handleEditClick(size?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FFCC00] rounded-[8px] py-[8px] px-[12px]">
+                                                                Sửa
+                                                            </button>
+                                                        )}
+
+                                                        {canDelete && (
+                                                            <button
+                                                                onClick={() => handleDeleteClick(size?.id)}
+                                                                className="text-[16px] font-[600] text-[#ffffff] bg-[#FF0000] rounded-[8px] py-[8px] px-[12px]">
+                                                                Xóa
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>

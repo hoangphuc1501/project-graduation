@@ -19,7 +19,7 @@ const CreateRole = (props) => {
         const fetchPermissions = async () => {
             try {
                 const response = await laravelAPI.get('/api/admin/permissionGetAll');
-                console.log('Permissions data:', response);
+                // console.log('Permissions data:', response);
                 if (response.code === 'success') {
                     setPermissions(response.data);
                 }
@@ -98,28 +98,30 @@ const CreateRole = (props) => {
                             <label className='text-[18px] text-[#000000] font-[700] pb-[8px]' >Mô tả</label>
                             <TextEditor initialValue="" onChange={setDescription} height={300} name="description" />
                         </div>
-                        <div>
-                            <h4 className="font-[700]">Vai trò này có quyền gì?</h4>
-                            <p>Chọn vào module hoặc các hành động dưới đây để chọn quyền.</p>
+                        <div className='px-[10px] mb-[20px]'>
+                            <h4 className="text-[16px] text-[#000000] font-[700] pb-[8px]">Vai trò này có quyền gì?</h4>
+                            <p className='text-[16px] text-[#000000] font-[400]'>Chọn vào module hoặc các hành động dưới đây để chọn quyền.</p>
                         </div>
 
                         {/* Lặp qua các module */}
                         {Object.keys(permissions).map((moduleName) => (
-                            <div key={moduleName}>
-                                <h5 className="font-[700]">{moduleName}</h5>
-                                {permissions[moduleName].map((permission) => (
-                                    <div key={permission.id} className="mb-3">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                value={permission.id}
-                                                checked={selectedPermissions.includes(permission.id)}
-                                                onChange={() => handlePermissionChange(permission.id)}
-                                            />
-                                            {permission.name}
-                                        </label>
-                                    </div>
-                                ))}
+                            <div key={moduleName} className='card mb-[20px] px-[20px] py-[20px] rounded-[10px]'>
+                                <h5 className="text-[16px] text-[#000000] font-[700] pb-[8px]">{moduleName}</h5>
+                                <div className="flex items-center gap-[30px] flex-wrap">
+                                    {permissions[moduleName].map((permission) => (
+                                        <div key={permission.id} >
+                                            <label className='flex items-center gap-[6px] py-[4px]'>
+                                                <input
+                                                    type="checkbox"
+                                                    value={permission.id}
+                                                    checked={selectedPermissions.includes(permission.id)}
+                                                    onChange={() => handlePermissionChange(permission.id)}
+                                                />
+                                                <span className='text-[16px] text-[#000000] font-[400] cursor-pointer'>{permission.name}</span>
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         ))}
                         <div className=''>

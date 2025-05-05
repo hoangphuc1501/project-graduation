@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { laravelAPI } from "../../../utils/axiosCustom";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
+import Loading from "../../../components/client/animations/loading";
 
 
 const VoucherListClient = () => {
@@ -70,9 +71,8 @@ const VoucherListClient = () => {
                 </button>
             </div>
             {loading ? (
-                <div className="flex justify-center">
-                    <div className="loader border-4 border-gray-300 border-t-orange-500 rounded-full w-10 h-10 animate-spin"></div>
-                    <span className="ml-2 text-orange-500 text-lg font-semibold">Đang tải...</span>
+                <div className="flex justify-center items-center h-[300px]">
+                    <Loading />
                 </div>
             ) : (
                 <>

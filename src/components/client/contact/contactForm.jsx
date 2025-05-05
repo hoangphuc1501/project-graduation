@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faEnvelope, faPhone, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { nodeAPI } from "../../../utils/axiosCustom";
+import { laravelAPI } from "../../../utils/axiosCustom";
 import { toast } from "react-toastify";
 
 const ContactForm = () => {
@@ -20,7 +20,7 @@ const ContactForm = () => {
         e.preventDefault();
 
         try {
-            const response = await nodeAPI.post("/contact", formData);
+            const response = await laravelAPI.post("/api/contact", formData);
             console.log(response)
             if(response.code === "success" ){
                 toast.success(response.message)

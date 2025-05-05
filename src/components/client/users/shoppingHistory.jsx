@@ -3,6 +3,7 @@ import { laravelAPI } from "../../../utils/axiosCustom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import Loading from "../animations/loading";
 const ShoppingHistory = () => {
     const [orders, setOrders] = useState([]);
     const [activeStatus, setActiveStatus] = useState("all");
@@ -53,8 +54,9 @@ const ShoppingHistory = () => {
             setOrders(ordersWithProducts);
         } catch (error) {
             console.error("Lỗi khi tải danh sách đơn hàng", error);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     // hủy đơn hàng
@@ -131,7 +133,9 @@ const ShoppingHistory = () => {
                         ))}
                     </div>
                     {loading ? (
-                        <p>Đang tải...</p>
+                        <div className="flex justify-center items-center h-[300px]">
+                            <Loading />
+                        </div>
                     ) : (
                         <div className="py-[40px]">
                             {orders?.length === 0 ? (
